@@ -12,6 +12,7 @@ $routes->get('/login', 'AuthController::login');
 $routes->get('/masuk', 'AuthController::login');
 
 $routes->get('/register', 'AuthController::register');
+$routes->post('/register/check', 'AuthController::processRegisterUser');
 $routes->get('/daftar', 'AuthController::register');
 
 $routes->get('/logout', 'AuthController::processLogout');

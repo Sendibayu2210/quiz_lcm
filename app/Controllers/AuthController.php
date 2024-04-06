@@ -5,6 +5,8 @@ namespace App\Controllers;
 use App\Controllers\BaseController;
 use CodeIgniter\HTTP\ResponseInterface;
 
+use App\Models\UsersModel;
+
 use CodeIgniter\RESTful\ResourceController;
 use CodeIgniter\API\ResponseTrait;
 
@@ -15,6 +17,7 @@ class AuthController extends ResourceController
     public function __construct()
     {
         $this->validation = \Config\Services::Validation(); 
+        $this->usersmodel = new UsersModel();
     }
 
     public function login()
@@ -118,68 +121,68 @@ class AuthController extends ResourceController
     {
         $request['name'] = $this->request->getPost('name');
         $request['email'] = $this->request->getPost('email');
+        $request['username'] = $this->request->getPost('username');
         $request['password'] = $this->request->getPost('password');
+        $request['address'] = $this->request->getPost('address');
+        $request['birthday'] = $this->request->getPost('birthday');
+        
         
         $dataValidation = [
             'name' => $request['name'],
             'email' => $request['email'],            
+            'username' => $request['username'],            
             'password' => $request['password'],
-            // 'address' => $request['address'],            
-            // 'birthday' => $request['birthday'],            
-            // 'nohp' => $request['nohp'],            
+            'address' => $request['address'],            
+            'birthday' => $request['birthday'],                        
         ];
 
         $validationArray = [
             'name' => [
-                'label' => 'Nama',
+                'label' => 'name',
                 'rules' => 'required',
                 'errors' => [
-                    'required' => 'Masukan nama atau email'
+                    'required' => 'Please enter your full name'
                 ],
             ],
+            'username' => [
+                'label' => 'username',
+                'rules' => 'required|is_unique[users.username]',
+                'errors' => [
+                    'required' => 'Please enter your username',                    
+                    'is_unique' => 'Username already registered, please use another username',
+                ],
+            ],            
             'email' => [
                 'label' => 'Email',
                 'rules' => 'required|valid_email|is_unique[users.email]',
                 'errors' => [
-                    'required' => 'Masukan email',
-                    'valid_email' => 'Masukan format email dengan benar contoh namaakun@gmail.com',
-                    'is_unique' => 'Email sudah terdaftar, silahkan gunakan email lain',
+                    'required' => 'Please enter your email',
+                    'valid_email' => 'Please enter a valid email format, for example: emailname@gmail.com',
+                    'is_unique' => 'Email already registered, please use another email',
                 ],
             ],            
             'password' => [
                 'label' => 'Password',
                 'rules' => 'required',
                 'errors' => [
-                    'required' => 'Masukan Password'
+                    'required' => 'Please enter your password'
                 ],
             ],
             'address' => [
                 'label' => 'Alamat',
                 'rules' => 'required',
                 'errors' => [
-                    'required' => 'Masukan Alamat'
+                    'required' => 'Please enter your address'
                 ],
             ],
             'birthday' => [
                 'label' => 'Tanggal Lahir',
                 'rules' => 'required',
                 'errors' => [
-                    'required' => 'Masukan Tanggal Lahir'
+                    'required' => 'Please enter your date of birth'
                 ],
-            ],
-            'nohp' => [
-                'label' => 'No Handphone',
-                'rules' => 'required',
-                'errors' => [
-                    'required' => 'Masukan No Handphone'
-                ],
-            ],
-        ];
-
-        // hapus data array, tetap dibiarkan takutnya sewaktu waktu ingin diubah proses daftarnya
-        unset($validationArray['address']);
-        unset($validationArray['birthday']);
-        unset($validationArray['nohp']);
+            ],           
+        ];        
 
         $this->validation->setRules($validationArray);
 
@@ -196,50 +199,26 @@ class AuthController extends ResourceController
         // insert data
         $dataInsert = [
             'name' => htmlspecialchars($request['name']),
+            'username' => htmlspecialchars($request['username']),            
             'email' => htmlspecialchars($request['email']),            
-            // 'birthday' => htmlspecialchars($request['birthday']),            
-            // 'address' => htmlspecialchars($request['address']),            
-            // 'nohp' => htmlspecialchars($request['nohp']),            
-            'view_password' => htmlspecialchars($request['password']),
+            'birthday' => htmlspecialchars($request['birthday']),            
+            'address' => htmlspecialchars($request['address']),                                    
             'password' => password_hash($request['password'], PASSWORD_DEFAULT),
             'role' => 'user',
             'status' => 'active',                     
         ];
 
         $insert = $this->usersmodel->insert($dataInsert);
-        if($insert){
-            
-            // copy foto profile
-            // $sourcePath = FCPATH . 'img/fp.png';  // Gantilah dengan path file sumber
-            // $extension = pathinfo($sourcePath, PATHINFO_EXTENSION);  // Dapatkan ekstensi file
-            // $randomFilename = uniqid() . '_' . time();  // Membuat nama file baru yang unik
 
-            // // Gabungkan nama file baru dengan ekstensi
-            // $newName = $randomFilename . '.' . $extension;
-            // $destinationPath = FCPATH . 'assets/foto-profile/' . $newName ;            
-            // if (copy($sourcePath, $destinationPath)) {
-            //     $this->usersmodel->set('foto', $newName)->where('email', $request['email'])->update();
-            // }  
-            
-            
-            // register affiliate
-            $registerAffiliate = $this->affiliate->registerAffiliate();
-            $dataUpdate = [
-                'referral_code' => $registerAffiliate['referralCode'],
-                'commission' => $registerAffiliate['commission'],
-                'category_commission' => $registerAffiliate['categoryCommission'],
-            ];
-            $update = $this->usersmodel->set($dataUpdate)->where('email', $request['email'])->update();
-
+        if($insert){                                               
             $response=[
                 'status' => 'success',
-                'message'=> 'Pendaftaran selesai, silahkan login',                                        
+                'message'=> 'Registered successfully, please sign in',                                        
             ];
-
         }else{            
             $response=[
                 'status' => 'error',
-                'message'=> 'Registrasi kamu gagal',
+                'message'=> 'Registration failed',
             ];
         }    
         return $this->response->setJson($response);
