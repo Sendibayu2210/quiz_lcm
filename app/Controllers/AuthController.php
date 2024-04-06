@@ -33,7 +33,7 @@ class AuthController extends ResourceController
         $email = $this->request->getPost('email');
         $password = $this->request->getPost('password');        
     
-        $user = $this->usersmodel->where('email',$email)->first();        
+        $user = $this->usersmodel->where('email',$email)->orWhere('username', $email)->first();        
         $status = 'success';
         $message = '';    
     
@@ -44,18 +44,17 @@ class AuthController extends ResourceController
 
         $this->validation->setRules([
             'email' => [
-                'label' => 'email atau email',
-                'rules' => 'required|valid_email',
+                'label' => 'email or username',
+                'rules' => 'required',
                 'errors' => [
-                    'required' => 'Masukan email',
-                    'valid_email' => 'Mohon masukan format email yang sesuai',
+                    'required' => 'Please enter your email or username',                    
                 ],
             ],
             'password' => [
                 'label' => 'Password',
                 'rules' => 'required',
                 'errors' => [
-                    'required' => 'Masukan Password'
+                    'required' => 'Please enter your Password'
                 ],
             ],
         ]);
@@ -71,13 +70,13 @@ class AuthController extends ResourceController
 
         if(!$user){
             $status = 'error';
-            $message = 'Email belum terdaftar';
+            $message = 'Email or username is not registered yet';
         }    
         
         if($user){
             if(!password_verify($password, $user['password'])){
                 $status = 'error';
-                $message = 'Password salah';
+                $message = 'Incorrect password';
             }
         }
 
@@ -112,7 +111,7 @@ class AuthController extends ResourceController
     public function register()
     {
         $data = [
-            'title' => 'Daftar - Digisean',
+            'title' => 'Daftar - GET-HOUSE OF ENGLISH KUNINGAN',
         ];
         return view('auth/register',$data);
     }
@@ -231,7 +230,7 @@ class AuthController extends ResourceController
         $data = [
             'title' => 'Lupa Password',        
         ];        
-        return view('digisean/auth/forgot-password',$data);
+        return view('GET-HOUSE OF ENGLISH KUNINGAN/auth/forgot-password',$data);
     }
 
     public function forgotPasswordCheckEmail()
@@ -258,7 +257,7 @@ class AuthController extends ResourceController
                 'email'=>$email,
                 'token'=>$token,
             ];
-            $message = view('digisean/email/forgotPassword',$data);
+            $message = view('GET-HOUSE OF ENGLISH KUNINGAN/email/forgotPassword',$data);
             $sendEmail = $this->email->sendEmail($to, $subject, $message);
                       
             if($sendEmail==true){

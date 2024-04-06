@@ -177,20 +177,13 @@
                         }else{               
                             if(res.message == 'validation'){
                                 res.message = 'Please check your form';                                
-                                let validationErrors = res.validation
-
-                                console.log(validationErrors)
-                                let keys = Object.keys(validationErrors)
-                                console.log(keys)
-                                
+                                let validationErrors = res.validation                                
+                                let keys = Object.keys(validationErrors)                                                                
                                 keys.forEach(function(key) {
                                     let value = validationErrors[key];
                                     $('#' + key).addClass('is-invalid').after(`<div class="invalid-feedback">${value}</div>`)
                                 });
-
-
                             }
-
                             let iconWarning = '<i class="fas fa-warning me-1"></i>'
                             message.html(iconWarning+res.message).removeClass('d-none').removeClass('bg-success').addClass('bg-danger')
                         }

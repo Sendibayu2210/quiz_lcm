@@ -21,9 +21,8 @@
     <input type="hidden" id="page" value="<?= (isset($page) && $page) ? $page : 'Get-House of English Kuningan'; ?>">
     
     <div id="app">
-        <!-- <-?= view('sidebar'); ?> -->
         
-        <div id="<?= (session()->get('isLoggedIn')==true) ? 'main-content' : ""; ?>">
+        <div>
           <?= $this->renderSection('content'); ?>
         </div>
     </div>

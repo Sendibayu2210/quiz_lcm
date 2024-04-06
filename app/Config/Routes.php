@@ -9,6 +9,7 @@ $routes->get('/', 'Home::index');
 
 // == AUTH ==
 $routes->get('/login', 'AuthController::login');
+$routes->post('/login/check', 'AuthController::checkProcessLogin');
 $routes->get('/masuk', 'AuthController::login');
 
 $routes->get('/register', 'AuthController::register');
