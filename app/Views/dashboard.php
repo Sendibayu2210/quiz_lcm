@@ -1,9 +1,7 @@
 <?= $this->extend('template/layout'); ?>
 <?= $this->section('content'); ?>
 
-
 <?= view('components/sidebar'); ?>
-
 <div id="main-content" class="p-4">
     <div class="container">
 

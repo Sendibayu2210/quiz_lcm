@@ -21,15 +21,19 @@ $routes->get('/logout', 'AuthController::processLogout');
 $routes->get('/dashboard', 'Home::dashboard');
 
 
-// Manage Users
+// Manage Users or profile
 $routes->get('/admin/users', 'UsersController::listUsers');
 $routes->get('/admin/users/(:num)', 'UsersController::detailUser/$1');
 
 $routes->post('/users/profile/change-foto', 'UsersController::changeFotoProfile');
 $routes->post('/users/profile/update', 'UsersController::updateDataUser');
 
-// Quiz
+// Question, Quiz
+$routes->get('/admin/questions', 'QuestionController::questionsList');
+$routes->get('/admin/questions/add', 'QuestionController::addQuestions');
+$routes->post('/admin/questions/save', 'QuestionController::saveQuestions');
 $routes->get('/quiz', 'QuizController::quiz');
+
 
 // About
 $routes->get('/about', 'Home::about');

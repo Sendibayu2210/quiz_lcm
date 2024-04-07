@@ -35,6 +35,9 @@ a{
 .cursor-pointer{
     cursor: pointer;
 }
+.outline-none{
+    outline: none !important;
+}
 
 /* Sidebar */
 #sidebar{
