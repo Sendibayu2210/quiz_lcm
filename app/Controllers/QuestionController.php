@@ -28,8 +28,20 @@ class QuestionController extends BaseController
     {
         $data = [
             'title' => 'Add Questions',
+            'page' => 'add',
+            'id' => '',
         ];
-        return view('questions/questionAdd', $data);
+        return view('questions/questionAddEdit', $data);
+    }
+
+    public function editQuestions($id)
+    {
+        $data = [
+            'title' => 'Edit Questions',
+            'page' => 'edit',
+            'id' => $id
+        ];
+        return view('questions/questionAddEdit', $data);
     }
 
     public function saveQuestions()
@@ -40,31 +52,58 @@ class QuestionController extends BaseController
 
        $questionText = $this->request->getPost('questionText');
        $multipleChoice = $this->request->getPost('multipleChoice');
+       $page = $this->request->getPost('page');
+       $idQuestion = $this->request->getPost('idQuestion');
     
        $status = 'error';
        if($questionText!=''){
            if(is_array($multipleChoice)){            
+
                 $generateId = $this->generateRandomString();
                 $dataSaveQuestion = [
                     'id' => $generateId,
                     'question' => $questionText,
                 ];
 
-                $saveQuestion = $this->questionsmodel->insert($dataSaveQuestion);
+                if($page=='add'){
+                    $saveQuestion = $this->questionsmodel->insert($dataSaveQuestion);
+                }else{                    
+                    $saveQuestion = $this->questionsmodel->set('question', $questionText)->where('id', $idQuestion)->update();
+                }                
+
                 if($saveQuestion){
                     // save multiple choice
                     $saveMultipleChoice = [];
+                    $save = true;
                     foreach($multipleChoice as $choice){
                         
+
+
                         $dataSave = [
                             'id_question'=> $generateId,
                             'choice_text'=>$choice['value'],
                             'is_correct'=> $choice['correct'],
                         ];
-                        $saveMultipleChoice[] = $dataSave;
+
+                        if($page=='edit'){
+                            if($choice['id_choice']=='-'){
+                                $dataSave['id_question'] = $idQuestion;
+                                $save = $this->multiplechoicemodel->insert($dataSave);
+                            }else{
+                                unset($dataSave['id_question']);
+                                $save = $this->multiplechoicemodel->set($dataSave)->where('id', $choice['id_choice'])->update();
+                            }
+                            
+                        }else{   // if page add                  
+                            $saveMultipleChoice[] = $dataSave;
+                        }
                     }
+
                     // insert bacth
-                    $save = $this->multiplechoicemodel->insertBatch($saveMultipleChoice);
+                    if(count($saveMultipleChoice) > 0){
+                        $save = $this->multiplechoicemodel->insertBatch($saveMultipleChoice);
+                    }
+
                     if($save){
                         $status = 'success';
                         $message = 'Question successfully saved';
@@ -88,7 +127,6 @@ class QuestionController extends BaseController
        ]);
     }
 
-
     private function generateRandomString() {
         $length=3;
         $characters = '0123456789';
@@ -100,5 +138,48 @@ class QuestionController extends BaseController
         return $randomString;
     }
 
+
+    public function dataQuestions($id='')
+    {
+        $search = $this->request->getVar('search');
+
+
+        if($search!=''){
+            $questions= $this->questionsmodel->select('id, question');
+            $searchArray = explode(' ', $search);
+            foreach($searchArray as $key => $dt){
+                if($key==0){
+                    $questions->like('question', $dt);
+                    continue;
+                }       
+                $questions->orLike('question', $dt);
+            }            
+            $questions = $questions->findAll(); // tidak ada pencarian
+        }else{
+            $questions= $this->questionsmodel->select('id, question')->findAll(); // tidak ada pencarian
+        }
+        
+        if($id!=''){
+            $questions= $this->questionsmodel->select('id, question')->where('id', $id)->findAll(); // tidak ada pencarian            
+        }
+
+        foreach($questions as &$quest){
+            $multipleChoice = $this->multiplechoicemodel->select('id as id_choice, choice_text, is_correct')->where('id_question', $quest['id'])->findAll();
+
+            if($multipleChoice){
+                // jika yang login adalah user hapus is_correct
+
+                $quest['multiple_choice'] = $multipleChoice;
+            }else{
+                $quest['multiple_choice'] = [];
+            }
+        }
+
+        return $this->response->setJson([
+            'status' => 'success',
+            'data' => $questions,
+            'search' => $search
+        ]);        
+    }
 
 }

@@ -5,7 +5,9 @@
 <div id="main-content" class="p-4">
     
     <div class="container" id="multiple-choice">
-        <div class="h5">Add Questions</div>
+        <input type="text" value="<?= $page; ?>" id="page" class="d-none">
+        <input type="text" value="<?= $id; ?>" id="id-question" class="d-none">
+        <div class="h5"><span class="text-capitalize"><?= $page; ?></span> Questions</div>
 
         <div class="mt-4">
             <div class="form-group mb-3">
@@ -30,17 +32,21 @@
                         <tbody></tbody>
                     </table>                    
                     <div id="message" class="my-2"></div>
-                    <button type="button" class="btn btn-sm bg-primary px-5 w-100 btn-save" @click="saveQuestions">Save</button>
+                    <div class="text-start">
+                        <button type="button" class="btn btn-sm bg-primary px-5 btn-save" @click="saveQuestions">Save</button>
+                    </div>
                 </form>                    
-            </div>
-            
+            </div>            
         </div>
 
         <!-- component mulitple choice -->
         <table id="component-mulitple-choice" class="d-none">
             <tbody>
                 <tr>
-                    <td><input type="text" class="form-control form-control-sm" name="multiple-choice-text[]"></td>
+                    <td>
+                        <input type="hidden" value="-" name="id-choice[]">
+                        <input type="text" class="form-control form-control-sm" name="multiple-choice-text[]">
+                    </td>
                     <td>
                         <div class="d-flex justify-content-center">
                             <div class="form-check form-switch">
@@ -48,7 +54,7 @@
                             </div>
                         </div>
                     </td>
-                    <td class="text-center"><button class="ms-2 btn btn-sm border text-danger delete-multiple-choice"><i class="fas fa-trash"></i></button></td>
+                    <td class="text-center"><button class="ms-2 btn btn-sm border text-danger delete-multiple-choice" data-id="-"><i class="fas fa-trash"></i></button></td>
                 </tr>
             </tbody>
         </table>
@@ -66,20 +72,20 @@
             return{
                 baseUrl : $('#base-url').val(),
                 questionText:'',
-                spinner:`<div class="spinner-border spinner-border-sm" role="status"><span class="visually-hidden">Loading...</span></div>`
+                spinner:`<div class="spinner-border spinner-border-sm" role="status"><span class="visually-hidden">Loading...</span></div>`,
+                page:'',                
             }
         },
         methods:{
             addMultipleChoice(){
                 let component = $("#component-mulitple-choice tbody").html();                
                 $('#table-multiple-choice tbody').append(component)
-            },
-            deleteMultipleChoice(){
-                console.log('test')
-            },
+            },            
             async saveQuestions(){
 
+                var idChoice = $('#table-multiple-choice input[name="id-choice[]"]').serializeArray();
                 var multipleChoice = $('#table-multiple-choice input[name="multiple-choice-text[]"]').serializeArray();
+
                 var indexCorrect = $('#table-multiple-choice input[type="radio"]').map(function(index){
                     return this.checked ? index : null;
                 }).get();
@@ -88,8 +94,7 @@
                 message.html('').removeClass("text-danger text-success")
                 let iconWarning = '<i class="fas fa-warning me-1"></i>'
 
-                let btnSave = $('.btn-save')                
-                btnSave.html(this.spinner);
+                let btnSave = $('.btn-save')                                
                 
                 // === Logic ===
                 // cek question apakah != ''
@@ -126,16 +131,24 @@
                             if(index == indexCorrect[0]){
                                 correct = {'correct': true};
                             }
-                            let mergeObject = { ...item, ...correct}; // merge object
+
+                            let dataIdChoice = {'id_choice': idChoice[index].value}
+
+                            let mergeObject = { ...item, ...correct, ...dataIdChoice}; // merge object
                             return mergeObject;
                         });
+                        
 
                         try{
+                            btnSave.html(this.spinner);
+                                                        
                             let params  = {
                                 'questionText': this.questionText,
                                 'multipleChoice': mergedMultipleChoice,
-                            }
-                            
+                                'page': this.page,
+                                'idQuestion': $('#id-question').val(),
+                            }                                                        
+
                             const response = await axios.post(this.baseUrl+'admin/questions/save', params,{
                                 headers:{
                                     'Content-type':'multipart/form-data',
@@ -149,7 +162,12 @@
                                 colorText = 'text-success'
                                 this.questionText=''
                                 $("#table-multiple-choice tbody").html('');
-                                this.addMultipleChoice();
+                                
+                                if(this.page=='edit'){
+                                    this.getQuestion();
+                                }else{
+                                    this.addMultipleChoice();                                
+                                }
                             }
                             message.html(res.message).addClass(colorText)
                                                         
@@ -166,19 +184,64 @@
 
                 btnSave.html('Save')
 
+            },
+            async getQuestion(){
+                try{
+                    let id = $('#id-question').val()                    
+                    const response = await axios.get(this.baseUrl+'admin/questions/data/'+id);
+                    let res = response.data;                    
+                    if(res.status=='success'){
+                        if(res.data.length>0){
+                            let data  = res.data[0];                        
+                            this.questionText = data.question
+                            data.multiple_choice.map(function(item, index){                                
+                                $('#table-multiple-choice tbody').append(`
+                                    <tr>
+                                        <td>
+                                            <input type="hidden" value="${item.id_choice}" name="id-choice[]">
+                                            <input type="text" class="form-control form-control-sm" name="multiple-choice-text[]" value="${item.choice_text}">
+                                        </td>
+                                        <td>
+                                            <div class="d-flex justify-content-center">
+                                                <div class="form-check form-switch">
+                                                    <input class="form-check-input" type="radio" name="is-correct[]" role="switch" id="flexSwitchCheckDefault" value="true" ${item.is_correct=='true'?'checked':''}>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="text-center"><button class="ms-2 btn btn-sm border text-danger delete-multiple-choice" data-id="${item.id_choice}"><i class="fas fa-trash"></i></button></td>
+                                    </tr>                            
+                                `)
+                            })
+
+                        }
+                    }                    
+
+                }catch(error){
+                    console.log(error)
+                }
             }
         },
         mounted(){
-            for(let i=0; i<4; i++){
-                this.addMultipleChoice();
-            }
+            this.page = $('#page').val();
+            if(this.page=='add'){
+                for(let i=0; i<4; i++){
+                    this.addMultipleChoice();
+                }
+            }else{
+                // edit
+                this.getQuestion();
+            }            
         }
     }).mount('#multiple-choice')
     
-    $(document).on('click','.delete-multiple-choice', function(){    
-        $(this).parent().parent().remove();
-    })
-    
+    $(document).on('click','.delete-multiple-choice', function(){          
+        let id = $(this).data('id');
+        if(id=='-'){
+            $(this).parent().parent().remove();
+        }else{
+            // muncul modal
+            alert()
+        }
+    })    
 </script>
-
 <?= $this->endSection(); ?>

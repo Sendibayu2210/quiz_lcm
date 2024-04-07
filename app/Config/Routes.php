@@ -30,8 +30,14 @@ $routes->post('/users/profile/update', 'UsersController::updateDataUser');
 
 // Question, Quiz
 $routes->get('/admin/questions', 'QuestionController::questionsList');
+$routes->get('/admin/questions/data', 'QuestionController::dataQuestions'); // all
+$routes->get('/admin/questions/data/(:num)', 'QuestionController::dataQuestions/$1'); // per id
 $routes->get('/admin/questions/add', 'QuestionController::addQuestions');
 $routes->post('/admin/questions/save', 'QuestionController::saveQuestions');
+$routes->get('/admin/questions/edit/(:num)', 'QuestionController::editQuestions/$1');
+
+
+
 $routes->get('/quiz', 'QuizController::quiz');
 
 
