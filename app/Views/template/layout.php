@@ -22,7 +22,7 @@
     
     <div id="app">
         
-        <div>
+        <div class="small">
           <?= $this->renderSection('content'); ?>
         </div>
     </div>

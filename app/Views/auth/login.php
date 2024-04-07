@@ -94,7 +94,7 @@
 
                             setTimeout(() => {
                                 document.location.href = '/dashboard'
-                            }, 1500);
+                            }, 300);
                             
                         }else{
                             if(res.message=='validation'){

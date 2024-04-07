@@ -1,11 +1,18 @@
 <div id="sidebar" class="bg-primary mh-100vh">
 
-    <ul class="list-unstyled p-5">
-        <li><a href="/profile">Profile</a></li>
-        <li><a href="/quiz">Quiz</a></li>
-        <li><a href="/history">History</a></li>
-        <li><a href="/about">About</a></li>
-        <li><a href="/logout">Logout</a></li>
+    <ul class="list-unstyled p-4 pt-5">
+        <!-- Admin -->
+        <li><a href="/dashboard"><i class="fas fa-home fa-fw me-1"></i> Home</a></li>
+        <li><a href="/admin/users"><i class="fas fa-users fa-fw me-1"></i> Manage Users</a></li>
+        <li><a href="/admin/question"><i class="fas fa-book-open fa-fw me-1"></i> Manage Question</a></li>
+        <li><a href="/admin/history"><i class="fas fa-history fa-fw me-1"></i> History Quiz</a></li>
+        
+        <!-- <li><a href="/quiz">Quiz</a></li>
+        <li><a href="/profile"><i class="fas fa-user fa-fw me-1"></i> Profile</a></li>
+        <li><a href="/history">History</a></li> -->
+
+        <li><a href="/about"><i class="fas fa-address-card fa-fw me-1"></i> About</a></li>
+        <li><a href="/logout"><i class="fas fa-sign-out-alt fa-fw me-1"></i> Logout</a></li>
     </ul>
 
 </div>

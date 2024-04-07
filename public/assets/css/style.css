@@ -11,7 +11,7 @@ a{
 .bg-warning{
     background: #ffd35d !important;
 }
-.bg-danger{
+.bg-danger, .btn-danger{
     background: #f1688d !important;
 }
 .bg-info{
@@ -29,10 +29,16 @@ a{
 .br-15{
     border-radius: 15px;
 }
+.br-50{
+    border-radius: 50px;
+}
+.cursor-pointer{
+    cursor: pointer;
+}
 
 /* Sidebar */
 #sidebar{
-    width: 250px;    
+    width: 230px;    
 }
 #sidebar ul li{
     margin-bottom: 25px;
@@ -44,8 +50,8 @@ a{
 
 #main-content{
     min-height: 100vh;
-    width: calc(100% - 250px);
-    left: 250px;
+    width: calc(100% - 230px);
+    left: 230px;
     position: absolute;
     top: 0;
 }
