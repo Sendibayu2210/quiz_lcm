@@ -183,9 +183,7 @@
                             if(res.status=='success'){
                                 colorText = 'text-success'
                                                                 
-                                if(this.page=='edit'){
-                                    this.getQuestion();
-                                }else{
+                                if(this.page=='add'){                                    
                                     this.questionText=''
                                     $("#table-multiple-choice tbody").html('');
                                     this.addMultipleChoice();                                

@@ -41,6 +41,7 @@ a{
 
 /* Sidebar */
 #sidebar{
+    position: fixed;
     width: 230px;    
 }
 #sidebar ul li{
@@ -58,4 +59,9 @@ a{
     position: absolute;
     top: 0;
     padding:15px;
+}
+
+.card-multiple-choice:hover{
+    background: #5b5ba8 !important;
+    color: white;
 }

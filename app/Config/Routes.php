@@ -41,6 +41,7 @@ $routes->post('/admin/multiple-choice/delete', 'QuestionController::deleteMultip
 
 
 $routes->get('/quiz', 'QuizController::quiz');
+$routes->get('/quiz/data', 'QuizController::dataQuiz');
 
 
 // About

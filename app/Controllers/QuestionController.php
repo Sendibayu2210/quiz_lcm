@@ -138,11 +138,12 @@ class QuestionController extends BaseController
         return $randomString;
     }
 
-    public function dataQuestions($id='')
-    {
-        $search = $this->request->getVar('search');
-
-
+    public function dataQuestions($id='', $requestFrom='', $search='')
+    {        
+        if($requestFrom==''){
+            $search = $this->request->getVar('search');    
+        }
+        
         if($search!=''){
             $questions= $this->questionsmodel->select('id, question');
             $searchArray = explode(' ', $search);
@@ -157,11 +158,11 @@ class QuestionController extends BaseController
         }else{
             $questions= $this->questionsmodel->select('id, question')->findAll(); // tidak ada pencarian
         }
-        
+
         if($id!=''){
             $questions= $this->questionsmodel->select('id, question')->where('id', $id)->findAll(); // tidak ada pencarian            
         }
-
+        
         foreach($questions as &$quest){
             $multipleChoice = $this->multiplechoicemodel->select('id as id_choice, choice_text, is_correct')->where('id_question', $quest['id'])->findAll();
 
@@ -174,12 +175,17 @@ class QuestionController extends BaseController
             }
         }
 
+        if($requestFrom!=''){
+            return $questions;
+        }
+
         return $this->response->setJson([
             'status' => 'success',
             'data' => $questions,
             'search' => $search
         ]);        
-    }
+
+    }    
 
     public function deleteMultipleChoice()
     {

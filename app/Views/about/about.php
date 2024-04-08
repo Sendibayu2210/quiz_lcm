@@ -4,7 +4,7 @@
 
 <?= view('components/sidebar'); ?>
 
-<div id="main-content" class="bg-warning p-4">
+<div id="main-content" class="bg-warning- p-4">
     
 
     <div class="card border border-2 border-primary mb-5 br-15" style="width: 40rem;">
