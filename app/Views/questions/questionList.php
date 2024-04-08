@@ -2,7 +2,7 @@
 <?= $this->section('content'); ?>
 
 <?= view('components/sidebar'); ?>
-<div id="main-content" class="p-4">
+<div id="main-content" class="">
 
     <div class="container" id="question-list">
         <div class="h5">Manage Questions</div>

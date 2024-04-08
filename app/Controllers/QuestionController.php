@@ -138,7 +138,6 @@ class QuestionController extends BaseController
         return $randomString;
     }
 
-
     public function dataQuestions($id='')
     {
         $search = $this->request->getVar('search');
@@ -180,6 +179,26 @@ class QuestionController extends BaseController
             'data' => $questions,
             'search' => $search
         ]);        
+    }
+
+    public function deleteMultipleChoice()
+    {
+        $id = $this->request->getPost('id');
+
+        // session admin
+
+        $delete = $this->multiplechoicemodel->where('id', $id)->delete();
+        if($delete){
+            $status='success';
+            $message='data has been deleted';
+        }else{
+            $status = 'error';
+            $message = 'failed to delete';
+        }
+        return $this->response->setJson([
+            'status' => $status,
+            'message' => $message,            
+        ]);
     }
 
 }

@@ -1,6 +1,10 @@
 <div id="sidebar" class="bg-primary mh-100vh">
 
-    <ul class="list-unstyled p-4 pt-5">
+    <div class="p-4 text-center fw-bold">
+        <div>GET HOUSE OF ENGLISH</div>
+        <div>KUNINGAN</div>
+    </div>
+    <ul class="list-unstyled p-4 ">
         <!-- Admin -->
         <li><a href="/dashboard"><i class="fas fa-home fa-fw me-1"></i> Home</a></li>
         <li><a href="/admin/users"><i class="fas fa-users fa-fw me-1"></i> Manage Users</a></li>

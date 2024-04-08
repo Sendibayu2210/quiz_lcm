@@ -21,7 +21,7 @@
                     <button class="badge bg-warning text-dark border-0" @click="addMultipleChoice"><i class="fas fa-plus me-1"></i> Add Multiple Choice</button>
                 </div>
                 <form action="" id="form-multiple-choice">
-                    <table class="table small" id="table-multiple-choice">
+                    <table class="table small table-borderless-" id="table-multiple-choice">
                         <thead>
                             <tr class="small">
                                 <th>Input Multiple Choice</th>
@@ -57,9 +57,30 @@
                     <td class="text-center"><button class="ms-2 btn btn-sm border text-danger delete-multiple-choice" data-id="-"><i class="fas fa-trash"></i></button></td>
                 </tr>
             </tbody>
-        </table>
+        </table>                
+
+
+        <div class="modal fade" id="modal-confirmation" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered-">
+                <div class="modal-content ">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Confirmation Delete</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">                    
+                    Do you really want to delete this choice ?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" @click="deleteChoice">Delete</button>
+                </div>
+                </div>
+            </div>
+        </div>
+
 
     </div>
+
 </div>
 
 <?= $this->endSection(); ?>
@@ -73,7 +94,8 @@
                 baseUrl : $('#base-url').val(),
                 questionText:'',
                 spinner:`<div class="spinner-border spinner-border-sm" role="status"><span class="visually-hidden">Loading...</span></div>`,
-                page:'',                
+                page:'',   
+                idChoice:null,             
             }
         },
         methods:{
@@ -160,12 +182,12 @@
                             let colorText = 'text-danger'
                             if(res.status=='success'){
                                 colorText = 'text-success'
-                                this.questionText=''
-                                $("#table-multiple-choice tbody").html('');
-                                
+                                                                
                                 if(this.page=='edit'){
                                     this.getQuestion();
                                 }else{
+                                    this.questionText=''
+                                    $("#table-multiple-choice tbody").html('');
                                     this.addMultipleChoice();                                
                                 }
                             }
@@ -196,7 +218,7 @@
                             this.questionText = data.question
                             data.multiple_choice.map(function(item, index){                                
                                 $('#table-multiple-choice tbody').append(`
-                                    <tr>
+                                    <tr id="mc-${item.id_choice}">
                                         <td>
                                             <input type="hidden" value="${item.id_choice}" name="id-choice[]">
                                             <input type="text" class="form-control form-control-sm" name="multiple-choice-text[]" value="${item.choice_text}">
@@ -208,7 +230,7 @@
                                                 </div>
                                             </div>
                                         </td>
-                                        <td class="text-center"><button class="ms-2 btn btn-sm border text-danger delete-multiple-choice" data-id="${item.id_choice}"><i class="fas fa-trash"></i></button></td>
+                                        <td class="text-center"><button type="button" class="ms-2 btn btn-sm border text-danger delete-multiple-choice" data-id="${item.id_choice}"><i class="fas fa-trash"></i></button></td>
                                     </tr>                            
                                 `)
                             })
@@ -218,6 +240,27 @@
 
                 }catch(error){
                     console.log(error)
+                }
+            },
+
+            async deleteChoice(){
+                try{
+                    let params = {
+                        'id': this.idChoice
+                    }                    
+                    const response = await axios.post(this.baseUrl+'admin/multiple-choice/delete',params,{
+                        headers:{
+                            'Content-type':'multipart/form-data'
+                        }
+                    })
+                    let res = response.data;
+                    console.log(res)
+                    if(res.status == 'success'){
+                        $('#mc-'+params.id).remove();
+                        $('#modal-confirmation').modal('hide')
+                    }
+                }catch(error){
+                    console.log(error.response)
                 }
             }
         },
@@ -230,18 +273,20 @@
             }else{
                 // edit
                 this.getQuestion();
-            }            
+            }             
+            
+            let self = this;
+            $(document).on('click','.delete-multiple-choice', function(){          
+                let id = $(this).data('id');            
+                self.idChoice = id
+                if(id=='-'){
+                    $(this).parent().parent().remove();
+                }else{            
+                    $('#modal-confirmation').modal('show');
+                }        
+            })    
+            
         }
-    }).mount('#multiple-choice')
-    
-    $(document).on('click','.delete-multiple-choice', function(){          
-        let id = $(this).data('id');
-        if(id=='-'){
-            $(this).parent().parent().remove();
-        }else{
-            // muncul modal
-            alert()
-        }
-    })    
+    }).mount('#multiple-choice')        
 </script>
 <?= $this->endSection(); ?>

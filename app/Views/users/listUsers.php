@@ -3,11 +3,12 @@
 
     <?= view('components/sidebar'); ?>
     <div id="main-content">
+
         <div class="container">
-            <div class="mt-4">             
+            <div class="">             
                 
                 <div class="d-lg-flex mb-3 justify-content-between">
-                    <div class="mb-3 h5">List Users</div>
+                    <div class="mb-3 h5">Manage Users</div>
                     <div>
                         <form action="<?= base_url('admin/users'); ?>" method="get">
                             <div class="form-group d-flex border br-50 p-1">

@@ -36,6 +36,8 @@ $routes->get('/admin/questions/add', 'QuestionController::addQuestions');
 $routes->post('/admin/questions/save', 'QuestionController::saveQuestions');
 $routes->get('/admin/questions/edit/(:num)', 'QuestionController::editQuestions/$1');
 
+$routes->post('/admin/multiple-choice/delete', 'QuestionController::deleteMultipleChoice');
+
 
 
 $routes->get('/quiz', 'QuizController::quiz');
