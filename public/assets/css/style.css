@@ -17,6 +17,9 @@ a{
 .bg-info{
     background: #01bae1 !important;
 }
+.bg-success{
+    background: rgb(32, 192, 32) !important;
+}
 .text-danger{
     color: #f1688d !important;
 }
@@ -25,6 +28,12 @@ a{
 }
 .ls-3{
     letter-spacing: 5px;
+}
+.br-5{
+    border-radius: 5px;
+}
+.br-10{
+    border-radius: 10px;
 }
 .br-15{
     border-radius: 15px;
@@ -64,4 +73,8 @@ a{
 .card-multiple-choice:hover{
     background: #5b5ba8 !important;
     color: white;
+}
+.card-multiple-choice:hover button{
+    background: #ffd255 !important;
+    color: black;
 }

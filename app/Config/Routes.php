@@ -41,7 +41,9 @@ $routes->post('/admin/multiple-choice/delete', 'QuestionController::deleteMultip
 
 
 $routes->get('/quiz', 'QuizController::quiz');
+$routes->get('/quiz/attention', 'QuizController::attentionBeforeQuiz');
 $routes->get('/quiz/data', 'QuizController::dataQuiz');
+$routes->post('/quiz/save-choice', 'QuizController::saveChoiceQuiz');
 
 
 // About

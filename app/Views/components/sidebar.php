@@ -19,7 +19,7 @@
         <li><a href="/logout"><i class="fas fa-sign-out-alt fa-fw me-1"></i> Logout</a></li>
 
 
-        <li><a href="/quiz"><i class="fas fa-laptop fa-fw me-1"></i> Quiz</a></li>
+        <li><a href="/quiz/attention"><i class="fas fa-laptop fa-fw me-1"></i> Quiz</a></li>
     </ul>
 
 </div>
