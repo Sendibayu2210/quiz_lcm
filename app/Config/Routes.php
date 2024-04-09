@@ -38,12 +38,12 @@ $routes->get('/admin/questions/edit/(:num)', 'QuestionController::editQuestions/
 
 $routes->post('/admin/multiple-choice/delete', 'QuestionController::deleteMultipleChoice');
 
-
-
 $routes->get('/quiz', 'QuizController::quiz');
 $routes->get('/quiz/attention', 'QuizController::attentionBeforeQuiz');
 $routes->get('/quiz/data', 'QuizController::dataQuiz');
 $routes->post('/quiz/save-choice', 'QuizController::saveChoiceQuiz');
+$routes->post('/quiz/finish', 'QuizController::finishQuiz');
+$routes->get('/quiz/score', 'QuizController::pageScore');
 
 
 // About

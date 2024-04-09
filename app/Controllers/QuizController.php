@@ -10,6 +10,7 @@ use App\Controllers\QuestionController;
 use App\Models\QuestionsModel;
 use App\Models\AnsweredUsersModel;
 use App\Models\MultipleChoiceModel;
+use App\Models\UserQuizzesModel;
 
 class QuizController extends BaseController
 {
@@ -19,8 +20,10 @@ class QuizController extends BaseController
         $this->answeredusersmodel = new AnsweredUsersModel();
         $this->questionsmodel = new QuestionsModel();
         $this->multiplechoicemodel = new MultipleChoiceModel();
+        $this->userquizzesmodel = new UserQuizzesModel();
 
         $this->idLogin = session()->get('idLogin');
+        $this->roleLogin = session()->get('roleLogin');
     }
 
     public function attentionBeforeQuiz()
@@ -61,11 +64,16 @@ class QuizController extends BaseController
             }
 
             $createQuiz = $this->answeredusersmodel->insertBatch($saveQuestionRandom);            
-
             if(!$createQuiz){
                 // return redirect to sorry (failed create quiz for you);
                 dd('sorry,  failed create quiz');
             }
+
+            $saveStartQuiz = $this->userquizzesmodel->insert([
+                'user_id' => $this->idLogin,
+                'start_time' => date('Y-m-d H:i:s'),
+            ]);
+
         }
         
         $data = [
@@ -154,5 +162,80 @@ class QuizController extends BaseController
             'status' => $status,
             'message' => $message,            
         ]);
+    }
+
+    public function finishQuiz()
+    {
+        if($this->idLogin == ''){
+            // return redirect to 403
+            dd('please login');
+        }                
+        $getData = $this->userquizzesmodel->where('user_id', $this->idLogin)->first();
+        if(strtotime($getData['end_time']) < strtotime($getData['start_time'])){
+            $time = date('Y-m-d H:i:s');
+            $updateCloseQuiz = $this->userquizzesmodel->set('end_time', $time)->where('user_id', $this->idLogin)->update();
+        }
+        return redirect('quiz/score');
+    }
+
+
+    public function scoreQuiz($id='')
+    {
+        if($this->roleLogin=='user'){
+            $id = $this->idLogin;
+        }
+
+        // cek dulu apakah user sudah selesai mengerjakan quiz ?
+        $checkFinishQuiz = $this->userquizzesmodel->where('user_id', $id)->first();
+        if($checkFinishQuiz){
+            $start = strtotime($checkFinishQuiz['start_time']);
+            $end = strtotime($checkFinishQuiz['end_time']);        
+            if($end > $start){     // jika date close quiz > start quiz       
+                $answered = $this->answeredusersmodel->where('id_user', $id)->findAll();
+                $totalCorrect = 0;
+                foreach($answered as $dt){
+                    $idMc = explode(',', $dt['id_multiple_choice']);
+                    $multipleChoice = $this->multiplechoicemodel->whereIn('id', $idMc)->where('is_correct', 'true')->first();
+
+                    if($multipleChoice['id'] == $dt['id_answered']){
+                        $totalCorrect = $totalCorrect + 1;
+                    }                                        
+                }
+
+                // ============ Perhitungan Nilai ================
+                // Total soal dan jawaban yang benar
+                $totalQuestions = count($answered);                
+                // Hitung persentase benar
+                $persentaseBenar = ($totalCorrect / $totalQuestions) * 100;
+                // Bobot nilai maksimal
+                $bobotNilaiMaksimal = 100;
+                // Hitung nilai
+                $nilai = $persentaseBenar * $bobotNilaiMaksimal / 100;    
+
+
+                $result = [
+                    'totalQuestion' => $totalQuestions,
+                    'totalCorrect' => $totalCorrect,
+                    'totalWrong' => $totalQuestions - $totalCorrect,
+                    'score' => number_format($nilai, 2),
+                ];
+
+                return $result;
+
+            }else{
+                echo 'not yet finish';
+            }                        
+        }else{
+            echo 'belum ada quiz dimulai';
+        }    
+    }
+
+    public function pageScore()
+    {
+        $data = [
+            'title' => 'Score',
+            'data' => $this->scoreQuiz(),
+        ];
+        return view('quiz/quizScore', $data);
     }
 }

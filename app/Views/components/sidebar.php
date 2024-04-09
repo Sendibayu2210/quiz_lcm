@@ -20,6 +20,7 @@
 
 
         <li><a href="/quiz/attention"><i class="fas fa-laptop fa-fw me-1"></i> Quiz</a></li>
+        <li><a href="/quiz/score"><i class="fas fa-history fa-fw me-1"></i>History Quiz</a></li>
     </ul>
 
 </div>
