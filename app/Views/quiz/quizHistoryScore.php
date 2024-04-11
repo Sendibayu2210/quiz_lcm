@@ -9,10 +9,10 @@
 
         <div class="row">
             <div class="col-lg-8 small"> 
-                <div class="alert alert-light mb-2" v-for="i in 10">
-                    <div>Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat minima ut atque dolorum nisi porro et itaque blanditiis architecto suscipit?</div>
-                    <ul>
-                        <li v-for="i in 4">test</li>
+                <div class="alert border mb-2" v-for="(item, index) in historyQuestion">
+                    <div v-html="(index+1) + '. ' + item.question"></div>
+                    <ul class="list-unstyled mt-1">
+                        <li v-for="(mc, idx) in item.multiple_choice" :class="(item.id_choice_selected===mc.id_choice) ? 'text-primary fw-bold' : ''">{{ String.fromCharCode(65 + idx) }}. {{mc.choice_text}}</li>
                     </ul>
                 </div>
             </div>
@@ -49,8 +49,27 @@
     createApp({
         data(){
             return{
-
+                baseUrl : $('#base-url').val(),
+                historyQuestion:{},
             }
+        },
+        methods:{
+            async getDataQuiz()
+            {
+                try{    
+                    const response = await axios.get(this.baseUrl+'quiz/data');
+                    let res = response.data;      
+                    console.log(res)              
+                    if(res.status == 'success'){
+                        this.historyQuestion = res.data                         
+                    }                                        
+                }catch(error){
+                    console.log(error.response)
+                }
+            },
+        },
+        mounted(){
+            this.getDataQuiz();
         }
     }).mount('#history-quiz')
 </script>

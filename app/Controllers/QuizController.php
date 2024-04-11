@@ -236,6 +236,6 @@ class QuizController extends BaseController
             'title' => 'Score',
             'data' => $this->scoreQuiz(),
         ];
-        return view('quiz/quizScore', $data);
+        return view('quiz/quizHistoryScore', $data);
     }
 }
