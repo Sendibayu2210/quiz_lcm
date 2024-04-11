@@ -6,6 +6,7 @@
     <div class="container mt-3" id="history-quiz">
 
         <div class="h5 mb-5">History & Score</div>
+        <input type="hidden" id="id-user"  value="<?= $idUser; ?>">
 
         <div class="row">
             <div class="col-lg-8 small"> 
@@ -16,6 +17,7 @@
                     </ul>
                 </div>
             </div>
+
             <div class="col-lg-4 mx-auto">
                 <div class="card mx-auto br-15 border-primary border-0">
                     <div class="card-body mb-5">
@@ -56,8 +58,11 @@
         methods:{
             async getDataQuiz()
             {
+                let idUser = $('#id-user').val();
+                let paramsId = (idUser!='') ? ('/'+idUser) : '';
+                
                 try{    
-                    const response = await axios.get(this.baseUrl+'quiz/data');
+                    const response = await axios.get(this.baseUrl+'quiz/data'+paramsId);
                     let res = response.data;      
                     console.log(res)              
                     if(res.status == 'success'){

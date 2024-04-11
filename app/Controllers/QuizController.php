@@ -82,32 +82,42 @@ class QuizController extends BaseController
         return view('quiz/quiz', $data);
     }    
 
-    public function dataQuiz()
+    public function dataQuiz($id='')
     {
         if($this->idLogin == ''){
             // return redirect to 403
             dd('please login');
         }
-        $quiz = $this->answeredusersmodel->where('id_user', $this->idLogin)->findAll();
 
-        $userQuiz = [];
-        foreach($quiz as $dt){
-            // get questions 
-            // get multiple choice
-            $idMc = explode(',', $dt['id_multiple_choice']);                        
-            $question = $this->questionsmodel->where('id', $dt['id_question'])->first();
-            $multipleChoice = $this->multiplechoicemodel->select('id as id_choice, choice_text')->whereIn('id', $idMc)->findAll();            
-            
-            $data = [
-                'id' => $question['id'],
-                'question' => $question['question'],
-                'multiple_choice' => $multipleChoice,
-                'id_question_selected' => ($dt['id_answered']!='') ? $dt['id_question'] : '',
-                'id_choice_selected' => $dt['id_answered']
-            ];
+        if($id==''){
+            $id = $this->idLogin;
+        }
 
-            $userQuiz[] = $data;            
-        }                
+        $quiz = $this->answeredusersmodel->where('id_user', $id)->findAll();
+
+        if($quiz){
+            $userQuiz = [];
+            foreach($quiz as $dt){
+                // get questions 
+                // get multiple choice
+                $idMc = explode(',', $dt['id_multiple_choice']);                        
+                $question = $this->questionsmodel->where('id', $dt['id_question'])->first();
+                $multipleChoice = $this->multiplechoicemodel->select('id as id_choice, choice_text')->whereIn('id', $idMc)->findAll();            
+                
+                $data = [
+                    'id' => $question['id'],
+                    'question' => $question['question'],
+                    'multiple_choice' => $multipleChoice,
+                    'id_question_selected' => ($dt['id_answered']!='') ? $dt['id_question'] : '',
+                    'id_choice_selected' => $dt['id_answered']
+                ];
+    
+                $userQuiz[] = $data;            
+            }    
+        }else{
+            $userQuiz = [];
+        }
+
         return $this->response->setJson([
             'status' => 'success',
             'data' =>$userQuiz,
@@ -181,8 +191,10 @@ class QuizController extends BaseController
 
     public function scoreQuiz($id='')
     {
-        if($this->roleLogin=='user'){
-            $id = $this->idLogin;
+        if($id==''){
+            if($this->roleLogin=='user'){
+                $id = $this->idLogin;
+            }
         }
 
         // cek dulu apakah user sudah selesai mengerjakan quiz ?
@@ -190,8 +202,10 @@ class QuizController extends BaseController
         if($checkFinishQuiz){
             $start = strtotime($checkFinishQuiz['start_time']);
             $end = strtotime($checkFinishQuiz['end_time']);        
+            $answered = $this->answeredusersmodel->where('id_user', $id)->findAll();
+            $totalQuestions = count($answered);                
+
             if($end > $start){     // jika date close quiz > start quiz       
-                $answered = $this->answeredusersmodel->where('id_user', $id)->findAll();
                 $totalCorrect = 0;
                 foreach($answered as $dt){
                     $idMc = explode(',', $dt['id_multiple_choice']);
@@ -204,7 +218,7 @@ class QuizController extends BaseController
 
                 // ============ Perhitungan Nilai ================
                 // Total soal dan jawaban yang benar
-                $totalQuestions = count($answered);                
+                // $totalQuestions = count($answered);                
                 // Hitung persentase benar
                 $persentaseBenar = ($totalCorrect / $totalQuestions) * 100;
                 // Bobot nilai maksimal
@@ -219,23 +233,90 @@ class QuizController extends BaseController
                     'totalWrong' => $totalQuestions - $totalCorrect,
                     'score' => number_format($nilai, 2),
                 ];
-
-                return $result;
-
-            }else{
-                echo 'not yet finish';
+            }else{                
+                $result = [
+                    'totalQuestion' => $totalQuestions,
+                    'totalCorrect' => '-',
+                    'totalWrong' => '-',
+                    'score' => '-',
+                ];
             }                        
         }else{
-            echo 'belum ada quiz dimulai';
+            $result = [
+                'totalQuestion' => '-',
+                'totalCorrect' => '-',
+                'totalWrong' => '-',
+                'score' => '-',
+            ];
         }    
+
+
+        return $result; 
     }
 
-    public function pageScore()
+    public function pageScore($id='')
     {
         $data = [
             'title' => 'Score',
-            'data' => $this->scoreQuiz(),
+            'data' => $this->scoreQuiz($id),
+            'idUser' => $id,
         ];
+        
         return view('quiz/quizHistoryScore', $data);
+    }
+
+
+    public function pageHistoryQuizForAdmin()
+    {
+        $data = [
+            'title' => 'History Quiz',            
+        ];
+
+        return view('quiz/quizHistoryForAdmin', $data);
+    }
+
+    public function dataHistoryQuiz()
+    {
+        $data = $this->userquizzesmodel
+            ->select('user_quizzes.*, users.name, users.email, users.username')
+            ->join('users', 'users.id=user_quizzes.user_id')->orderBy('name', 'asc')->findAll();
+        
+        $data = $this->statusProgressAndScore($data);           
+        
+        return $this->response->setJson([
+            'status'=> 'success',
+            'data' => $data,
+        ]);
+    }
+    
+    private function statusProgressAndScore($dataArray)
+    {
+        if(is_array($dataArray)){
+            foreach($dataArray as $key => &$dt){
+                $startTime = strtotime($dt['start_time']);
+                $endTime = strtotime($dt['end_time']);
+                
+                // status progress
+                $dt['status_progress'] = '';
+                $dt['score'] = '-';
+                $dt['total_question'] = '-';
+
+                if($startTime > 0 && $endTime > $startTime){
+                    $dt['status_progress'] = 'finish';
+                }else if($startTime > 0 && $endTime < 0){
+                    $dt['status_progress'] = 'progress';
+                }else if($startTime < 0){
+                    $dt['status_progress'] = 'not yet';
+                }
+
+                // score
+                $dataScore = $this->scoreQuiz($dt['user_id']);
+                if($dataScore){
+                    $dt['score'] = $dataScore['score'];
+                    $dt['total_question'] = $dataScore['totalQuestion'];
+                }                            
+            }            
+        }       
+        return $dataArray;
     }
 }
