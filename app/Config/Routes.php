@@ -49,6 +49,7 @@ $routes->post('/quiz/save-choice', 'QuizController::saveChoiceQuiz');
 $routes->post('/quiz/finish', 'QuizController::finishQuiz');
 $routes->get('/quiz/score', 'QuizController::pageScore');
 $routes->get('/quiz/score/(:any)', 'QuizController::pageScore/$1');
+$routes->post('/quiz/manage-user', 'QuizController::manageUserQuiz');
 
 
 // About

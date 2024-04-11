@@ -6,6 +6,7 @@ use App\Controllers\BaseController;
 use CodeIgniter\HTTP\ResponseInterface;
 
 use App\Models\UsersModel;
+use App\Models\UserQuizzesModel;
 use App\Controllers\UploadDownloadController;
 
 use CodeIgniter\RESTful\ResourceController;
@@ -17,6 +18,7 @@ class UsersController extends ResourceController
     public function __construct()
     {
         $this->usersmodel = new UsersModel();    
+        $this->userquizzesmodel = new UserQuizzesModel();
         $this->updown = new UploadDownloadController();
         $this->validation = \Config\Services::validation();                
     }
@@ -41,30 +43,7 @@ class UsersController extends ResourceController
         ];        
         // return view('digisean/users/profile', $data);  // jobbean platform freelance
         return view('video-watch/profile/profile',$data); // jobbean video watch
-    }
-
-    // public function apiGetProfile()
-    // {
-    //     $email = $this->request->getVar('email');
-
-    //     $user = $this->usersmodel->select('name,email,address,birthday,nohp,gender,created_at,foto, referral_code, commission, category_commission')->where('email',$email)->first();
-    //     if($user){
-    //         $user['foto'] = base_url('assets/foto-profile/'). $user['foto'];
-    //         $data = $user;
-    //         $status='success';
-    //         $message='';
-    //     }else{
-    //         $status='error';
-    //         $message='Data tidak ditemukan';
-    //         $data='';
-    //     }
-    //     $response = [
-    //         'status' => $status,
-    //         'message'=>$message,
-    //         'data' => $data,
-    //     ];
-    //     return $this->response->setJson($response);
-    // }
+    }    
 
     private function dataUser()
     {        
@@ -167,14 +146,23 @@ class UsersController extends ResourceController
                 ->orLike('email', $search)
                 ->orLike('role', $search);
             endif;
-        $users= $users->orderBy('created_at','desc')->paginate(100);                                  
+        $users= $users->orderBy('created_at','desc')->paginate(100);      
+        
+        foreach($users as &$user){
+            $checkUserQuizzes = $this->userquizzesmodel->where("user_id", $user['id'])->first();
+            if($checkUserQuizzes){
+                $user['user_quiz'] = true;
+            }else{            
+                $user['user_quiz'] = false;
+            }
+        }        
 
         $data = [
             'title' => 'List Users',
             'users' => $users,            
         ];
         return view('users/listUsers',$data);
-    }
+    }    
 
     public function detailUser($idUser)
     {

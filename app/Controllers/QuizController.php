@@ -28,9 +28,26 @@ class QuizController extends BaseController
 
     public function attentionBeforeQuiz()
     {
+
+        // check userquizzesmodel apakah sudah melakaukan progress atau belum
+        $id = $this->idLogin;
+
+        $checkData = $this->userquizzesmodel->where('user_id', $id)->find();
+        $status = '-';
+        if($checkData){            
+            $dataProgress = $this->statusProgressAndScore($checkData);
+            $status = $dataProgress[0]['status_progress'];
+
+            if($status=='finish'){
+                return redirect('quiz/score');
+            }
+        }
+
         $data = [
             'title' => 'Attention',
-        ];
+            'status' => $status,
+        ];        
+
         return view('quiz/quizAttention', $data);
     }
 
@@ -308,7 +325,6 @@ class QuizController extends BaseController
                 }else if($startTime < 0){
                     $dt['status_progress'] = 'not yet';
                 }
-
                 // score
                 $dataScore = $this->scoreQuiz($dt['user_id']);
                 if($dataScore){
@@ -318,5 +334,48 @@ class QuizController extends BaseController
             }            
         }       
         return $dataArray;
+    }
+
+    // create or delete user quiz
+    public function manageUserQuiz()
+    {
+        $id = $this->request->getPost('id');
+        $data = $this->userquizzesmodel->where('user_id', $id)->first();
+        $status = 'error';
+        $message = '';
+
+        if($data){
+            // (logic) = sudah ada, cek di table quiz sudah ada atau tidak, jika tidak ada maka hapus aja. jika ada maka beri peringatan.
+            $checkProgressQuiz = $this->answeredusersmodel->where('id_user', $id)->first();
+            if($checkProgressQuiz){
+                $status = 'confirmation';
+                $message = 'user already progress';
+            }else{
+                $delete = $this->userquizzesmodel->where('user_id', $id)->delete();
+                if($delete){
+                    $status = 'success';
+                    $message = 'data successfully delete';
+                }else{
+                    $message = 'data failed delete';
+                }
+            }            
+        }else{
+            // (tambahan) = jika tidak ada data users di table users maka lakukan validasi
+            // tidak ada maka di insert
+            $save = $this->userquizzesmodel->insert([
+                'user_id' => $id,
+            ]);
+            if($save){
+                $status = 'success';
+                $message = 'success add user to quiz';
+            }else{
+                $message = 'failed add user to quiz';
+            }
+        }
+
+        return $this->response->setJson([
+            'status' => $status,
+            'message' => $message,
+        ]);
     }
 }
