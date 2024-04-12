@@ -38,9 +38,9 @@ class QuizController extends BaseController
             $dataProgress = $this->statusProgressAndScore($checkData);
             $status = $dataProgress[0]['status_progress'];
 
-            if($status=='finish'){
-                return redirect('quiz/score');
-            }
+            // if($status=='finish'){
+            //     return redirect('quiz/score');
+            // }
         }
 
         $data = [
@@ -271,13 +271,27 @@ class QuizController extends BaseController
         return $result; 
     }
 
+    
     public function pageScore($id='')
     {
+        // validasi apakah sudah finish atau belum 
+        if($id==''){
+            $id = $this->idLogin;
+        }
+        $dataQuizzes = $this->userquizzesmodel->where('user_id', $id)->find();
+        $status = false;
+        if($dataQuizzes){
+            // check status progress
+            $progress = $this->statusProgressAndScore($dataQuizzes);
+            $status = $progress['0']['status_progress'];
+        }
+
         $data = [
             'title' => 'Score',
             'data' => $this->scoreQuiz($id),
             'idUser' => $id,
-        ];
+            'status' => $status,
+        ];        
         
         return view('quiz/quizHistoryScore', $data);
     }
@@ -376,6 +390,19 @@ class QuizController extends BaseController
         return $this->response->setJson([
             'status' => $status,
             'message' => $message,
+        ]);
+    }
+
+    public function createLevel()
+    {
+        $id = $this->request->getPost('id');
+        $level = $this->request->getPost('level');
+
+        $saveLevel = $this->userquizzesmodel->set('level', $level)->where('id', $id)->update();
+
+        return $this->response->setJson([
+            'status' => 'success',            
+            'message' => 'level has been saved',
         ]);
     }
 }

@@ -5,8 +5,8 @@
 <div id="main-content">
     <div class="container mt-3">
         <div class="border p-3 br-10">        
-            <div class="h5 mb-3">Attention</div>
             <?php if($status=='not yet' || $status=='progress') : ?>
+                <div class="h5 mb-3">Attention</div>
                 <ol type="1">
                     <li>No Assistance: Participants are prohibited from assisting or giving hints to other participants during the quiz.</li>
                     <li>No Copying of Answers: Participants are not allowed to copy answers from other participants or other sources during the quiz.</li>
@@ -27,6 +27,13 @@
 
             <?php if($status == '-') : ?>
                 <div class="my-5 text-center text-danger fw-bold">Sorry, you are not able to take the quiz yet!!</div>
+            <?php endif; ?>
+
+            <?php if($status == 'finish') : ?>
+                <div class="my-5 text-center text-primary fw-bold">
+                    <div>You have finished this quiz</div>
+                    <a href="/quiz/score" class="btn btn-primary mt-4 px-4">View History & Score</a>
+                </div>
             <?php endif; ?>
         </div>
     </div>

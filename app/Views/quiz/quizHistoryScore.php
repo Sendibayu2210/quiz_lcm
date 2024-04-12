@@ -8,6 +8,7 @@
         <div class="h5 mb-5">History & Score</div>
         <input type="hidden" id="id-user"  value="<?= $idUser; ?>">
 
+        <?php if($status=='finish') : ?> 
         <div class="row">
             <div class="col-lg-8 small"> 
                 <div class="alert border mb-2" v-for="(item, index) in historyQuestion">
@@ -40,6 +41,12 @@
                 </div>
             </div>
         </div>
+        <?php else: ?>
+            <div class="my-5 text-center text-danger fw-bold">
+                <div>Sorry, your quiz cannot be completed!!</div>
+                <a href="/quiz" class="mt-4 btn btn-primary px-4 btn-sm">Back to Quiz</a>
+            </div>
+        <?php endif;; ?>
     </div>
 </div>
 

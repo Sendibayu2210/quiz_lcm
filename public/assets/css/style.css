@@ -4,9 +4,10 @@ a{
 .mh-100vh{
     min-height: 100vh;
 }
-.bg-primary{
+.bg-primary, .btn-primary{
     background: #5b5ba8 !important;
     color: white;
+    border: 0;
 }
 .bg-warning{
     background: #ffd35d !important;

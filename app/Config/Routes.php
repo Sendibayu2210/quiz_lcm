@@ -40,6 +40,7 @@ $routes->post('/admin/multiple-choice/delete', 'QuestionController::deleteMultip
 
 $routes->get('/admin/history', 'QuizController::pageHistoryQuizForAdmin');
 $routes->get('/admin/history/data-user', 'QuizController::dataHistoryQuiz');
+$routes->post('/admin/history/create-level-user', 'QuizController::createLevel');
 
 $routes->get('/quiz', 'QuizController::quiz');
 $routes->get('/quiz/attention', 'QuizController::attentionBeforeQuiz');
