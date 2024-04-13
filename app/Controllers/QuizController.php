@@ -85,12 +85,10 @@ class QuizController extends BaseController
                 // return redirect to sorry (failed create quiz for you);
                 dd('sorry,  failed create quiz');
             }
-
-            $saveStartQuiz = $this->userquizzesmodel->insert([
-                'user_id' => $this->idLogin,
-                'start_time' => date('Y-m-d H:i:s'),
-            ]);
-
+            
+            $this->checkUserQuizzes();
+        }else{
+            $this->checkUserQuizzes();
         }
         
         $data = [
@@ -98,6 +96,23 @@ class QuizController extends BaseController
         ];
         return view('quiz/quiz', $data);
     }    
+
+    private function checkUserQuizzes()
+    {
+        $checkQuizzes = $this->userquizzesmodel->where('user_id', $this->idLogin)->first();
+        if(!$checkQuizzes){
+            $saveStartQuiz = $this->userquizzesmodel->insert([
+                'user_id' => $this->idLogin,
+                'start_time' => date('Y-m-d H:i:s'),
+            ]);
+        }else{
+            $startTime =  strtotime($checkQuizzes['start_time']);
+            if($startTime < 0){
+                $timeNow = date('Y-m-d H:i:s');
+                $this->userquizzesmodel->set('start_time', $timeNow)->where('user_id', $this->idLogin)->update();
+            }
+        }
+    }
 
     public function dataQuiz($id='')
     {
@@ -420,5 +435,20 @@ class QuizController extends BaseController
             'status' => 'success',            
             'message' => 'level has been saved',
         ]);
-    }    
+    }
+    
+    public function deleteProgressQuizUser()
+    {
+        // === LOGIC ===
+        // delete from user_quizzes
+        // delete from answerd_users
+        $idUser = $this->request->getPost('id');
+        $this->userquizzesmodel->where('user_id', $idUser)->delete();
+        $this->answeredusersmodel->where('id_user', $idUser)->delete();
+
+        return $this->response->setJson([
+            'status' => 'success',
+            'message' => 'Progress user has been reset',
+        ]);
+    }
 }

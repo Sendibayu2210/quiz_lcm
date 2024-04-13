@@ -7,6 +7,7 @@ use CodeIgniter\HTTP\ResponseInterface;
 
 use App\Models\QuestionsModel;
 use App\Models\MultipleChoiceModel;
+use App\Models\AnsweredUsersModel;
 
 class QuestionController extends BaseController
 {
@@ -14,6 +15,8 @@ class QuestionController extends BaseController
     {
         $this->questionsmodel = new QuestionsModel();
         $this->multiplechoicemodel = new MultipleChoiceModel();
+        $this->answeredusersmodel = new AnsweredUsersModel();
+        
     }
 
     public function questionsList()
@@ -205,6 +208,60 @@ class QuestionController extends BaseController
             'status' => $status,
             'message' => $message,            
         ]);
+    }
+
+    function checkQuestionProgressForDelete()
+    {
+        // check di table answeredusersmodel apakah sudah ada atau tidak
+        $id = $this->request->getPost("id");            
+
+        $checkQuestion = $this->answeredusersmodel->where('id_question', $id)->first();
+        if($checkQuestion){
+            // notif confirmation
+            $status = 'confirmation';
+            $message = 'this question has been used by students! <br> are you sure wanna remove this question ? <br><br> if you delete this question it will change student score';
+
+        }else{
+            // delete question
+            $delete = $this->questionsmodel->where('id', $id)->delete();
+            if($delete){
+                // delete multiple choice
+                $checkProgress = $this->answeredusersmodel->where('id_question', $id)->first();
+                if($checkProgress){
+                    $this->answeredusersmodel->where('id_question', $id)->delete();
+                }
+
+                $this->multiplechoicemodel->where('id_question', $id)->delete();
+                $status = 'success';
+                $message = 'question has been deleted';
+
+            }else{
+                $status = 'error';
+                $message = 'question can not delete';
+            }
+        }
+
+        return $this->response->setJson([
+            'status'=>$status,
+            'message'=>$message,            
+        ]);
+    }
+
+    public function deleteQuestion()
+    {
+        $id = $this->request->getPost("id");   
+        // check di answereduser sudah ada atau tidak jika ga ada maka delete
+        $checkProgress = $this->answeredusersmodel->where('id_question', $id)->first();
+        if($checkProgress){
+            $this->answeredusersmodel->where('id_question', $id)->delete();
+        }
+        $this->questionsmodel->where('id', $id)->delete();
+        $this->multiplechoicemodel->where('id_question', $id)->delete();        
+
+        return $this->response->setJson([
+            'status'=>'success',
+            'message'=>'question has been deleted',            
+        ]);  
     }
 
 }

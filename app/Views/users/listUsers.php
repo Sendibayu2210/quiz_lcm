@@ -36,7 +36,7 @@
                         </thead>
                         <tbody>
                             <?php foreach($users as $key => $dt) : ?> 
-                                <tr>
+                                <tr id="row-<?= $dt['id'] ?>">
                                     <td class="text-center"><?= $key+1; ?></td>                                                                                                                
                                     <td><?= $dt['name']; ?></td>                                
                                     <td><?= $dt['email']; ?></td>                                
@@ -76,7 +76,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-sm btn-light " data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-sm btn-danger">Delete</button>
+                        <button type="button" class="btn btn-sm btn-danger" @click="deleteProgressQuiz">Delete</button>
                     </div>
                     </div>
                 </div>
@@ -92,6 +92,7 @@
         data(){
             return{
                 baseUrl:$('#base-url').val(),
+                idUserSelected:null,
             }
         },
         methods:{
@@ -111,11 +112,30 @@
                     if(res.status == 'confirmation'){
                         $("#set-quiz-"+idUser).prop('checked', true)
                         $('#exampleModal').modal('show')
+                        this.idUserSelected = idUser
+                        $('#set-quiz-'+idUser).prop('checked',true)
                     }
                 }catch(error){
                     console.log(error.response)
                 }
-                
+            },
+            async deleteProgressQuiz()
+            {                                
+                try{
+                    const response = await axios.post(this.baseUrl+'admin/quiz/delete-progress', {'id': this.idUserSelected}, {
+                        headers:{
+                            'Content-type':'multipart/form-data'
+                        }
+                    })
+                    let res = response.data;                    
+                    if(res.status == 'success'){
+                        $('#exampleModal').modal('hide')
+                        $('#set-quiz-'+this.idUserSelected).prop('checked',false)
+                        this.idUserSelected = null
+                    }
+                }catch(error){
+                    console.log(error.response)
+                }
             }
         }
     }).mount('#list-users')

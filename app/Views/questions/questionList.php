@@ -25,7 +25,7 @@
                     </div>
                     <div class="col-lg-2 text-end">
                         <a :href="'/admin/questions/edit/'+item.id" class="badge bg-warning border-0 text-dark me-1"><i class="fas fa-pen"></i></a>
-                        <button class="badge bg-danger border-0 text-white"><i class="fas fa-trash"></i></button>
+                        <button class="badge bg-danger border-0 text-white" @click="checkQuestionProgress(item.id)"><i class="fas fa-trash"></i></button>
                     </div>
                 </div>
                 <ul>
@@ -35,6 +35,26 @@
 
             <div class="text-center text-danger" v-if="messageNotFound">Data not found</div>
 
+        </div>
+
+
+        <!-- Modal -->
+        <div class="modal fade" id="modal-confirmation" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Confirmation</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div v-html="modalMessage"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-danger" @click="deleteQuestion">Delete</button>
+                </div>
+                </div>
+            </div>
         </div>
 
     </div>
@@ -53,6 +73,8 @@
                 questionsList:{},
                 search:'',
                 messageNotFound:false,
+                modalMessage:null,
+                idQuestionOpen:null,
             }
         },
         methods:{
@@ -80,6 +102,46 @@
             },
             btnSearchQuestions(){
                 this.getQuestions(this.search)
+            },
+
+            async checkQuestionProgress(id){
+                try{
+                    const response = await axios.post(this.baseUrl+'admin/questions/check-delete', {'id':id}, {
+                        headers:{
+                            'Content-type':'multipart/form-data'
+                        }
+                    });
+                    let res = response.data;
+                    if(res.status=='confirmation'){
+                        this.modalMessage = res.message;
+                        $('#modal-confirmation').modal('show')
+                        this.idQuestionOpen = id
+                    }
+                    if(res.status=='success'){
+                        this.getQuestions(this.search)
+                    }
+                }catch(error){
+                    console.log(error.response)
+                }
+            },
+            async deleteQuestion()
+            {
+                try{
+                    const response = await axios.post(this.baseUrl+'admin/questions/delete',{'id':this.idQuestionOpen},{
+                        headers:{
+                            'Content-type':'multipart/form-data'
+                        }
+                    })
+                    let res = response.data;                    
+                    if(res.status=='success'){
+                        this.getQuestions(this.search)
+                        $('#modal-confirmation').modal('hide')
+                        
+                    }
+
+                }catch(error){
+                    console.log(error.response)
+                }
             }
         },
         mounted(){
