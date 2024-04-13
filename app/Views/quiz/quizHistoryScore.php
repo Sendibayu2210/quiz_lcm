@@ -39,6 +39,27 @@
                         </div>
                     </div>
                 </div>
+                <div class="card mt-3 br-15 border-primary">
+                    <div class="card-body small">
+                        <div class="mb-3 fw-bold text-primary border-bottom  pb-2">Data User</div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <div>Name</div>
+                            <div>{{dataUserQuiz.name}}</div>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <div>Email</div>
+                            <div>{{dataUserQuiz.email}}</div>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <div>Start Quiz</div>
+                            <div>{{dataUserQuiz.start_time}}</div>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <div>End Quiz</div>
+                            <div>{{dataUserQuiz.end_time}}</div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <?php else: ?>
@@ -60,6 +81,7 @@
             return{
                 baseUrl : $('#base-url').val(),
                 historyQuestion:{},
+                dataUserQuiz:{},
             }
         },
         methods:{
@@ -68,10 +90,11 @@
                 let idUser = $('#id-user').val();
                 let paramsId = (idUser!='') ? ('/'+idUser) : '';
                 
+                this.dataUser(idUser)
+
                 try{    
                     const response = await axios.get(this.baseUrl+'quiz/data'+paramsId);
-                    let res = response.data;      
-                    console.log(res)              
+                    let res = response.data;                          
                     if(res.status == 'success'){
                         this.historyQuestion = res.data                         
                     }                                        
@@ -79,6 +102,20 @@
                     console.log(error.response)
                 }
             },
+            
+            async dataUser(id)
+            {
+                try{    
+                    const response = await axios.get(this.baseUrl+'quiz/data-user/'+id);
+                    let res = response.data;      
+                    console.log(res)              
+                    if(res.status == 'success'){
+                        this.dataUserQuiz = res.data                         
+                    }                                        
+                }catch(error){
+                    console.log(error.response)
+                }   
+            }
         },
         mounted(){
             this.getDataQuiz();

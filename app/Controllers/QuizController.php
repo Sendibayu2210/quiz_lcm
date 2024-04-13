@@ -205,7 +205,6 @@ class QuizController extends BaseController
         return redirect('quiz/score');
     }
 
-
     public function scoreQuiz($id='')
     {
         if($id==''){
@@ -271,7 +270,6 @@ class QuizController extends BaseController
         return $result; 
     }
 
-    
     public function pageScore($id='')
     {
         // validasi apakah sudah finish atau belum 
@@ -285,6 +283,10 @@ class QuizController extends BaseController
             $progress = $this->statusProgressAndScore($dataQuizzes);
             $status = $progress['0']['status_progress'];
         }
+        
+        if($this->roleLogin=='admin'){
+            $status = 'finish'; // agar admin bisa mengecek hasil score siswa walaupun siswa belum menyelesaikan quiz
+        }
 
         $data = [
             'title' => 'Score',
@@ -292,10 +294,9 @@ class QuizController extends BaseController
             'idUser' => $id,
             'status' => $status,
         ];        
-        
+
         return view('quiz/quizHistoryScore', $data);
     }
-
 
     public function pageHistoryQuizForAdmin()
     {
@@ -313,6 +314,21 @@ class QuizController extends BaseController
             ->join('users', 'users.id=user_quizzes.user_id')->orderBy('name', 'asc')->findAll();
         
         $data = $this->statusProgressAndScore($data);           
+        
+        return $this->response->setJson([
+            'status'=> 'success',
+            'data' => $data,
+        ]);
+    }
+
+    public function dataUserQuiz($id)
+    {
+        $data = $this->userquizzesmodel
+            ->select('user_quizzes.*, users.name, users.email, users.username')
+            ->join('users', 'users.id=user_quizzes.user_id')
+            ->where('user_id', $id)
+            ->orderBy('name', 'asc')
+            ->first();            
         
         return $this->response->setJson([
             'status'=> 'success',
@@ -404,5 +420,5 @@ class QuizController extends BaseController
             'status' => 'success',            
             'message' => 'level has been saved',
         ]);
-    }
+    }    
 }
