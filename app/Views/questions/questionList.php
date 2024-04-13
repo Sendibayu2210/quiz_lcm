@@ -4,59 +4,61 @@
 <?= view('components/sidebar'); ?>
 <div id="main-content" class="">
 
-    <div class="container" id="question-list">
-        <div class="h5">Manage Questions</div>
+    <div class="" id="question-list">
+        <?= view('components/navbar'); ?>
+        
+        <div class="container" >        
 
-        <div class="mt-4 d-flex justify-content-between align-items-center">
-            <div><a href="/admin/questions/add" class="btn btn-sm bg-warning">Add Questions</a></div>
-            <div>
-                <div class="d-flex p-1 border br-50">
-                    <input type="text" class="border-0 outline-none ms-2" @keypress="searchQuestions" placeholder="search questions here" v-model="search">
-                    <button class="btn btn-sm br-50 bg-warning" @click="btnSearchQuestions"><i class="fas fa-search"></i></button>
-                </div>
-            </div>
-        </div>
-
-        <div class="mt-4">
-            <div class="p-2 px-3 small border mb-2" v-for="(item, index) in questionsList">
-                <div class="row">
-                    <div class="col-lg-10">
-                        <div class="question mb-3" v-html="item.question"></div>
-                    </div>
-                    <div class="col-lg-2 text-end">
-                        <a :href="'/admin/questions/edit/'+item.id" class="badge bg-warning border-0 text-dark me-1"><i class="fas fa-pen"></i></a>
-                        <button class="badge bg-danger border-0 text-white" @click="checkQuestionProgress(item.id)"><i class="fas fa-trash"></i></button>
+            <div class="mt-4 d-flex justify-content-between align-items-center">
+                <div><a href="/admin/questions/add" class="btn btn-sm bg-warning">Add Questions</a></div>
+                <div>
+                    <div class="d-flex p-1 border br-50">
+                        <input type="text" class="border-0 outline-none ms-2" @keypress="searchQuestions" placeholder="search questions here" v-model="search">
+                        <button class="btn btn-sm br-50 bg-warning" @click="btnSearchQuestions"><i class="fas fa-search"></i></button>
                     </div>
                 </div>
-                <ul>
-                    <li class="multiple-choice" v-for="data in item.multiple_choice" v-html="data.choice_text" :class="(data.is_correct=='true') ? 'fw-bold text-primary' : ''"></li>
-                </ul>
             </div>
 
-            <div class="text-center text-danger" v-if="messageNotFound">Data not found</div>
-
-        </div>
-
-
-        <!-- Modal -->
-        <div class="modal fade" id="modal-confirmation" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">Confirmation</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="mt-4">
+                <div class="p-2 px-3 small border mb-2" v-for="(item, index) in questionsList">
+                    <div class="row">
+                        <div class="col-lg-10">
+                            <div class="question mb-3" v-html="item.question"></div>
+                        </div>
+                        <div class="col-lg-2 text-end">
+                            <a :href="'/admin/questions/edit/'+item.id" class="badge bg-warning border-0 text-dark me-1"><i class="fas fa-pen"></i></a>
+                            <button class="badge bg-danger border-0 text-white" @click="checkQuestionProgress(item.id)"><i class="fas fa-trash"></i></button>
+                        </div>
+                    </div>
+                    <ul>
+                        <li class="multiple-choice" v-for="data in item.multiple_choice" v-html="data.choice_text" :class="(data.is_correct=='true') ? 'fw-bold text-primary' : ''"></li>
+                    </ul>
                 </div>
-                <div class="modal-body">
-                    <div v-html="modalMessage"></div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-danger" @click="deleteQuestion">Delete</button>
-                </div>
+
+                <div class="text-center text-danger" v-if="messageNotFound">Data not found</div>
+
+            </div>
+
+            <!-- Modal -->
+            <div class="modal fade" id="modal-confirmation" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Confirmation</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div v-html="modalMessage"></div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-danger" @click="deleteQuestion">Delete</button>
+                    </div>
+                    </div>
                 </div>
             </div>
-        </div>
 
+        </div>
     </div>
 
 </div>
@@ -69,6 +71,7 @@
     createApp({
         data(){
             return{
+                titlePage: 'Manage Questions',
                 baseUrl: $('#base-url').val(),
                 questionsList:{},
                 search:'',

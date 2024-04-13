@@ -88,12 +88,20 @@ class AuthController extends ResourceController
             return $this->response->setJson($response);
         }
 
+
+        if($user['foto']!=''){
+            $foto = base_url() . 'assets/foto-profile/'. $user['foto'];
+        }else{
+            $foto = '';
+        }
+
         $setSession=[
             'idLogin' => $user['id'],            
             'isLoggedIn' => true,
             'roleLogin' => $user['role'],           
-            'emailLogin' => $user['email'],           
-            'fotoLogin' => $user['foto'],            
+            'emailLogin' => $user['email'],     
+            'nameLogin' => $user['name'],
+            'fotoLogin' => $foto, 
         ];
         session()->set($setSession);
 
