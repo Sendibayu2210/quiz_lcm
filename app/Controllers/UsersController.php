@@ -224,6 +224,7 @@ class UsersController extends ResourceController
                     'messgae'=>'Foto profile diperbaharui',
                     'fotoName' => base_url('assets/foto-profile/'.$fileName),
                 ];
+                session()->set('fotoLogin', $response['fotoName']);
             }else{
                 $response = [
                     'status'=>'error',

@@ -92,9 +92,22 @@ a{
     color: black;
 }
 
+#menu-sidebar{
+    display: none;
+    cursor: pointer;
+}
+#sidebar.active{
+    left: 0;
+    z-index: 10;
+    transition: all .5s;
+}
+
 @media  only screen and (max-width: 768px){
     #sidebar{
         left: -250px;
+    }
+    #menu-sidebar{
+        display: block;
     }
     #main-content{
         left: 0;

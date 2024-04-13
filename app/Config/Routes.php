@@ -21,7 +21,6 @@ $routes->post('/users/profile/update', 'UsersController::updateDataUser');
 // Manage Users or profile
 $routes->get('/admin/users', 'UsersController::listUsers');
 $routes->get('/admin/users/(:num)', 'UsersController::detailUser/$1');
-
 // Question, Quiz
 $routes->get('/admin/questions', 'QuestionController::questionsList');
 $routes->get('/admin/questions/data', 'QuestionController::dataQuestions'); // all
