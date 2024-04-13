@@ -3,12 +3,13 @@
 
     <?= view('components/sidebar'); ?>
     <div id="main-content">
-
-        <div class="container" id="list-users">
-            <div class="">             
                 
-                <div class="d-lg-flex mb-3 justify-content-between">
-                    <div class="mb-3 h5">Manage Users</div>
+        <div class="" id="list-users">
+            <?= view('components/navbar'); ?>
+            <div class="container px-lg-4">             
+                
+                <div class="d-lg-flex mb-3 justify-content-between">                    
+                    <div></div>
                     <div>
                         <form action="<?= base_url('admin/users'); ?>" method="get">
                             <div class="form-group d-flex border br-50 p-1">
@@ -93,6 +94,7 @@
             return{
                 baseUrl:$('#base-url').val(),
                 idUserSelected:null,
+                titlePage:'Manage Users',
             }
         },
         methods:{

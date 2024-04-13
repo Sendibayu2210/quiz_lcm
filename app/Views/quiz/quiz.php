@@ -1,17 +1,15 @@
 <?= $this->extend('template/layout'); ?>
 <?= $this->section('content'); ?>
 <?= view('components/sidebar'); ?>
-
 <div id="main-content">
-
     <div id="quiz">
-        <div class="row mh-100vh small" style="margin-top: -15px;">
-            <div class="col-lg-9 bg-warning-">
+        <div class="row mh-100vh small" >
+            <div class="col-lg-9">                
                 <div class="container mt-4">
                     <div class="mb-4">
                         <span class="h4 text-secondary fw-bold">Quiz</span>
                     </div>
-    
+
                     <div class="card border border-1 border-primary">
                         <div class="card-body">
                             <div class="" v-html="(openNumber+1)+'. '+showQuestion.question" style="font-size:13px;"></div>

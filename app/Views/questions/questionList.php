@@ -7,13 +7,13 @@
     <div class="" id="question-list">
         <?= view('components/navbar'); ?>
         
-        <div class="container" >        
+        <div class="container px-lg-4" >        
 
-            <div class="mt-4 d-flex justify-content-between align-items-center">
-                <div><a href="/admin/questions/add" class="btn btn-sm bg-warning">Add Questions</a></div>
+            <div class="mt-4 d-lg-flex justify-content-between align-items-center">
+                <div class="mb-3"><a href="/admin/questions/add" class="btn btn-sm bg-warning">Add Questions</a></div>
                 <div>
                     <div class="d-flex p-1 border br-50">
-                        <input type="text" class="border-0 outline-none ms-2" @keypress="searchQuestions" placeholder="search questions here" v-model="search">
+                        <input type="text" class="border-0 outline-none ms-2 w-100" @keypress="searchQuestions" placeholder="search questions here" v-model="search">
                         <button class="btn btn-sm br-50 bg-warning" @click="btnSearchQuestions"><i class="fas fa-search"></i></button>
                     </div>
                 </div>

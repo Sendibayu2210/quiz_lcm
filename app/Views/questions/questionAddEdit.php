@@ -2,86 +2,89 @@
 <?= $this->section('content'); ?>
 
 <?= view('components/sidebar'); ?>
-<div id="main-content" class="p-4">
-    
-    <div class="container" id="multiple-choice">
-        <input type="text" value="<?= $page; ?>" id="page" class="d-none">
-        <input type="text" value="<?= $id; ?>" id="id-question" class="d-none">
-        <div class="h5"><span class="text-capitalize"><?= $page; ?></span> Questions</div>
 
-        <div class="mt-4">
-            <div class="form-group mb-3">
-                <label for="" class="fw-bold">Enter Question</label>
-                <textarea name="" id="" cols="30" rows="5" class="form-control form-control-sm mt-2" v-model="questionText"></textarea>
-            </div>
 
-                                        
-            <div class="col-lg-12 mt-4">
-                <div class="text-end">
-                    <button class="badge bg-warning text-dark border-0" @click="addMultipleChoice"><i class="fas fa-plus me-1"></i> Add Multiple Choice</button>
+<div id="main-content">
+    <div class="" id="multiple-choice">
+        <?= view('components/navbar'); ?>
+        
+        <div class="container px-lg-4">
+            <input type="text" value="<?= $page; ?>" id="page" class="d-none">
+            <input type="text" value="<?= $id; ?>" id="id-question" class="d-none">        
+
+            <div class="mt-4">
+                <div class="form-group mb-3">
+                    <label for="" class="fw-bold">Enter Question</label>
+                    <textarea name="" id="" cols="30" rows="5" class="form-control form-control-sm mt-2" v-model="questionText"></textarea>
                 </div>
-                <form action="" id="form-multiple-choice">
-                    <table class="table small table-borderless-" id="table-multiple-choice">
-                        <thead>
-                            <tr class="small">
-                                <th>Input Multiple Choice</th>
-                                <th width="70px" class="text-center">Is Correct</th>
-                                <th width="70px" class="text-center">Delete</th>
-                            </tr>                        
-                        </thead>
-                        <tbody></tbody>
-                    </table>                    
-                    <div id="message" class="my-2"></div>
-                    <div class="text-start">
-                        <button type="button" class="btn btn-sm bg-primary px-5 btn-save" @click="saveQuestions">Save</button>
+
+                                            
+                <div class="col-lg-12 mt-4">
+                    <div class="text-end">
+                        <button class="badge bg-warning text-dark border-0" @click="addMultipleChoice"><i class="fas fa-plus me-1"></i> Add Multiple Choice</button>
                     </div>
-                </form>                    
-            </div>            
-        </div>
-
-        <!-- component mulitple choice -->
-        <table id="component-mulitple-choice" class="d-none">
-            <tbody>
-                <tr>
-                    <td>
-                        <input type="hidden" value="-" name="id-choice[]">
-                        <input type="text" class="form-control form-control-sm" name="multiple-choice-text[]">
-                    </td>
-                    <td>
-                        <div class="d-flex justify-content-center">
-                            <div class="form-check form-switch">
-                                <input class="form-check-input" type="radio" name="is-correct[]" role="switch" id="flexSwitchCheckDefault" value="true">
-                            </div>
+                    <form action="" id="form-multiple-choice">
+                        <table class="table small table-borderless-" id="table-multiple-choice">
+                            <thead>
+                                <tr class="small">
+                                    <th>Input Multiple Choice</th>
+                                    <th width="70px" class="text-center">Is Correct</th>
+                                    <th width="70px" class="text-center">Delete</th>
+                                </tr>                        
+                            </thead>
+                            <tbody></tbody>
+                        </table>                    
+                        <div id="message" class="my-2"></div>
+                        <div class="text-start">
+                            <button type="button" class="btn btn-sm bg-primary px-5 btn-save" @click="saveQuestions">Save</button>
                         </div>
-                    </td>
-                    <td class="text-center"><button class="ms-2 btn btn-sm border text-danger delete-multiple-choice" data-id="-"><i class="fas fa-trash"></i></button></td>
-                </tr>
-            </tbody>
-        </table>                
+                    </form>                    
+                </div>            
+            </div>
+
+            <!-- component mulitple choice -->
+            <table id="component-mulitple-choice" class="d-none">
+                <tbody>
+                    <tr>
+                        <td>
+                            <input type="hidden" value="-" name="id-choice[]">
+                            <input type="text" class="form-control form-control-sm" name="multiple-choice-text[]">
+                        </td>
+                        <td>
+                            <div class="d-flex justify-content-center">
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="radio" name="is-correct[]" role="switch" id="flexSwitchCheckDefault" value="true">
+                                </div>
+                            </div>
+                        </td>
+                        <td class="text-center"><button class="ms-2 btn btn-sm border text-danger delete-multiple-choice" data-id="-"><i class="fas fa-trash"></i></button></td>
+                    </tr>
+                </tbody>
+            </table>                
 
 
-        <div class="modal fade" id="modal-confirmation" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered-">
-                <div class="modal-content ">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">Confirmation Delete</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">                    
-                    Do you really want to delete this choice ?
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" @click="deleteChoice">Delete</button>
-                </div>
+            <div class="modal fade" id="modal-confirmation" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered-">
+                    <div class="modal-content ">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Confirmation Delete</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">                    
+                        Do you really want to delete this choice ?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" @click="deleteChoice">Delete</button>
+                    </div>
+                    </div>
                 </div>
             </div>
         </div>
-
-
     </div>
-
 </div>
+
+
 
 <?= $this->endSection(); ?>
 
@@ -95,7 +98,8 @@
                 questionText:'',
                 spinner:`<div class="spinner-border spinner-border-sm" role="status"><span class="visually-hidden">Loading...</span></div>`,
                 page:'',   
-                idChoice:null,             
+                idChoice:null,    
+                titlePage: '<?= $page; ?>' + ' Question',
             }
         },
         methods:{

@@ -3,6 +3,7 @@
 
 <?= view('components/sidebar'); ?>
 <div id="main-content">
+    <?= view('components/navbar'); ?>
     <div class="container mt-3">
         <div class="border p-3 br-10">        
             <?php if($status=='not yet' || $status=='progress') : ?>

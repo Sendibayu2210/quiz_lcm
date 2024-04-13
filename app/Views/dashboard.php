@@ -2,8 +2,9 @@
 <?= $this->section('content'); ?>
 
 <?= view('components/sidebar'); ?>
-<div id="main-content" class="p-4">
-    <div class="container">
+<div id="main-content">
+    <?= view('components/navbar'); ?>
+    <div class="container px-lg-4 mt-4">
 
             <div class="text-center h3">
                 <div>GET HOUSE OF ENGLISH</div>
