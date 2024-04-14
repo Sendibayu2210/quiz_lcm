@@ -79,6 +79,7 @@ a{
     left: 230px;
     position: absolute;
     top: 0;
+    padding-bottom: 100px;
     /* padding:15px; */
     /* background: #ffd35d !important; */
 }
@@ -112,5 +113,17 @@ a{
     #main-content{
         left: 0;
         width: 100%;
+    }
+
+    #sidebar-box-number{
+        position: absolute;
+        display: none;
+        right:0;
+        top: 0;
+        min-height: 100vh;
+        width: calc(100% - 80px);        
+    }
+    #sidebar-box-number.active{
+        display: block;
     }
 }

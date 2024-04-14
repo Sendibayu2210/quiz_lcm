@@ -4,10 +4,20 @@
 <div id="main-content">
     <div id="quiz">
         <div class="row mh-100vh small" >
-            <div class="col-lg-9">                
+            <div class="col-lg-9 mb-5">                
                 <div class="container mt-4">
-                    <div class="mb-4">
-                        <span class="h4 text-secondary fw-bold">Quiz</span>
+                    <div class="mb-4 d-flex justify-content-between">
+                        <div class="h4 text-secondary fw-bold">Quiz</div>
+                        <div id="menu-sidebar">
+                            <i class="fas fa-bars" id="icon"></i>
+                        </div>
+                    </div>
+
+                    <div class="my-4 d-flex justify-content-between">  
+                        <div class="px-5 bg-danger text-white h3 fw-bold text-center border border-light border-3 py-1 br-15 card-time d-lg-none d-md-block d-sm-block">00:00</div>                        
+                        <div class="mt-1 me-2 d-lg-none d-md-block d-sm-block" @click="toggleSidebarBoxNumber">
+                            <i class="fa-solid fa-grip fs-3"></i>
+                        </div>
                     </div>
 
                     <div class="card border border-1 border-primary">
@@ -32,9 +42,14 @@
     
                 </div>
             </div>
-            <div class="col-lg-3 bg-primary">
+            <div class="col-lg-3 bg-primary" id="sidebar-box-number">
+
+                <div class="mt-3 me-2 d-lg-none d-md-block d-sm-block" @click="toggleSidebarBoxNumber">
+                    <i class="fas fa-times fs-5"></i>
+                </div>
+
                 <div class="mt-5">
-                    <div class="mx-5 bg-danger h3 fw-bold text-center border border-light border-3 py-1 br-15">00:00</div>
+                    <div class="mx-5 bg-danger h3 fw-bold text-center border border-light border-3 py-1 br-15 card-time">00:00</div>
                 </div>
                 <div class="mt-3 mb-3 text-center">
                     
@@ -197,7 +212,10 @@
                 $('.box-number').removeClass('bg-info text-light').addClass('bg-light text-info')
                 $('#box-number-'+this.openNumber).removeClass('bg-light').addClass('bg-info text-light'); 
                 $('#box-number-'+this.openNumber+'.bg-success').removeClass('bg-light bg-info text-info')
-            },            
+            },   
+            toggleSidebarBoxNumber(){
+                $("#sidebar-box-number").toggleClass('active')
+            }         
         },
         mounted(){
             this.getDataQuiz();        

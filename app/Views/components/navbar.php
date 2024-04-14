@@ -24,20 +24,3 @@
     </div>
   </div>
 </nav>
-
-<?= $this->section('js'); ?>
-<script>
-  $(document).ready(function(){
-      $("#menu-sidebar").click(function(){
-        let icon = $(this).find('#icon').prop('class');
-          if(icon=='fas fa-bars'){
-            $('#sidebar').addClass('active')
-            $(this).find('#icon').removeClass("fa-bars").addClass('fa-times')
-          }else{
-            $('#sidebar').removeClass('active')
-            $(this).find('#icon').removeClass("fa-times").addClass('fa-bars')
-          }
-      })
-  })
-</script>
-<?= $this->endSection(); ?>

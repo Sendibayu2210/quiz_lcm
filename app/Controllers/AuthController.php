@@ -115,11 +115,10 @@ class AuthController extends ResourceController
         return $this->response->setJson($response);
     }
 
-
     public function register()
     {
         $data = [
-            'title' => 'Daftar - GET-HOUSE OF ENGLISH KUNINGAN',
+            'title' => 'Register - GET-HOUSE OF ENGLISH KUNINGAN',
         ];
         return view('auth/register',$data);
     }

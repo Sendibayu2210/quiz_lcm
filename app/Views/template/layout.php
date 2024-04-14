@@ -29,5 +29,20 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>        
     <?= $this->renderSection('js'); ?>
+    <!-- navbar -->
+    <script>
+      $(document).ready(function(){
+          $("#menu-sidebar").click(function(){
+            let icon = $(this).find('#icon').prop('class');
+              if(icon=='fas fa-bars'){
+                $('#sidebar').addClass('active')
+                $(this).find('#icon').removeClass("fa-bars").addClass('fa-times')
+              }else{
+                $('#sidebar').removeClass('active')
+                $(this).find('#icon').removeClass("fa-times").addClass('fa-bars')
+              }
+          })
+      })
+    </script>
   </body>
 </html>
