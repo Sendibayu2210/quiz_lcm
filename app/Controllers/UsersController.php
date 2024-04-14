@@ -20,7 +20,9 @@ class UsersController extends ResourceController
         $this->usersmodel = new UsersModel();    
         $this->userquizzesmodel = new UserQuizzesModel();
         $this->updown = new UploadDownloadController();
-        $this->validation = \Config\Services::validation();                
+        $this->validation = \Config\Services::validation();
+        $this->roleLogin = session()->get('roleLogin');
+        $this->idLogin = session()->get('idLogin');
     }
     
     public function profileUser()
@@ -164,8 +166,11 @@ class UsersController extends ResourceController
         return view('users/listUsers',$data);
     }    
 
-    public function detailUser($idUser)
+    public function detailUser($idUser='')
     {
+        if($idUser==''){
+            $idUser = $this->idLogin;
+        }
         $user = $this->usersmodel->where('id', $idUser)->first();
         if(!$user){
             return view('errors/error_404');
@@ -240,5 +245,26 @@ class UsersController extends ResourceController
             ];  
         }       
         return $this->response->setJson($response);
+    }
+
+    public function changePassword()
+    {
+        $id = $this->request->getPost('id');
+        $password = $this->request->getPost('password');
+        if($this->roleLogin=='admin'){
+
+            $passwordHash = password_hash($password, PASSWORD_DEFAULT);
+            $changePassword = $this->usersmodel->set('password', $passwordHash)->where('id', $id)->update();
+            $status = 'success';
+            $message = 'password has been changed';
+        }else{
+            $status = 'error';
+            $message = 'access denied';
+        }
+
+        return $this->response->setJson([
+            'status' => $status,            
+            'message' => $message,                
+        ]);
     }
 }

@@ -6,7 +6,7 @@
     </div>
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">          
-      <a href="/profile" class="d-flex w-100 justify-content-end py-2 align-items-center text-dark">
+      <div class="d-flex w-100 justify-content-end py-2 align-items-center text-dark cursor-pointer" id="navbar-profile">
         <div class="me-2"><?= session()->get('nameLogin'); ?></div>
         <div>                
             <?php $foto = session()->get('fotoLogin'); ?>
@@ -20,7 +20,15 @@
                 </div>    
             <?php endif; ?>                
         </div>
-      </a>
+      </div>
     </div>
+
+    <div id="menu-navbar" class="shadow border p-3 br-15 d-none">
+          <div class=" border-bottom cursor-pointer badge bg-danger" id="close"><i class="fas fa-times me-1"></i> Close</div>
+          <hr>
+          <a href="/users/profile" class="d-block mb-3"><i class="fas fa-user me-1"></i> Profile</a>
+          <a href="/about" class="d-block"><i class="fas fa-info-circle me-1"></i> About</a>
+    </div>
+
   </div>
 </nav>

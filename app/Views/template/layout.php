@@ -42,6 +42,10 @@
                 $(this).find('#icon').removeClass("fa-times").addClass('fa-bars')
               }
           })
+
+          $("#navbar-profile, #menu-navbar #close").click(function(){
+            $('#menu-navbar').toggleClass('d-none')
+          })
       })
     </script>
   </body>

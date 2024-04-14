@@ -18,9 +18,11 @@ $routes->get('/dashboard', 'Home::dashboard');
 
 $routes->post('/users/profile/change-foto', 'UsersController::changeFotoProfile');
 $routes->post('/users/profile/update', 'UsersController::updateDataUser');
+$routes->get('/users/profile', 'UsersController::detailUser');
 // Manage Users or profile
 $routes->get('/admin/users', 'UsersController::listUsers');
 $routes->get('/admin/users/(:num)', 'UsersController::detailUser/$1');
+$routes->post('/admin/users/change-password', 'UsersController::changePassword');
 // Question, Quiz
 $routes->get('/admin/questions', 'QuestionController::questionsList');
 $routes->get('/admin/questions/data', 'QuestionController::dataQuestions'); // all
