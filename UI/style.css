@@ -1,0 +1,156 @@
+a{
+    text-decoration: none;
+}
+.mh-100vh{
+    min-height: 100vh;
+}
+.bg-primary, .btn-primary{
+    background: #5b5ba8 !important;
+    color: white;
+    border: 0;
+}
+.bg-warning{
+    background: #ffd35d !important;
+}
+.bg-danger, .btn-danger{
+    background: #f1688d !important;
+}
+.bg-danger-light, .btn-danger-light{
+    background: #ffe6dc !important;
+    color: #A25B07;
+}
+.bg-info{
+    background: #01bae1 !important;
+}
+.bg-info-light{
+    background: #d0f4ff !important;
+    color: #0B7896;
+}
+.bg-success{
+    background: rgb(32, 192, 32) !important;
+}
+.bg-secondary, .btn-secondary{
+    background: #b3b3b3 !important;
+}
+.text-danger{
+    color: #f1688d !important;
+}
+.text-primary{
+    color: #5b5ba8 !important;    
+}
+.border-primary{
+    border: 1px solid #5b5ba8 !important;
+}
+.border-primary.border-3{
+    border: 3px solid #5b5ba8 !important;
+}
+.ls-3{
+    letter-spacing: 5px;
+}
+.br-5{
+    border-radius: 5px;
+}
+.br-10{
+    border-radius: 10px;
+}
+.br-15{
+    border-radius: 15px;
+}
+.br-50{
+    border-radius: 50px;
+}
+.cursor-pointer{
+    cursor: pointer;
+}
+.outline-none{
+    outline: none !important;
+}
+
+/* Sidebar */
+#sidebar{
+    position: fixed;
+    width: 230px;   
+    min-height: 100vh; 
+}
+#sidebar ul li{
+    margin-bottom: 25px;
+}
+#sidebar ul li a{
+    color:white;
+    display: block;
+}
+
+#main-content{
+    min-height: 100vh;
+    width: calc(100% - 230px);
+    left: 230px;
+    position: absolute;
+    top: 0;
+    /* padding-bottom: 100px; */
+    /* padding:15px; */
+    /* background: #ffd35d !important; */
+}
+
+.card-multiple-choice:hover{
+    background: #5b5ba8a5 !important;
+    color: white;
+}
+.card-multiple-choice:hover button{
+    background: #ffd255 !important;
+    color: black;
+}
+
+#menu-sidebar{
+    display: block;
+    cursor: pointer;
+}
+#sidebar.active{
+    left: 0;
+    z-index: 10;
+    transition: all .5s;
+}
+
+#menu-navbar{
+    width: 200px;
+    position: absolute;
+    right: 30px;
+    z-index: 10;
+    top: 50px;    
+    background: #fff;
+}
+#menu-navbar a{
+    color: black;
+    transition: all .3s;
+}
+#menu-navbar a:hover{
+    font-weight: bold;
+    color: #5b5ba8;
+    background: #eeeefa;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+@media  only screen and (max-width: 768px){
+    #sidebar{
+        left: -250px;
+    }
+    #menu-sidebar{
+        display: block;
+    }
+    #main-content{
+        left: 0;
+        width: 100%;
+    }
+
+    #sidebar-box-number{
+        position: absolute;
+        display: none;
+        right:0;
+        top: 0;
+        min-height: 100vh;
+        width: calc(100% - 80px);        
+    }
+    #sidebar-box-number.active{
+        display: block;
+    }
+}
