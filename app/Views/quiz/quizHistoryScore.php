@@ -6,12 +6,12 @@
     <div class="" id="history-quiz">
         <?= view('components/navbar'); ?>
         
-        <div class="px-lg-4 pt-4">            
+        <div class="px-lg-4 pt-4 d-flex justify-content-center">            
             <input type="hidden" id="id-user"  value="<?= $idUser; ?>">
 
             <?php if($status=='finish') : ?> 
-            <div class="row">
-                <div class="col-lg-8 small"> 
+            <div class="row container">
+                <div class="col-lg-8 small order-lg-1 order-2"> 
                     <div class="alert border mb-2" v-for="(item, index) in historyQuestion">
                         <div v-html="(index+1) + '. ' + item.question"></div>
                         <ul class="list-unstyled mt-1">
@@ -20,7 +20,7 @@
                     </div>
                 </div>
 
-                <div class="col-lg-4 mx-auto">
+                <div class="col-lg-4 mx-auto order-lg-2 order-1 mb-3">
                     <div class="card mx-auto br-15 border-primary border-0">
                         <div class="card-body mb-5">
                             <div class="mx-auto border text-center border-primary p-2 br-10 bg-white shadow text-primary" style="width: 130px; margin-top: -35px;">
@@ -110,8 +110,7 @@
             {
                 try{    
                     const response = await axios.get(this.baseUrl+'quiz/data-user/'+id);
-                    let res = response.data;      
-                    console.log(res)              
+                    let res = response.data;                                 
                     if(res.status == 'success'){
                         this.dataUserQuiz = res.data                         
                     }                                        

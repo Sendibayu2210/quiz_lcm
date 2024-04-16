@@ -9,7 +9,7 @@ a{
     color: white;
     border: 0;
 }
-.bg-warning{
+.bg-warning, .btn-warning{
     background: #ffd35d !important;
 }
 .bg-danger, .btn-danger{
@@ -121,6 +121,21 @@ a{
     background: #eeeefa;
     padding: 5px;
     border-radius: 5px;
+}
+.bg-warning-light{
+    background: linear-gradient(to bottom, #FFF5DA, #EEEEFF) !important;
+    /* background: #FFF5DA; */
+}
+.text-gradient-primary-warning{
+    background-image: linear-gradient(45deg, #5B5BA8, #FFD25B);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+.accecoris-login-register{
+    width: 300px;
+    position: absolute;
+    right: 0;
+    bottom: 0;
 }
 
 @media  only screen and (max-width: 768px){

@@ -2,19 +2,32 @@
 <?= $this->section('content'); ?>
 
 <div id="login-register">
-
+    <?= view('components/navbar-out'); ?>
     <div class="row">
-        <div class="col-lg-5 mh-100vh bg-primary">
-
-            <div class="p-lg-5 p-2">
-                <div>
-                    <div class="h1 fw-bold">REGISTER</div>
-                </div>
+        <div class="col-lg-4 col-md-5 col-12 mh-100vh bg-primary">
+            
+            <div class="px-lg-5 py-4 p-2">
+                <div class="fw-bold">Get House of English</div>
+                
+                <div class="h3 fw-bold mt-5">REGISTER</div>
                 <form @submit.prevent="submitRegister" id="form-register" ref="formRegister" action="/register/check" method="post">
                     <div class="mt-4">
                         <div class="form-group mb-3">
                             <input type="text" class="form-control form-control-sm" placeholder="Full Name" id="name" required v-model="name">
                         </div>
+                        <div class="form-group mb-3">
+                            <input type="text" class="form-control form-control-sm" placeholder="Email" id="email" required v-model="email">
+                        </div>
+                        <div class="form-group mb-3">
+                            <input type="text" class="form-control form-control-sm" placeholder="Username" id="username" required v-model="username">
+                        </div>
+                        <div class="form-group mb-3">
+                            <input type="password" class="form-control form-control-sm" placeholder="Password" id="password" required v-model="password">
+                        </div>
+                        <div class="form-group mb-3">
+                            <input type="password" class="form-control form-control-sm" id="confirm-password" placeholder="Confirm Password"  @keyup="checkConfirmPassword"id="confirmPassword" required v-model="confirmPassword">
+                            <div class="invalid-feedback confirm-password">Passwords do not match</div>
+                        </div>                        
                         <div class="mb-3">
                             <div class="d-flex justify-content-around">
                                 <div class="form-group me-2 w-100">
@@ -38,47 +51,31 @@
                             </div>
                             <input type="text" class="d-none" id="birthday">
                         </div>
-
                         <div class="forn-group mb-3">
                             <textarea  cols="30" rows="3" class="form-control" placeholder="Address" id="address" required v-model="address"></textarea>                            
                         </div>
-                        <div class="form-group mb-3">
-                            <input type="text" class="form-control form-control-sm" placeholder="Email" id="email" required v-model="email">
-                        </div>
-                        <div class="form-group mb-3">
-                            <input type="text" class="form-control form-control-sm" placeholder="Username" id="username" required v-model="username">
-                        </div>
-                        <div class="form-group mb-3">
-                            <input type="password" class="form-control form-control-sm" placeholder="Password" id="password" required v-model="password">
-                        </div>
-                        <div class="form-group mb-3">
-                            <input type="password" class="form-control form-control-sm" id="confirm-password" placeholder="Confirm Password"  @keyup="checkConfirmPassword"id="confirmPassword" required v-model="confirmPassword">
-                            <div class="invalid-feedback confirm-password">Passwords do not match</div>
-                        </div>
-
-                        <div><span>Already have an account?</span> <a href="/login" class="text-info">Login</a></div>
-
-                        <div class="mt-4 text-center">
+                        
+                        <div class="mt-4 text-center mb-3">
                             <div class="mb-3">
                                 <div class="badge bg-success d-none message">-</div>
                             </div>
-
-                            <button type="submit" class="btn btn-warning px-4 border border-light border-2 text-primary fw-bold">Sign Up</button>
+                            <button type="submit" class="btn btn-warning px-4 btn-sm w-100 text-primary fw-bold">Sign Up</button>
                         </div>
+                        <div><span>Already have an account?</span> <a href="/login" class="text-warning fw-bold">Login</a></div>
                     </div>
                 </form>
             </div>
         </div>
-        <div class="col-lg-7 bg-warning">
+        <div class="col-lg-8 col-md-7 col-12 bg-warning-light d-lg-block d-md-block d-sm-none d-none">
 
-            <div class="p-5">
-                <div><span class="h1 fw-bold p-2 bg-danger text-white mb-3">WELCOME</span></div>
-                <div class="h2 fw-bold my-3 text-primary">BACK</div>
-                <div class="text-danger fw-bold small">
+            <div class="p-5 mt-5">
+                <div><span class="h1 fw-bold text-gradient-primary-warning">WELCOME BACK</span></div>                
+                <div class="mt-3 text-primary">
                     We're glad to see you return to our community. Please log in <br>
                     to continue to your exam phase with us. <br>
                     Thank you for your loyalty and support!
                 </div>
+                <img src="/assets/image-components/bg-bottom-right.png" alt="" class="accecoris-login-register">
             </div>
         </div>
     </div>
@@ -174,6 +171,7 @@
                             this.confirmPassword = null;
                             
                             message.html(res.message).removeClass('d-none').removeClass('bg-danger').addClass('bg-success')
+                            $("input, textarea, select").removeClass('is-invalid')
                         }else{               
                             if(res.message == 'validation'){
                                 res.message = 'Please check your form';                                

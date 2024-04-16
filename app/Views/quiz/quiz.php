@@ -14,7 +14,7 @@
                     </div>
 
                     <div class="my-4 d-flex justify-content-between">  
-                        <div class="px-5 bg-danger text-white h3 fw-bold text-center border border-light border-3 py-1 br-15 card-time d-lg-none d-md-block d-sm-block">00:00</div>                        
+                        <div class="px-5 bg-danger text-white h3 fw-bold text-center border border-light border-3 py-1 br-15 card-time d-lg-none d-md-block d-sm-block timing"></div>                        
                         <div class="mt-1 me-2 d-lg-none d-md-block d-sm-block" @click="toggleSidebarBoxNumber">
                             <i class="fa-solid fa-grip fs-3"></i>
                         </div>
@@ -49,7 +49,7 @@
                 </div>
 
                 <div class="mt-5">
-                    <div class="mx-5 bg-danger h3 fw-bold text-center border border-light border-3 py-1 br-15 card-time">00:00</div>
+                    <div class="mx-5 bg-danger h3 fw-bold text-center border border-light border-3 py-1 br-15 card-time timing"></div>
                 </div>
                 <div class="mt-3 mb-3 text-center">
                     
@@ -81,7 +81,7 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
                     <form action="/quiz/finish" method="post">
-                        <button  type="submit" class="btn bg-primary">Finish</button>
+                        <button  type="submit" class="btn bg-primary" id="btn-finish">Finish</button>
                     </form>
                 </div>
                 </div>
@@ -102,7 +102,7 @@
                 openNumber:0,
                 lastNumber:0,
                 lastNumberHide:true,
-                messageSelectedChoice:'',
+                messageSelectedChoice:'',                
             }
         },
         methods:{
@@ -116,7 +116,7 @@
                         this.showQuestion = res.data[0],
                         this.openNumber = 0;
                         this.lastNumber = res.data.length                        
-                    }                                        
+                    }                              
                 }catch(error){
                     console.log(error.response)
                 }
@@ -215,10 +215,51 @@
             },   
             toggleSidebarBoxNumber(){
                 $("#sidebar-box-number").toggleClass('active')
-            }         
+            },
+            async dataUser(){
+                try{                        
+                    const response = await axios.get(this.baseUrl+'quiz/data-user');
+                    let res = response.data;                               
+                    if(res.status == 'success'){                                                                                        
+                        this.timeLimit(res.data.start_time, res.data.time_limit_minutes)
+                    }                                        
+                }catch(error){
+                    console.log(error.response)
+                }   
+            },
+            timeLimit(startTime, timeLimit){                                
+                var startTime = Date.parse(startTime); // Timestamp start time
+                var limit = timeLimit * (60 * 1000); // 120 menit dalam milidetik
+                var endTime = startTime + limit; // Timestamp end time
+
+                var x = setInterval(function() {
+                    var now = new Date().getTime(); // Timestamp waktu sekarang
+                    var distance = endTime - now; // Selisih antara end time dan waktu sekarang
+
+                    var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                    var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                    // Tampilkan waktu mundur dalam format menit:detik
+                    // console.log(hours + " jam " + minutes + " menit " + seconds + " detik");
+                    let timing = `${(hours<=9) ? '0'+hours : hours} : ${(minutes<=9) ? '0'+minutes : minutes} : ${(seconds<=9) ? '0'+seconds : seconds}`;                    
+                    $('.timing').html(timing).css('font-size', '20px')                    
+
+                    // Jika waktu sudah habis, hentikan interval
+                    if (distance < 0) {
+                        clearInterval(x);
+                        $(".timing").html("00 : 00 : 00")
+                        $('#btn-finish').click();
+                        console.log("Waktu habis!");
+                    }
+                }, 1000); // Update setiap 1 detik (1000 milidetik)
+            }
+
         },
         mounted(){
-            this.getDataQuiz();        
+            this.getDataQuiz();  
+            this.dataUser();                        
+
             let self = this
             $(document).on('click','.card-multiple-choice', function(){
                 $(".card-multiple-choice").removeClass('bg-primary text-white').find('button').removeClass("bg-warning")                

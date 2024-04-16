@@ -63,7 +63,14 @@ class QuizController extends BaseController
         if(!$checkUserQuiz){
             // jika belum ada - buatkan soalnya
             $questions = $this->questioncontroller->dataQuestions('','quizcontroller');    
-            $randomQuestions = $this->linearCongruentMethod($questions);                
+
+            // pengacakan multiple choice (pilihan ganda)
+            foreach($questions as &$dt){
+                $mc = $dt['multiple_choice'];
+                $dt['multiple_choice'] = $this->linearCongruentMethod($mc);
+            }            
+
+            $randomQuestions = $this->linearCongruentMethod($questions);
             $saveQuestionRandom=[];
             foreach($randomQuestions as $rq){
     
@@ -99,6 +106,7 @@ class QuizController extends BaseController
 
     private function checkUserQuizzes()
     {
+        // == untuk mengecek apakah user sudah pernah melakukan quiz dan menandai waktu mulai
         $checkQuizzes = $this->userquizzesmodel->where('user_id', $this->idLogin)->first();
         if(!$checkQuizzes){
             $saveStartQuiz = $this->userquizzesmodel->insert([
@@ -280,8 +288,6 @@ class QuizController extends BaseController
                 'score' => '-',
             ];
         }    
-
-
         return $result; 
     }
 
@@ -336,15 +342,19 @@ class QuizController extends BaseController
         ]);
     }
 
-    public function dataUserQuiz($id)
+    public function dataUserQuiz($id='')
     {
+        if($id==''){
+            $id = $this->idLogin;
+        }
+
         $data = $this->userquizzesmodel
             ->select('user_quizzes.*, users.name, users.email, users.username')
             ->join('users', 'users.id=user_quizzes.user_id')
             ->where('user_id', $id)
             ->orderBy('name', 'asc')
-            ->first();            
-        
+            ->first();                        
+
         return $this->response->setJson([
             'status'=> 'success',
             'data' => $data,

@@ -2,52 +2,51 @@
 <?= $this->section('content'); ?>
 
 <div id="login-register">
-
+    <?= view('components/navbar-out'); ?>
     <div class="row">
-        <div class="col-lg-5 mh-100vh bg-primary">
-
+        <div class="col-lg-4 col-md-5 col-12 mh-100vh bg-primary">
             <form @submit.prevent="checkLogin">
-                <div class="p-lg-5 p-2">
-                    <div>
-                        <div class="h1 fw-bold">LOG<span class="text-warning">IN</span></div>
-                        <div><span>Don’t have an account?</span> <a href="/register" class="text-info">Create your account</a></div>
-                    </div>
-                    <div class="mt-5">
+                <div class="px-lg-5 py-4 p-2">
+                    <div class="fw-bold">Get House of English</div>
+                    
+                    <div class="h1 fw-bold mt-5 pt-4">Log<span class="text-warning">in</span></div>                        
+                    
+                    <div class="mt-4 pt-2">
                         <div class="form-group mb-3">
-                            <input type="text" class="form-control form-control-sm" id="email" placeholder="Username or Email" v-model="email">
+                            <input type="text" class="form-control form-control-sm text-dark" id="email" placeholder="Username or Email" v-model="email">
                         </div>
                         <div class="form-group mb-3">
                             <input type="password" class="form-control form-control-sm" id="password" placeholder="Password" v-model="password">
                         </div>
                         <div class="form-check mb-3">
-                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                            <label class="form-check-label" for="flexCheckDefault">
-                                Remember Me
+                            <input class="form-check-input" type="checkbox" value="" id="show-password" @click="showPassword">
+                            <label class="form-check-label" for="show-password">
+                                Show password
                             </label>
                         </div>
 
                         <div class="mt-5 text-center">
                             <div class="mb-3">
-                                <div class="badge bg-success d-none message">-</div>
-                            </div>
-
-                            <button class="btn btn-warning px-4 border border-light border-2 text-primary fw-bold">Login</button>
+                                <div class="badge bg-success d-none message w-100">-</div>
+                            </div>                            
+                            <button class="btn btn-warning w-100 text-primary fw-bold btn-sm">LOGIN</button>                            
                         </div>
+                        <div class="mt-4"><span>Don’t have an account?</span> <a href="/register" class="text-warning fw-bold">Create your account</a></div>
                     </div>
                 </div>
             </form>
 
         </div>
-        <div class="col-lg-7 bg-warning">
+        <div class="col-lg-8 col-md-7 col-12 bg-warning-light d-lg-block d-md-block d-sm-none d-none">
 
-            <div class="p-5">
-                <div><span class="h1 fw-bold p-2 bg-danger text-white mb-3">WELCOME</span></div>
-                <div class="h2 fw-bold my-3 text-primary">BACK</div>
-                <div class="text-danger fw-bold small">
+            <div class="p-5 mt-5">
+                <div><span class="h1 fw-bold text-gradient-primary-warning">WELCOME BACK</span></div>                
+                <div class="mt-3 text-primary">
                     We're glad to see you return to our community. Please log in <br>
                     to continue to your exam phase with us. <br>
                     Thank you for your loyalty and support!
                 </div>
+                <img src="/assets/image-components/bg-bottom-right.png" alt="" class="accecoris-login-register">
             </div>
 
         </div>
@@ -115,6 +114,15 @@
 
                     }catch(error){
                         console.log(error)
+                    }
+                },
+                showPassword(){
+                    let inputPassword = $('#password');                    
+                    let type = inputPassword.prop('type');
+                    if(type=='password'){
+                        inputPassword.prop('type', 'text')
+                    }else{
+                        inputPassword.prop('type', 'password')
                     }
                 }
             }
