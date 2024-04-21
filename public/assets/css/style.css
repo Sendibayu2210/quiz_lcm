@@ -76,6 +76,7 @@ a{
 /* Sidebar */
 #sidebar{
     position: fixed;
+    z-index: 5;
     width: 230px;    
 }
 #sidebar ul li{
@@ -84,6 +85,14 @@ a{
 #sidebar ul li a{
     color:white;
     display: block;
+}
+#barrier-back-sidebar{    
+    display: none;
+    position: absolute;
+    z-index: 1;
+    width:100%;
+    min-height: 100vh;
+    background: rgba(0, 0, 0, 0.378);    
 }
 
 #main-content{
@@ -142,7 +151,7 @@ a{
     -webkit-text-fill-color: transparent;
 }
 .accecoris-login-register{
-    width: 300px;
+    width: 600px;
     position: absolute;
     right: 0;
     bottom: 0;
@@ -151,12 +160,18 @@ th,td{
     padding: 4px;
 }
 
+
+
 @media  only screen and (max-width: 768px){
     #sidebar{
         left: -250px;
-    }
+    }    
     #menu-sidebar{
         display: block;
+    }
+    #barrier-back-sidebar.active{
+        display: block;
+        position: fixed;
     }
     #main-content{
         left: 0;

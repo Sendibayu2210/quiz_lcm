@@ -35,17 +35,21 @@
           $("#menu-sidebar").click(function(){
             let icon = $(this).find('#icon').prop('class');
               if(icon=='fas fa-bars'){
-                $('#sidebar').addClass('active')
+                $('#sidebar, #barrier-back-sidebar').addClass('active')                
                 $(this).find('#icon').removeClass("fa-bars").addClass('fa-times')
               }else{
-                $('#sidebar').removeClass('active')
+                $('#sidebar, #barrier-back-sidebar').removeClass('active')
                 $(this).find('#icon').removeClass("fa-times").addClass('fa-bars')
               }
           })
 
+          $("#barrier-back-sidebar").click(function(){
+            $("#menu-sidebar").click();            
+          })
+
           $("#navbar-profile, #menu-navbar #close").click(function(){
             $('#menu-navbar').toggleClass('d-none')
-          })
+          })                    
       })
     </script>
   </body>

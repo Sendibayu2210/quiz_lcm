@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg bg-transparent mb-3  position-absolute w-100">
+<nav class="navbar navbar-expand-lg bg-transparent mb-3  position-absolute w-100" style="z-index: 5;">
   <div class="container-fluid"> 
     <a class="navbar-brand- h5" href="#" v-html="titlePage"></a>           
 

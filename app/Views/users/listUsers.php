@@ -21,51 +21,52 @@
                     </div>
                 </div>
                             
-                <div class="bg-warning-light p-3 br-10 border-primary">
-                <?php if(count($users) > 0) : ?>
-                    <div class="table-responsive">
-                        <table class="table- br-10 w-100 small table-border table-striped table-hover">
-                            <thead>
-                                <tr>
-                                    <th width="50px" class="text-center">No</th>
-                                    <th>Name</th>                                
-                                    <th>Email</th>                               
-                                    <th>Username</th>
-                                    <th>Birthday</th>                                
-                                    <th>Role</th>       
-                                    <th class="text-center" width="70px">Set Quiz</th>                                                       
-                                    <th>Action</th>                      
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php foreach($users as $key => $dt) : ?> 
-                                    <tr id="row-<?= $dt['id'] ?>" class="border-0 border-bottom border-1 border-secondary">
-                                        <td class="text-center"><?= $key+1; ?></td>                                                                                                                
-                                        <td><?= $dt['name']; ?></td>                                
-                                        <td><?= $dt['email']; ?></td>                                
-                                        <td><?= $dt['username']; ?></td>                                
-                                        <td><?= $dt['birthday']; ?></td>
-                                        <td><?= $dt['role']; ?></td>    
-                                        <td>                                  
-                                            <div class="d-flex justify-content-center">
-                                                <div class="form-check form-switch">
-                                                    <input class="form-check-input border-primary" type="checkbox" role="switch" id="set-quiz-<?= $dt['id']; ?>" value="<?= $dt['id']; ?>" @change="settingQuiz('<?= $dt['id']; ?>')" <?= ($dt['user_quiz']==true) ? 'checked' : ''; ?>> 
-                                                </div>
-                                            </div>      
-                                        </td>                                                                                                                    
-                                        <td class="text-center">
-                                            <a href="<?= base_url('admin/users/'.$dt['id']); ?>" class="badge bg-primary">
-                                                Detail
-                                            </a>
-                                        </td>
-                                    </tr>    
-                                <?php endforeach; ?>                            
-                            </tbody>
-                        </table>
-                    </div>    
-                <?php else: ?>                    
-                    <div class="text-center fw-bold text-danger"><i class="fas fa-warning me-1"></i> Data not found</div>
-                <?php endif; ?>                    
+                <div class="bg-warning-light p-3 br-10 border-primary border-2 mt-4">
+                    <div style="margin-top: -25px;" class="mb-4"><span class="bg-primary p-2 px-5 br-10 border-light border-3 border">List Users</span></div>
+                    <?php if(count($users) > 0) : ?>
+                        <div class="table-responsive">
+                            <table class="table- br-10 w-100 small table-border table-striped table-hover">
+                                <thead>
+                                    <tr>
+                                        <th width="50px" class="text-center">No</th>
+                                        <th>Name</th>                                
+                                        <th>Email</th>                               
+                                        <th>Username</th>
+                                        <th>Birthday</th>                                
+                                        <th>Role</th>       
+                                        <th class="text-center" width="70px">Set Quiz</th>                                                       
+                                        <th>Action</th>                      
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php foreach($users as $key => $dt) : ?> 
+                                        <tr id="row-<?= $dt['id'] ?>" class="border-0 border-bottom border-1 border-secondary">
+                                            <td class="text-center"><?= $key+1; ?></td>                                                                                                                
+                                            <td><?= $dt['name']; ?></td>                                
+                                            <td><?= $dt['email']; ?></td>                                
+                                            <td><?= $dt['username']; ?></td>                                
+                                            <td><?= $dt['birthday']; ?></td>
+                                            <td><?= $dt['role']; ?></td>    
+                                            <td>                                  
+                                                <div class="d-flex justify-content-center">
+                                                    <div class="form-check form-switch">
+                                                        <input class="form-check-input border-primary" type="checkbox" role="switch" id="set-quiz-<?= $dt['id']; ?>" value="<?= $dt['id']; ?>" @change="settingQuiz('<?= $dt['id']; ?>')" <?= ($dt['user_quiz']==true) ? 'checked' : ''; ?>> 
+                                                    </div>
+                                                </div>      
+                                            </td>                                                                                                                    
+                                            <td class="text-center">
+                                                <a href="<?= base_url('admin/users/'.$dt['id']); ?>" class="badge bg-primary">
+                                                    Detail
+                                                </a>
+                                            </td>
+                                        </tr>    
+                                    <?php endforeach; ?>                            
+                                </tbody>
+                            </table>
+                        </div>    
+                    <?php else: ?>                    
+                        <div class="text-center fw-bold text-danger pb-3"><i class="fas fa-warning me-1"></i> Data not found</div>
+                    <?php endif; ?>                    
                 </div>
                                 
             </div>

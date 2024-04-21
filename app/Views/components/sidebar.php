@@ -1,12 +1,13 @@
 <?php $role = session()->get('roleLogin'); ?>
 
+<div id="barrier-back-sidebar"></div>
 <div id="sidebar" class="bg-primary mh-100vh">
-
-    <div class="p-4 text-center fw-bold">
-        <div>GET HOUSE OF ENGLISH</div>
-        <div>KUNINGAN</div>
+    
+    <div class="position-relative text-center">
+        <img src="/assets/image-components/logo gethouse.png" alt="" class="w-75">
     </div>
-    <ul class="list-unstyled p-4 ">
+    
+    <ul class="list-unstyled p-4 mt-3">
         <!-- Admin -->
         <li><a href="/dashboard"><i class="fas fa-home fa-fw me-1"></i> Home</a></li>
         <?php if($role=='admin') : ?> 

@@ -3,13 +3,15 @@
 
 <div id="login-register">
     <?= view('components/navbar-out'); ?>
-    <div class="row">
+    <div class="d-flex">
         <div class="col-lg-4 col-md-5 col-12 mh-100vh bg-primary">
-            <form @submit.prevent="checkLogin">
-                <div class="px-lg-5 py-4 p-2">
-                    <div class="fw-bold">Get House of English</div>
-                    
-                    <div class="h1 fw-bold mt-5 pt-4">Log<span class="text-warning">in</span></div>                        
+            <div class="position-relative">
+                <img src="/assets/image-components/bg-top-sidebar-login-register.png" alt="" class="w-100">
+            </div>
+
+            <form @submit.prevent="checkLogin" style="margin-top: -130px;">
+                <div class="px-lg-5 pb-4 p-2">                                    
+                    <div class="h1 fw-bold mt-5 pt-4 ps-lg-0 ps-4">Log<span class="text-warning">in</span></div>                        
                     
                     <div class="mt-4 pt-2">
                         <div class="form-group mb-3">
@@ -37,19 +39,23 @@
             </form>
 
         </div>
-        <div class="col-lg-8 col-md-7 col-12 bg-warning-light d-lg-block d-md-block d-sm-none d-none">
 
-            <div class="p-5 mt-5">
-                <div><span class="h1 fw-bold text-gradient-primary-warning">WELCOME BACK</span></div>                
-                <div class="mt-3 text-primary">
+        <div class="col-lg-8 col-md-7 col-12 bg-warning d-lg-block d-md-block d-sm-none d-none">
+            <div class="position-relative">
+                <img src="assets/image-components/acc-login-register-top.png" alt="" class="ms-4 position-relative" style="margin-top: -10px;">
+            </div>
+            <div class="p-5">
+                <div><span class="px-3 bg-danger text-white mb-3 br-10" style="font-size: 60px; letter-spacing: 10px; font-weight: 850;">WELCOME</span></div>
+                <div class="h2 fw-bold- text-primary" style="font-size:45px; font-weight: 850;">BACK</div>
+                <div class="mt-3 text-danger fw-bold">
                     We're glad to see you return to our community. Please log in <br>
                     to continue to your exam phase with us. <br>
                     Thank you for your loyalty and support!
                 </div>
-                <img src="/assets/image-components/bg-bottom-right.png" alt="" class="accecoris-login-register">
+                <img src="/assets/image-components/accecories-login-register.png" alt="" class="accecoris-login-register">
             </div>
-
         </div>
+
     </div>
 
 </div>
