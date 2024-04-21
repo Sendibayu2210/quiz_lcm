@@ -4,37 +4,41 @@
 <div id="main-content">
     <div class="" id="history-quiz">
         <?= view('components/navbar'); ?>        
-        <div class="px-lg-4 px-3">
-            <div class="table-responsive">
-                <table class="table small table-bordered">
-                    <thead>
-                        <tr>
-                            <th width="40px">No</th>
-                            <th>Name</th>
-                            <th>Email</th>
-                            <th>Status</th>
-                            <th>Score</th>                        
-                            <th>Total Question</th>                        
-                            <th>Level</th>                        
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr v-for="(item, index) in dataUsers">
-                            <td>{{index+1}}</td>
-                            <td>{{item.name}}</td>                        
-                            <td>{{item.email}}</td>                        
-                            <td>{{item.status_progress}}</td>                        
-                            <td>{{item.score}}</td>                        
-                            <td>{{item.total_question}}</td>                                                                    
-                            <td>{{item.level}}</td>                                                                    
-                            <td class="d-flex">
-                                <a :href="'/quiz/score/'+item.user_id" class="badge bg-primary me-2">Detail</a>
-                                <div class="badge bg-warning text-dark cursor-pointer" @click="creteLevel(item.id)">Level</div>                            
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+        <div class="container-lg">
+            <div class="px-lg-4 bg-warning-light p-3 br-10 border-primary">        
+                <div class="table-responsive">
+                    <table class="table- w-100 small table-borderles">
+                        <thead>
+                            <tr>
+                                <th width="40px">No</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Status</th>
+                                <th>Score</th>                        
+                                <th>Total Question</th>                        
+                                <th>Level</th>                        
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="(item, index) in dataUsers" class="border-bottom border-secondary">
+                                <td>{{index+1}}</td>
+                                <td>{{item.name}}</td>                        
+                                <td>{{item.email}}</td>                        
+                                <td>{{item.status_progress}}</td>                        
+                                <td>{{item.score}}</td>                        
+                                <td>{{item.total_question}}</td>                                                                    
+                                <td>{{item.level}}</td>                                                                    
+                                <td class="d-flex">
+                                    <div class="mb-2">
+                                        <a :href="'/quiz/score/'+item.user_id" class="badge bg-primary me-2">Detail</a>
+                                        <div class="badge bg-warning text-dark cursor-pointer" @click="creteLevel(item.id)">Level</div>                            
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
 

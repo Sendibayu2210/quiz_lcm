@@ -4,23 +4,23 @@
 <div id="main-content">
     <div id="quiz">
         <div class="row mh-100vh small" >
-            <div class="col-lg-9 mb-5">                
+            <div class="col-lg-9 mb-5" id="content-quiz">                
                 <div class="container mt-4">
                     <div class="mb-4 d-flex justify-content-between">
-                        <div class="h4 text-secondary fw-bold">Quiz</div>
+                        <div class="h4 text-primary fw-bold">Quiz</div>
                         <div id="menu-sidebar">
                             <i class="fas fa-bars" id="icon"></i>
                         </div>
                     </div>
 
                     <div class="my-4 d-flex justify-content-between">  
-                        <div class="px-5 bg-danger text-white h3 fw-bold text-center border border-light border-3 py-1 br-15 card-time d-lg-none d-md-block d-sm-block timing"></div>                        
+                        <div class="px-5 bg-danger text-white h3 fw-bold text-center border border-light border-3 py-1 br-15 card-time d-lg-none d-md-block d-sm-block timing">00 : 00 : 00</div>                        
                         <div class="mt-1 me-2 d-lg-none d-md-block d-sm-block" @click="toggleSidebarBoxNumber">
                             <i class="fa-solid fa-grip fs-3"></i>
                         </div>
                     </div>
 
-                    <div class="card border border-1 border-primary">
+                    <div class="card border border-2 border-primary bg-warning-light">
                         <div class="card-body">
                             <div class="" v-html="(openNumber+1)+'. '+showQuestion.question" style="font-size:13px;"></div>
     
@@ -49,7 +49,7 @@
                 </div>
 
                 <div class="mt-5">
-                    <div class="mx-5 bg-danger h3 fw-bold text-center border border-light border-3 py-1 br-15 card-time timing"></div>
+                    <div class="mx-5 bg-danger h5 fw-bold text-center border border-light border-3 py-1 br-15 card-time timing">00 : 00 : 00</div>
                 </div>
                 <div class="mt-3 mb-3 text-center">
                     
@@ -271,6 +271,9 @@
                 $('.box-number').removeClass('bg-info text-light').addClass('bg-light text-info')
                 $(this).removeClass('bg-light').addClass('bg-info text-light');                                        
             })
+
+            var offsetHeight = document.getElementById('main-content').offsetHeight;            
+            $("#sidebar-box-number").css({'height':offsetHeight,'right':0}).addClass('position-absolute')
         }
     }).mount('#quiz')
 </script>

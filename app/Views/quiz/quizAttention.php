@@ -5,7 +5,7 @@
 <div id="main-content">
     <?= view('components/navbar'); ?>
     <div class="container mt-3">
-        <div class="border p-3 br-10">        
+        <div class="border p-3 br-10 bg-warning-light border-primary border-2">        
             <?php if($status=='not yet' || $status=='progress') : ?>
                 <div class="h5 mb-3">Attention</div>
                 <ol type="1">
@@ -27,7 +27,10 @@
             <?php endif; ?>
 
             <?php if($status == '-') : ?>
-                <div class="my-5 text-center text-danger fw-bold">Sorry, you are not able to take the quiz yet!!</div>
+                <div class="my-5 text-center text-danger fw-bold">
+                    <div class="fs-5 mb-3"><i class="fas fa-warning"></i></div>
+                    Sorry, you are not able to take the quiz yet!!
+                </div>
             <?php endif; ?>
 
             <?php if($status == 'finish') : ?>

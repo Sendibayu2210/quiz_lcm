@@ -7,16 +7,17 @@
     <?= view('components/navbar'); ?>
         <div class="container px-lg-4 mt-4">        
             
-            <div class="card border border-2 border-primary mb-3 br-15" >
+            <div class="card border border-2 border-primary mb-3 br-15 bg-warning-light" >
                 <div class="card-body">
+                    <div class="fw-bold text-primary mb-4">Data Profile</div>
                     <div class="d-lg-flex ">
                         <div class="me-5 mb-5">
                             <div class="position-relative border border-3 border-primary" style="width: 100px; height:100px; border-radius:50%;">
                                 <img src="<?= base_url('assets/foto-profile/'.$user['foto']); ?>" id="foto-profile" alt="..." style="width: 100%; height:100%; border-radius:50%; object-fit:cover;">
                             </div>
                             <div class="mt-3">
-                                <input type="file" class="d-none" id="foto" ref="uploadFoto" @change="changeFoto">
-                                <label for="foto" class="badge bg-light text-dark cursor-pointer btn-upload"><i class="fas fa-pen fa-fw me-1"></i>Upload Foto</label>
+                                <input type="file" class="d-none" id="foto" ref="uploadFoto" @change="changeFoto" accept=".jpg, .png, .jpeg">
+                                <label for="foto" class="badge bg-warning text-dark cursor-pointer btn-upload"><i class="fas fa-pen fa-fw me-1"></i>Upload Foto</label>
                             </div>
                         </div>
                         <div class="w-100">
@@ -58,7 +59,7 @@
             </div>
 
             <?php if(session()->get('roleLogin')=='admin') : ?> 
-                <div class="card border border-2 border-primary mb-3 br-15">
+                <div class="card border border-2 border-primary mb-3 br-15 bg-warning-light">
                     <div class="card-body">
                         <div class="fw-bold text-primary">Change Password</div>
                         <div class="form-group my-3">

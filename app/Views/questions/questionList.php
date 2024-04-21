@@ -10,24 +10,24 @@
         <div class="container px-lg-4" >        
 
             <div class="mt-4 d-lg-flex justify-content-between align-items-center">
-                <div class="mb-3"><a href="/admin/questions/add" class="btn btn-sm bg-warning">Add Questions</a></div>
+                <div class="mb-3"><a href="/admin/questions/add" class="btn btn-sm bg-primary fw-bold">Add Questions</a></div>
                 <div>
-                    <div class="d-flex p-1 border br-50">
-                        <input type="text" class="border-0 outline-none ms-2 w-100" @keypress="searchQuestions" placeholder="search questions here" v-model="search">
-                        <button class="btn btn-sm br-50 bg-warning" @click="btnSearchQuestions"><i class="fas fa-search"></i></button>
+                    <div class="d-flex p-1 border br-50 bg-warning-light-2">
+                        <input type="text" class="border-0 outline-none ms-2 w-100 bg-transparent" @keypress="searchQuestions" placeholder="search questions here" v-model="search">
+                        <button class="btn btn-sm br-50 bg-primary" @click="btnSearchQuestions"><i class="fas fa-search"></i></button>
                     </div>
                 </div>
             </div>
 
             <div class="mt-4">
-                <div class="p-2 px-3 small border mb-2" v-for="(item, index) in questionsList">
+                <div class="p-2 px-3 small border mb-2 bg-warning-light-2 br-10" v-for="(item, index) in questionsList">
                     <div class="row">
                         <div class="col-lg-10">
                             <div class="question mb-3" v-html="item.question"></div>
                         </div>
                         <div class="col-lg-2 text-end">
-                            <a :href="'/admin/questions/edit/'+item.id" class="badge bg-warning border-0 text-dark me-1"><i class="fas fa-pen"></i></a>
-                            <button class="badge bg-danger border-0 text-white" @click="checkQuestionProgress(item.id)"><i class="fas fa-trash"></i></button>
+                            <a :href="'/admin/questions/edit/'+item.id" class="badge bg-primary-light border-0 me-1"><i class="fas fa-pen"></i></a>
+                            <button class="badge bg-danger-light border-0 text-white" @click="checkQuestionProgress(item.id)"><i class="fas fa-trash"></i></button>
                         </div>
                     </div>
                     <ul>
@@ -35,7 +35,9 @@
                     </ul>
                 </div>
 
-                <div class="text-center text-danger" v-if="messageNotFound">Data not found</div>
+                <div class="text-center">
+                    <div class="text-center bg-warning-light-2 br-10 text-danger fw-bold p-3 px-5 border-primary" v-if="messageNotFound"><i class="fas fa-warning me-1"></i> Data not found</div>
+                </div>
 
             </div>
 

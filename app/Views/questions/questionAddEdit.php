@@ -8,24 +8,23 @@
     <div class="" id="multiple-choice">
         <?= view('components/navbar'); ?>
         
-        <div class="container px-lg-4">
+        <div class="container px-lg-4 mt-5">
             <input type="text" value="<?= $page; ?>" id="page" class="d-none">
             <input type="text" value="<?= $id; ?>" id="id-question" class="d-none">        
 
             <div class="mt-4">
-                <div class="form-group mb-3">
-                    <label for="" class="fw-bold">Enter Question</label>
-                    <textarea name="" id="" cols="30" rows="5" class="form-control form-control-sm mt-2" v-model="questionText"></textarea>
+                <div class="form-group mb-3 position-relative bg-warning-light br-10 border-2 border-primary">
+                    <span class="fw-bold bg-primary p-2 px-3 br-10 ms-3 position-absolute" style="margin-top: -15px;">Enter Question</span>
+                    <textarea name="" id="" cols="30" rows="5" class="form-control form-control-sm mt-4 bg-transparent border-0" v-model="questionText"></textarea>
                 </div>
-
-                                            
+                                        
                 <div class="col-lg-12 mt-4">
-                    <div class="text-end">
-                        <button class="badge bg-warning text-dark border-0" @click="addMultipleChoice"><i class="fas fa-plus me-1"></i> Add Multiple Choice</button>
+                    <div class="text-end mb-3">
+                        <button class="badge bg-primary fw-bold p-2 text-light border-0" @click="addMultipleChoice"><i class="fas fa-plus me-1"></i> Add Multiple Choice</button>
                     </div>
                     <form action="" id="form-multiple-choice">
-                        <table class="table small table-borderless-" id="table-multiple-choice">
-                            <thead>
+                        <table class="w-100 small" id="table-multiple-choice">
+                            <thead class="">
                                 <tr class="small">
                                     <th>Input Multiple Choice</th>
                                     <th width="70px" class="text-center">Is Correct</th>
@@ -34,7 +33,7 @@
                             </thead>
                             <tbody></tbody>
                         </table>                    
-                        <div id="message" class="my-2"></div>
+                        <div id="message" class="my-2 fw-bold"></div>
                         <div class="text-start">
                             <button type="button" class="btn btn-sm bg-primary px-5 btn-save" @click="saveQuestions">Save</button>
                         </div>
@@ -48,16 +47,16 @@
                     <tr>
                         <td>
                             <input type="hidden" value="-" name="id-choice[]">
-                            <input type="text" class="form-control form-control-sm" name="multiple-choice-text[]">
+                            <input type="text" class="form-control form-control-sm border-primary mb-2 bg-warning-light" name="multiple-choice-text[]">
                         </td>
-                        <td>
-                            <div class="d-flex justify-content-center">
-                                <div class="form-check form-switch">
-                                    <input class="form-check-input" type="radio" name="is-correct[]" role="switch" id="flexSwitchCheckDefault" value="true">
+                        <td class="d-flex justify-content-center align-items-center">
+                            <div class="px-2 br-5 bg-warning-light">
+                                <div class="form-check form-switch mt-2">
+                                    <input class="form-check-input border-primary" type="radio" name="is-correct[]" role="switch" id="flexSwitchCheckDefault" value="true">
                                 </div>
                             </div>
                         </td>
-                        <td class="text-center"><button class="ms-2 btn btn-sm border text-danger delete-multiple-choice" data-id="-"><i class="fas fa-trash"></i></button></td>
+                        <td class="text-center"><button class="ms-2 btn btn-sm bg-warning-light text-danger delete-multiple-choice" data-id="-"><i class="fas fa-trash-alt"></i></button></td>
                     </tr>
                 </tbody>
             </table>                
@@ -222,18 +221,19 @@
                                 $('#table-multiple-choice tbody').append(`
                                     <tr id="mc-${item.id_choice}">
                                         <td>
-                                            <input type="hidden" value="${item.id_choice}" name="id-choice[]">
-                                            <input type="text" class="form-control form-control-sm" name="multiple-choice-text[]" value="${item.choice_text}">
+                                        <input type="hidden" value="${item.id_choice}" name="id-choice[]">
+                                            <input type="text" class="form-control form-control-sm border-primary mb-2 bg-warning-light" name="multiple-choice-text[]" value="${item.choice_text}">
                                         </td>
-                                        <td>
-                                            <div class="d-flex justify-content-center">
-                                                <div class="form-check form-switch">
-                                                    <input class="form-check-input" type="radio" name="is-correct[]" role="switch" id="flexSwitchCheckDefault" value="true" ${item.is_correct=='true'?'checked':''}>
+                                        <td class="d-flex justify-content-center align-items-center">
+                                            <div class="px-2 br-5 bg-warning-light">
+                                                <div class="form-check form-switch mt-2">
+                                                    <input class="form-check-input border-primary" type="radio" name="is-correct[]" role="switch" id="flexSwitchCheckDefault" value="true" ${item.is_correct=='true'?'checked':''}>
                                                 </div>
                                             </div>
                                         </td>
-                                        <td class="text-center"><button type="button" class="ms-2 btn btn-sm border text-danger delete-multiple-choice" data-id="${item.id_choice}"><i class="fas fa-trash"></i></button></td>
-                                    </tr>                            
+                                        <td class="text-center"><button type="button" class="ms-2 btn btn-sm bg-warning-light text-danger delete-multiple-choice" data-id="${item.id_choice}"><i class="fas fa-trash-alt"></i></button></td>
+                                    </tr>
+                                               
                                 `)
                             })
 
