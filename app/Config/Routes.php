@@ -37,6 +37,8 @@ $routes->get('/admin/history', 'QuizController::pageHistoryQuizForAdmin');
 $routes->get('/admin/history/data-user', 'QuizController::dataHistoryQuiz');
 $routes->post('/admin/history/create-level-user', 'QuizController::createLevel');
 $routes->post('/admin/quiz/delete-progress', 'QuizController::deleteProgressQuizUser');
+$routes->post('/admin/quiz/set-timing', 'QuizController::setTimingQuiz');
+
 
 $routes->get('/quiz', 'QuizController::quiz');
 $routes->get('/quiz/attention', 'QuizController::attentionBeforeQuiz');

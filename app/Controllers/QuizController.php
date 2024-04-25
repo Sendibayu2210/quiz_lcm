@@ -461,4 +461,26 @@ class QuizController extends BaseController
             'message' => 'Progress user has been reset',
         ]);
     }
+
+    public function setTimingQuiz()
+    {
+        // check di user quizzes apakah ada datanya atau tidak jika tidak ada maka harus aktifkan dulu, jika tidak ada maka update aja.
+        $id = $this->request->getVar('id');
+        $time = $this->request->getVar('time');
+
+        $checkData = $this->userquizzesmodel->where("user_id", $id)->first();
+        
+        if($checkData){
+            $update = $this->userquizzesmodel->set('time_limit_minutes', $time)->where('user_id', $id)->update();
+            $status = 'success';
+            $message = 'successfully updated timer';
+        }else{
+            $status = 'error';
+            $message = 'please activate the quiz for this user';
+        }
+        return $this->response->setJson([
+            'status' => $status,
+            'message' => $message,                                    
+        ]);
+    }
 }

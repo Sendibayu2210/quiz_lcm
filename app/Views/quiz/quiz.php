@@ -1,10 +1,10 @@
 <?= $this->extend('template/layout'); ?>
 <?= $this->section('content'); ?>
 <?= view('components/sidebar'); ?>
-<div id="main-content">
+<div id="main-content" class="pb-0">
     <div id="quiz">
         <div class="row mh-100vh small" >
-            <div class="col-lg-9 mb-5" id="content-quiz">                
+            <div class="col-lg-9" id="content-quiz">                
                 <div class="container mt-4">
                     <div class="mb-4 d-flex justify-content-between">
                         <div class="h4 text-primary fw-bold">Quiz</div>
@@ -40,6 +40,9 @@
                         <button type="button" class="btn bg-primary text-white px-4 border border-light border-3 btn-sm" v-if="lastNumberHide" @click="btnPreviousNext('next')">Next</button>
                     </div>
     
+                </div>
+                <div class="position-relative">
+                    <img src="/assets/image-components/acc-bottom-quiz.png" alt="" class="w-100">
                 </div>
             </div>
             <div class="col-lg-3 bg-primary" id="sidebar-box-number">
@@ -272,8 +275,12 @@
                 $(this).removeClass('bg-light').addClass('bg-info text-light');                                        
             })
 
-            var offsetHeight = document.getElementById('main-content').offsetHeight;            
-            $("#sidebar-box-number").css({'height':offsetHeight,'right':0}).addClass('position-absolute')
+            var offsetHeight = document.getElementById('content-quiz').offsetHeight;            
+            $("#sidebar-box-number").css({'height':offsetHeight+60,'right':0}).addClass('position-absolute')
+
+            setTimeout(() => {
+                $(".acc-bottom").remove();
+            }, 500);
         }
     }).mount('#quiz')
 </script>

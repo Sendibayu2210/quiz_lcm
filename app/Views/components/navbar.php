@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg bg-warning mb-3 shadow-sm">
+<nav class="navbar navbar-expand-lg bg-transparent mb-3 shadow-sm">
   <div class="container-fluid"> 
     <a class="navbar-brand- h5 text-primary fw-bold" href="#" v-html="titlePage"></a>       
     <div id="menu-sidebar" class="">

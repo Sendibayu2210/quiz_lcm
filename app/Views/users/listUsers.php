@@ -35,6 +35,7 @@
                                         <th>Birthday</th>                                
                                         <th>Role</th>       
                                         <th class="text-center" width="70px">Set Quiz</th>                                                       
+                                        <th class="text-center" width="70px">Set Timer</th> 
                                         <th>Action</th>                      
                                     </tr>
                                 </thead>
@@ -53,7 +54,11 @@
                                                         <input class="form-check-input border-primary" type="checkbox" role="switch" id="set-quiz-<?= $dt['id']; ?>" value="<?= $dt['id']; ?>" @change="settingQuiz('<?= $dt['id']; ?>')" <?= ($dt['user_quiz']==true) ? 'checked' : ''; ?>> 
                                                     </div>
                                                 </div>      
-                                            </td>                                                                                                                    
+                                            </td>                     
+                                            <td class="position-relative">
+                                                <input type="number" class="form-control form-control-sm" value="<?= $dt['timing']; ?>" @keyup="setTiming('<?= $dt['id']; ?>', $event)">
+                                                <div class="invalid-feedback timing bg-light border danger position-absolute" style="right: 0; z-index: 3; margin-top: -100px;"></div>
+                                            </td>                                                                                               
                                             <td class="text-center">
                                                 <a href="<?= base_url('admin/users/'.$dt['id']); ?>" class="badge bg-primary">
                                                     Detail
@@ -142,6 +147,37 @@
                         $('#set-quiz-'+this.idUserSelected).prop('checked',false)
                         this.idUserSelected = null
                     }
+                }catch(error){
+                    console.log(error.response)
+                }
+            },
+            async setTiming(id, event)
+            {
+                let time = event.target.value;
+                let params = {
+                    'id':id,
+                    'time':time,
+                }
+                $(event.target).removeClass('is-valid is-invalid');
+                $(".invalid-feedback.timing").html('');
+
+                try{
+                    const response = await axios.post(this.baseUrl + 'admin/quiz/set-timing', params, {
+                        headers:{
+                            'Content-type':'multipart/form-data',
+                        }
+                    })
+                    let res = response.data;                    
+                    if(res.status=='success'){                    
+                        $(event.target).addClass('is-valid');
+                    }else{
+                        $(event.target).addClass('is-invalid');            
+                        $(".invalid-feedback.timing").html(res.message);
+                    }
+                    setTimeout(() => {
+                        $(event.target).removeClass('is-valid is-invalid');
+                        $(".invalid-feedback.timing").html('');
+                    }, 2000);
                 }catch(error){
                     console.log(error.response)
                 }

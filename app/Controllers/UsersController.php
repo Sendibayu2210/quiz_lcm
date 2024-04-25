@@ -154,8 +154,10 @@ class UsersController extends ResourceController
             $checkUserQuizzes = $this->userquizzesmodel->where("user_id", $user['id'])->first();
             if($checkUserQuizzes){
                 $user['user_quiz'] = true;
+                $user['timing'] = $checkUserQuizzes['time_limit_minutes'];
             }else{            
                 $user['user_quiz'] = false;
+                $user['timing'] = 60;
             }
         }        
 

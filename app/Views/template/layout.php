@@ -16,6 +16,7 @@
     <?= $this->renderSection('css'); ?>
   </head>
   <body>    
+  <?php $role=session()->get('roleLogin'); ?>
 
     <input type="hidden" id="base-url" value="<?= base_url(); ?>">
     <input type="hidden" id="page" value="<?= (isset($page) && $page) ? $page : 'Get-House of English Kuningan'; ?>">
@@ -49,8 +50,25 @@
 
           $("#navbar-profile, #menu-navbar #close").click(function(){
             $('#menu-navbar').toggleClass('d-none')
-          })                    
+          })                          
       })
-    </script>
+    </script>    
+
+    <?php if($role=='user') : ?>
+      <script>
+        $(document).ready(function(){
+          $('#main-content').append(`
+            <div class="position-relative acc-bottom">
+              <img src="/assets/image-components/acc-user-main-content.png" alt="" class="w-100">
+            </div>`)
+        })
+      </script>  
+    <?php else: ?>
+      <script>
+        $(document).ready(function(){
+          $('#main-content').css('padding-bottom','100px')
+        })
+      </script>
+    <?php endif; ?>
   </body>
 </html>
