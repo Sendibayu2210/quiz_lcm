@@ -323,12 +323,37 @@ class QuizController extends BaseController
     {
         $data = [
             'title' => 'History Quiz',            
-        ];
-
+        ];            
+        $this->updateFinishQuiz();    
         return view('quiz/quizHistoryForAdmin', $data);
     }
 
-    public function dataHistoryQuiz()
+    private function updateFinishQuiz()
+    {
+        // === LOGIC ===
+        // 1. check apakah quiz sudah dimulai (start quiz) > 0
+        // 2. check apakah waktu end quiz < time()
+        // 3. ya => update end time,
+        $dataQuizzes = $this->dataHistoryQuiz(true);    
+        if(is_array($dataQuizzes)){
+            $updateFinishQuiz = [];
+            foreach($dataQuizzes as $dt){
+                $startTime = strtotime($dt['start_time']);
+                if($startTime > 0){
+                    $endTime = strtotime($dt['start_time']) + (60 * $dt['time_limit_minutes']);                                
+                    if($endTime < time()){
+                        $dt['end_time'] = date('Y-m-d H:i:s', $endTime);
+                        $updateFinishQuiz[] = $dt;
+                    }            
+                }
+            }
+            if(sizeof($updateFinishQuiz) > 0){
+                $this->userquizzesmodel->updateBatch($updateFinishQuiz, 'id');
+            }            
+        }    
+    }
+
+    public function dataHistoryQuiz($requestFromServer=false)
     {
         $data = $this->userquizzesmodel
             ->select('user_quizzes.*, users.name, users.email, users.username')
@@ -336,6 +361,10 @@ class QuizController extends BaseController
         
         $data = $this->statusProgressAndScore($data);           
         
+        if($requestFromServer==true){
+            return $data;
+        }
+
         return $this->response->setJson([
             'status'=> 'success',
             'data' => $data,

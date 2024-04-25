@@ -7,7 +7,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-    <link rel="stylesheet" href="<?= base_url('assets/css/style.css'); ?>">
+    <link rel="stylesheet" href="<?= base_url('assets/css/style.css?v2-250420241353'); ?>">
     <script src="<?= base_url('assets/js/jquery-3.7.1.min.js'); ?>"></script>
     <script src="<?= base_url('assets/js/vue.global.js'); ?>"></script>
     <script src="<?= base_url('assets/js/axios.js'); ?>"></script>        
@@ -54,19 +54,20 @@
       })
     </script>    
 
-    <?php if($role=='user') : ?>
+    <?php if($role=='user' || $role=='admin') : ?>
       <script>
         $(document).ready(function(){
           $('#main-content').append(`
-            <div class="position-relative acc-bottom">
+            <div class="position-absolute acc-bottom w-100" style="bottom:0;">
               <img src="/assets/image-components/acc-user-main-content.png" alt="" class="w-100">
             </div>`)
+            $('#main-content').css('padding-bottom','250px')
         })
       </script>  
     <?php else: ?>
       <script>
         $(document).ready(function(){
-          $('#main-content').css('padding-bottom','100px')
+          $('#main-content').css('padding-bottom','250px')
         })
       </script>
     <?php endif; ?>
