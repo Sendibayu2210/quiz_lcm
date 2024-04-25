@@ -18,11 +18,11 @@ class QuestionMigration extends Migration
             'question' => [
                 'type' => 'TEXT',
             ],
-            'attachment' => [
-                'type' => 'VARCHAR',
-                'constraint' => 255,
-                'null' => true,
-            ],
+            // 'attachment' => [
+            //     'type' => 'VARCHAR',
+            //     'constraint' => 255,
+            //     'null' => true,
+            // ],
             'status' => [
                 'type' => 'ENUM("active", "nonactive")',
                 'default' => 'active',

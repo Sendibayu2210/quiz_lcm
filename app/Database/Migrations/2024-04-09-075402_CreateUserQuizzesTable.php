@@ -29,6 +29,10 @@ class CreateUserQuizzesTable extends Migration
             'end_time' => [
                 'type' => 'DATETIME',
             ],
+            'time_limit_minutes' => [
+                'type' => 'INT',
+                'constraint' => 11,
+            ],
             'created_at' => [
                 'type' => 'DATETIME',
                 'null' => true,

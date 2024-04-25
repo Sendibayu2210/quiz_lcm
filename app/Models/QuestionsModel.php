@@ -15,7 +15,7 @@ class QuestionsModel extends Model
     protected $allowedFields    = [
         'id',
         'question',
-        'attachment',
+        // 'attachment',
         'status',
     ];
 
