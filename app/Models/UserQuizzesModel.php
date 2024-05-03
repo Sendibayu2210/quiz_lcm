@@ -18,6 +18,7 @@ class UserQuizzesModel extends Model
         'start_time',
         'end_time',
         'time_limit_minutes',
+        'id_periode',
     ];
 
     protected bool $allowEmptyInserts = false;

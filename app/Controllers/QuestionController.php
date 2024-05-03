@@ -8,6 +8,9 @@ use CodeIgniter\HTTP\ResponseInterface;
 use App\Models\QuestionsModel;
 use App\Models\MultipleChoiceModel;
 use App\Models\AnsweredUsersModel;
+use App\Models\PeriodeModel;
+use App\Models\UsersModel;
+use App\Models\UserQuizzesModel;
 
 class QuestionController extends BaseController
 {
@@ -16,23 +19,50 @@ class QuestionController extends BaseController
         $this->questionsmodel = new QuestionsModel();
         $this->multiplechoicemodel = new MultipleChoiceModel();
         $this->answeredusersmodel = new AnsweredUsersModel();
-        
+        $this->periodemodel = new PeriodeModel();
+        $this->usersmodel = new UsersModel();    
+        $this->userquizzesmodel = new UserQuizzesModel();
     }
 
-    public function questionsList()
-    {
+    public function questionsList($idPeriode)
+    {                        
+        $dataUsers = $this->listUser($idPeriode);   
+        $periode = $this->periodemodel->where('id', $idPeriode)->first();
         $data = [
             'title' => 'List Questions',
+            'id_periode' => $idPeriode,
+            'users' => $dataUsers,
+            'periode' => $periode,
         ];
         return view('questions/questionList', $data);
     }
 
-    public function addQuestions()
+
+    private function listUser($idPeriode)
     {
+        $users = $this->usersmodel->orderBy('created_at','desc')->where('role','user')->findAll();             
+        if($users){
+            foreach($users as &$user){
+                $checkUserQuizzes = $this->userquizzesmodel->where("user_id", $user['id'])->where('id_periode', $idPeriode)->first();
+                if($checkUserQuizzes){
+                    $user['user_quiz'] = true;
+                    $user['timing'] = $checkUserQuizzes['time_limit_minutes'];
+                }else{            
+                    $user['user_quiz'] = false;
+                    $user['timing'] = 60;
+                }
+            }        
+        }
+        return $users;
+    }
+
+    public function addQuestions()
+    {        
         $data = [
             'title' => 'Add Questions',
             'page' => 'add',
             'id' => '',
+            'id_periode' => $this->request->getVar('id_periode'),
         ];
         return view('questions/questionAddEdit', $data);
     }
@@ -42,7 +72,8 @@ class QuestionController extends BaseController
         $data = [
             'title' => 'Edit Questions',
             'page' => 'edit',
-            'id' => $id
+            'id' => $id,
+            'id_periode' => '',
         ];
         return view('questions/questionAddEdit', $data);
     }
@@ -57,6 +88,7 @@ class QuestionController extends BaseController
        $multipleChoice = $this->request->getPost('multipleChoice');
        $page = $this->request->getPost('page');
        $idQuestion = $this->request->getPost('idQuestion');
+       $idPeriode = $this->request->getPost('idPeriode');
     
        $status = 'error';
        if($questionText!=''){
@@ -66,11 +98,13 @@ class QuestionController extends BaseController
                 $dataSaveQuestion = [
                     'id' => $generateId,
                     'question' => $questionText,
+                    'id_periode' => $idPeriode,
                 ];
 
                 if($page=='add'){
                     $saveQuestion = $this->questionsmodel->insert($dataSaveQuestion);
                 }else{                    
+                    unset($dataSaveQuestion['id_periode']);
                     $saveQuestion = $this->questionsmodel->set('question', $questionText)->where('id', $idQuestion)->update();
                 }                
 
@@ -141,12 +175,15 @@ class QuestionController extends BaseController
         return $randomString;
     }
 
-    public function dataQuestions($id='', $requestFrom='', $search='')
-    {        
+    public function dataQuestions($id='', $requestFrom='', $search='', $idPeriode='')
+    {                
+        if($idPeriode==''){
+            $idPeriode = $this->request->getVar('id_periode');
+        }
+
         if($requestFrom==''){
             $search = $this->request->getVar('search');    
-        }
-        
+        }    
         if($search!=''){
             $questions= $this->questionsmodel->select('id, question');
             $searchArray = explode(' ', $search);
@@ -159,7 +196,7 @@ class QuestionController extends BaseController
             }            
             $questions = $questions->findAll(); // tidak ada pencarian
         }else{
-            $questions= $this->questionsmodel->select('id, question')->findAll(); // tidak ada pencarian
+            $questions= $this->questionsmodel->select('id, question')->where('id_periode', $idPeriode)->findAll(); // tidak ada pencarian
         }
 
         if($id!=''){
@@ -264,4 +301,53 @@ class QuestionController extends BaseController
         ]);  
     }
 
+
+    // ========= PERIODE ===========
+    public function periodePage()
+    {
+        $periode = $this->periodemodel->orderBy('id', 'desc')->findAll();
+        // dd($periode);
+
+        foreach($periode as &$dt){
+            $dt['total_questions'] = $this->questionsmodel->where('id_periode', $dt['id'])->countAllResults();
+            $dt['total_user_quizzes'] = $this->userquizzesmodel->where('id_periode', $dt['id'])->countAllResults();
+        }        
+        $data = [
+            'title' => 'List Questions',
+            'periode' => $periode,
+        ];
+        return view('questions/periodePage', $data);
+    }
+    public function savePeriode()
+    {
+        $id = $this->request->getPost('id');
+        $periode = $this->request->getPost('periode');
+        $status = $this->request->getPost('status');
+
+        if($status=='' || $status==null){
+            $status='nonactive';
+        }
+        $dataSave = [
+            'periode' => htmlspecialchars($periode),
+            'status' => htmlspecialchars($status),
+        ];                            
+        if($id==''){
+            $insert = $this->periodemodel->insert($dataSave);            
+        }else{
+            $update = $this->periodemodel->set($dataSave)->where('id', $id)->update();
+        }
+
+        return redirect()->back();
+    }
+
+    public function deletePeriode()
+    {
+        // delete question
+        // delete user answerd
+        // delete user quizzes
+        // delete periode
+        $id = $this->request->getPost('id');
+        $this->periodemodel->where('id', $id)->delete();
+        return redirect()->back();
+    }
 }

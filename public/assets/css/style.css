@@ -16,7 +16,7 @@ a{
 .bg-warning, .btn-warning{
     background: #ffd35d !important;
 }
-.bg-warning-light, .bg-warning-light-2{
+.bg-warning-light, .bg-warning-light-2, .btn-warning-light{
     background: #FFF8E4;
 }
 .bg-danger, .btn-danger{

@@ -7,6 +7,7 @@ use CodeIgniter\HTTP\ResponseInterface;
 
 use App\Models\UsersModel;
 use App\Models\UserQuizzesModel;
+use App\Models\PeriodeModel;
 use App\Controllers\UploadDownloadController;
 
 use CodeIgniter\RESTful\ResourceController;
@@ -19,6 +20,7 @@ class UsersController extends ResourceController
     {
         $this->usersmodel = new UsersModel();    
         $this->userquizzesmodel = new UserQuizzesModel();
+        $this->periodemodel = new PeriodeModel();
         $this->updown = new UploadDownloadController();
         $this->validation = \Config\Services::validation();
         $this->roleLogin = session()->get('roleLogin');
@@ -134,6 +136,33 @@ class UsersController extends ResourceController
         ];
 
         return $this->response->setJson($response);
+    }
+
+
+    // Student Per Periode 
+    public function studentPeriode($idPeriode)
+    {
+        $users = $this->usersmodel->orderBy('created_at','desc')->where('role','user')->findAll();             
+        if($users){
+            foreach($users as &$user){
+                $checkUserQuizzes = $this->userquizzesmodel->where("user_id", $user['id'])->where('id_periode', $idPeriode)->first();
+                if($checkUserQuizzes){
+                    $user['user_quiz'] = true;
+                    $user['timing'] = $checkUserQuizzes['time_limit_minutes'];
+                }else{            
+                    $user['user_quiz'] = false;
+                    $user['timing'] = 60;
+                }
+            }        
+        }
+        $periode = $this->periodemodel->where('id', $idPeriode)->first();
+        $data = [
+            'title' => 'List Users',
+            'users' => $users,          
+            'id_periode'  => $idPeriode,
+            'periode' => $periode,
+        ];
+        return view('users/listUsersPeriode',$data);
     }
 
    

@@ -11,6 +11,7 @@
         <div class="container px-lg-4 mt-5">
             <input type="text" value="<?= $page; ?>" id="page" class="d-none">
             <input type="text" value="<?= $id; ?>" id="id-question" class="d-none">        
+            <input type="text" value="<?= $id_periode; ?>" id="id-periode" class="d-none">
 
             <div class="mt-4">
                 <div class="form-group mb-3 position-relative bg-warning-light br-10 border-2 border-primary">
@@ -26,6 +27,7 @@
                         <table class="w-100 small" id="table-multiple-choice">
                             <thead class="">
                                 <tr class="small">
+                                    <th></th>
                                     <th>Input Multiple Choice</th>
                                     <th width="70px" class="text-center">Is Correct</th>
                                     <th width="70px" class="text-center">Delete</th>
@@ -45,6 +47,9 @@
             <table id="component-mulitple-choice" class="d-none">
                 <tbody>
                     <tr>
+                        <td width="50">
+                            <button class="border-primary mb-2 bg-warning-light btn btn-sm w-100 abjad"></button>
+                        </td>
                         <td>
                             <input type="hidden" value="-" name="id-choice[]">
                             <input type="text" class="form-control form-control-sm border-primary mb-2 bg-warning-light" name="multiple-choice-text[]">
@@ -61,7 +66,7 @@
                 </tbody>
             </table>                
 
-
+            <!-- modal delete multiple choice -->
             <div class="modal fade" id="modal-confirmation" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered-">
                     <div class="modal-content ">
@@ -102,7 +107,8 @@
             }
         },
         methods:{
-            addMultipleChoice(){
+            addMultipleChoice(){                            
+                this.createAbjad()
                 let component = $("#component-mulitple-choice tbody").html();                
                 $('#table-multiple-choice tbody').append(component)
             },            
@@ -172,8 +178,9 @@
                                 'multipleChoice': mergedMultipleChoice,
                                 'page': this.page,
                                 'idQuestion': $('#id-question').val(),
-                            }                                                        
-
+                                'idPeriode': $('#id-periode').val(),
+                            }                                       
+                                                    
                             const response = await axios.post(this.baseUrl+'admin/questions/save', params,{
                                 headers:{
                                     'Content-type':'multipart/form-data',
@@ -220,8 +227,11 @@
                             data.multiple_choice.map(function(item, index){                                
                                 $('#table-multiple-choice tbody').append(`
                                     <tr id="mc-${item.id_choice}">
+                                        <td width="50">
+                                            <button class="border-primary mb-2 bg-warning-light btn btn-sm w-100 abjad">${ String.fromCharCode(65 + index) }</button>
+                                        </td>
                                         <td>
-                                        <input type="hidden" value="${item.id_choice}" name="id-choice[]">
+                                            <input type="hidden" value="${item.id_choice}" name="id-choice[]">
                                             <input type="text" class="form-control form-control-sm border-primary mb-2 bg-warning-light" name="multiple-choice-text[]" value="${item.choice_text}">
                                         </td>
                                         <td class="d-flex justify-content-center align-items-center">
@@ -246,7 +256,7 @@
             },
 
             async deleteChoice(){
-                try{
+                try{                    
                     let params = {
                         'id': this.idChoice
                     }                    
@@ -255,15 +265,25 @@
                             'Content-type':'multipart/form-data'
                         }
                     })
-                    let res = response.data;
-                    console.log(res)
+                    let res = response.data;                    
                     if(res.status == 'success'){
                         $('#mc-'+params.id).remove();
                         $('#modal-confirmation').modal('hide')
+                        this.createAbjad()
                     }
                 }catch(error){
                     console.log(error.response)
                 }
+            },
+            createAbjad()
+            {
+                let abjad = $('.abjad')
+                let countAbjad = abjad.length;
+                let i=0;
+                for(i=0; i<countAbjad; i++){                    
+                    let textAbjad = String.fromCharCode(65 + i)
+                    abjad.eq(i).html(textAbjad)
+                }                
             }
         },
         mounted(){
@@ -283,6 +303,7 @@
                 self.idChoice = id
                 if(id=='-'){
                     $(this).parent().parent().remove();
+                    self.createAbjad()
                 }else{            
                     $('#modal-confirmation').modal('show');
                 }        

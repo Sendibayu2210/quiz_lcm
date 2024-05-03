@@ -24,7 +24,13 @@ $routes->get('/admin/users', 'UsersController::listUsers');
 $routes->get('/admin/users/(:num)', 'UsersController::detailUser/$1');
 $routes->post('/admin/users/change-password', 'UsersController::changePassword');
 // Question, Quiz
-$routes->get('/admin/questions', 'QuestionController::questionsList');
+$routes->get('/admin/periode', 'QuestionController::periodePage');
+$routes->post('/admin/periode/save', 'QuestionController::savePeriode');
+$routes->post('/admin/periode/delete', 'QuestionController::deletePeriode');
+
+$routes->get('/admin/questions-periode/(:num)', 'QuestionController::questionsList/$1');
+$routes->get('/admin/students-periode/(:num)', 'UsersController::studentPeriode/$1');
+
 $routes->get('/admin/questions/data', 'QuestionController::dataQuestions'); // all
 $routes->get('/admin/questions/data/(:num)', 'QuestionController::dataQuestions/$1'); // per id
 $routes->get('/admin/questions/add', 'QuestionController::addQuestions');

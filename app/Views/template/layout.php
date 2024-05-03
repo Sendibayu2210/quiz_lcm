@@ -11,7 +11,13 @@
     <script src="<?= base_url('assets/js/jquery-3.7.1.min.js'); ?>"></script>
     <script src="<?= base_url('assets/js/vue.global.js'); ?>"></script>
     <script src="<?= base_url('assets/js/axios.js'); ?>"></script>        
-    
+
+    <!-- datatables -->    
+      <link rel="stylesheet" href="https://cdn.datatables.net/2.0.5/css/dataTables.bootstrap5.css">    
+      <script src="https://cdn.datatables.net/2.0.5/js/dataTables.js"></script>
+      <script src="https://cdn.datatables.net/2.0.5/js/dataTables.bootstrap5.js"></script>
+    <!-- end datatables -->
+
     <?= $this->renderSection('head'); ?>
     <?= $this->renderSection('css'); ?>
   </head>

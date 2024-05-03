@@ -17,6 +17,7 @@ class QuestionsModel extends Model
         'question',
         // 'attachment',
         'status',
+        'id_periode',
     ];
 
     protected bool $allowEmptyInserts = false;

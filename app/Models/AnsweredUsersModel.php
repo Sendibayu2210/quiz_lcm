@@ -16,7 +16,8 @@ class AnsweredUsersModel extends Model
         'id_user',
         'id_question',
         'id_answered',
-        'id_multiple_choice'
+        'id_multiple_choice',
+        'id_periode',
     ];
 
     protected bool $allowEmptyInserts = false;

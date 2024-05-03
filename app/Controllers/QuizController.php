@@ -424,18 +424,21 @@ class QuizController extends BaseController
     public function manageUserQuiz()
     {
         $id = $this->request->getPost('id');
-        $data = $this->userquizzesmodel->where('user_id', $id)->first();
+        $idPeriode = $this->request->getPost('idPeriode');
+
+        $data = $this->userquizzesmodel->where('user_id', $id)->where('id_periode', $idPeriode)->first();
         $status = 'error';
         $message = '';
 
         if($data){
             // (logic) = sudah ada, cek di table quiz sudah ada atau tidak, jika tidak ada maka hapus aja. jika ada maka beri peringatan.
-            $checkProgressQuiz = $this->answeredusersmodel->where('id_user', $id)->first();
+            $checkProgressQuiz = $this->answeredusersmodel->where('id_user', $id)->where('id_periode', $idPeriode)->first();
+
             if($checkProgressQuiz){
                 $status = 'confirmation';
                 $message = 'user already progress';
             }else{
-                $delete = $this->userquizzesmodel->where('user_id', $id)->delete();
+                $delete = $this->userquizzesmodel->where('user_id', $id)->where('id_periode', $idPeriode)->delete();
                 if($delete){
                     $status = 'success';
                     $message = 'data successfully delete';
@@ -448,6 +451,7 @@ class QuizController extends BaseController
             // tidak ada maka di insert
             $save = $this->userquizzesmodel->insert([
                 'user_id' => $id,
+                'id_periode' => $idPeriode,
             ]);
             if($save){
                 $status = 'success';
