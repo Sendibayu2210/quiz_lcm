@@ -10,8 +10,8 @@
         <div class="container px-lg-4" >      
         
             <div class="d-flex mb-3 menu-top">
-                <a href="/admin/questions-periode/<?= $id_periode; ?>" class="btn btn-primary br-5 btn-sm px-3 me-1" @click="menuTop('question', $event)">questions</a>
-                <a href="/admin/students-periode/<?= $id_periode; ?>" class="btn btn-warning-light border-primary border-2 br-5 btn-sm px-3 me-1" @click="menuTop('add-student', $event)">add students</a>                
+                <a href="/admin/questions-periode/<?= $id_periode; ?>" class="btn btn-primary br-5 btn-sm px-3 me-1">questions</a>
+                <a href="/admin/students-periode/<?= $id_periode; ?>" class="btn btn-warning-light border-primary border-2 br-5 btn-sm px-3 me-1">add students</a>                
                 <input type="hidden" id="id_periode" value="<?= $id_periode; ?>">            
             </div>
             
@@ -55,58 +55,7 @@
                         </div>
                     </div>            
                 </div>            
-            </div>            
-
-            <div id="card-student" class="bg-warning-light p-3 br-10 border-primary border-2 mt-4 d-none">
-                <!-- <div style="margin-top: -25px;" class="mb-4"><span class="bg-primary p-2 px-5 br-10 border-light border-3 border">List Users</span></div> -->
-                <?php if(count($users) > 0) : ?>
-                    <div class="table-responsive">
-                        <table class="table- br-10 w-100 small table-border table-striped table-hover" id="data-table-2">
-                            <thead>
-                                <tr>
-                                    <th width="50px" class="text-center">No</th>
-                                    <th>Name</th>                                
-                                    <th>Email</th>                               
-                                    <th>Username</th>                              
-                                    <th>Role</th>       
-                                    <th class="text-center" width="70px">Set Quiz</th>                                                       
-                                    <th class="text-center" width="70px">Set Timer</th> 
-                                    <th>Action</th>                      
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php foreach($users as $key => $dt) : ?> 
-                                    <tr id="row-<?= $dt['id'] ?>" class="border-0 border-bottom border-1 border-secondary">
-                                        <td class="text-center"><?= $key+1; ?></td>                                                                                                                
-                                        <td><?= $dt['name']; ?></td>                                
-                                        <td><?= $dt['email']; ?></td>                                
-                                        <td><?= $dt['username']; ?></td>                                            
-                                        <td><?= $dt['role']; ?></td>    
-                                        <td>                                  
-                                            <div class="d-flex justify-content-center">
-                                                <div class="form-check form-switch">
-                                                    <input class="form-check-input border-primary" type="checkbox" role="switch" id="set-quiz-<?= $dt['id']; ?>" value="<?= $dt['id']; ?>" @change="settingQuiz('<?= $dt['id']; ?>')" <?= ($dt['user_quiz']==true) ? 'checked' : ''; ?>> 
-                                                </div>
-                                            </div>      
-                                        </td>                     
-                                        <td class="position-relative">
-                                            <input type="number" class="form-control form-control-sm" value="<?= $dt['timing']; ?>" @keyup="setTiming('<?= $dt['id']; ?>', $event)">
-                                            <div class="invalid-feedback timing bg-light border danger position-absolute" style="right: 0; z-index: 3; margin-top: -100px;"></div>
-                                        </td>                                                                                               
-                                        <td class="text-center">
-                                            <a href="<?= base_url('admin/users/'.$dt['id']); ?>" class="badge bg-primary">
-                                                Detail
-                                            </a>
-                                        </td>
-                                    </tr>    
-                                <?php endforeach; ?>                            
-                            </tbody>
-                        </table>
-                    </div>    
-                <?php else: ?>                    
-                    <div class="text-center fw-bold text-danger pb-3"><i class="fas fa-warning me-1"></i> Data not found</div>
-                <?php endif; ?>                    
-            </div>
+            </div>                        
 
             <!-- Modal show question -->
             <div class="modal fade" id="modal-show-question" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -268,28 +217,7 @@
             showQuestion(index){                
                 this.questionSelect = this.questionsList[index]
                 $("#modal-show-question").modal('show')
-            },        
-            menuTop(category, event){
-                console.log(category)
-
-                let menu = $('.menu-top');
-                menu.find('button').removeClass('btn-primary').addClass('btn-warning-light border-primary border-2')
-                $(event.target).addClass('btn-primary').removeClass('btn-warning-light border-primary border-2')
-
-                if(category=='add-student'){                    
-                    console.log('st')
-                    $('#card-student').removeClass('d-none')
-                    $('#card-question').addClass('d-none')
-                }
-
-                if(category=='question'){
-                    console.log('qu')
-                    $('#card-question').removeClass('d-none')
-                    $('#card-student').addClass('d-none')
-                }
-
-
-            },
+            },                    
 
         },
         mounted(){

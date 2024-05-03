@@ -3,6 +3,8 @@
 <?= view('components/sidebar'); ?>
 <div id="main-content" class="pb-0">
     <div id="quiz">
+        <input type="hidden" id="id-quizzes" value="<?= $quizzes['id']; ?>">
+
         <div class="row mh-100vh small" >
             <div class="col-lg-9" id="content-quiz">                
                 <div class="container mt-4">
@@ -84,6 +86,7 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
                     <form action="/quiz/finish" method="post">
+                        <input type="hidden" id="id-quizzes" name="id-quizzes" value="<?= $quizzes['id']; ?>">
                         <button  type="submit" class="btn bg-primary" id="btn-finish">Finish</button>
                     </form>
                 </div>
@@ -112,7 +115,8 @@
             async getDataQuiz()
             {
                 try{    
-                    const response = await axios.get(this.baseUrl+'quiz/data');
+                    let idQuizzes = $('#id-quizzes').val()
+                    const response = await axios.get(this.baseUrl+'quiz/data/'+idQuizzes);
                     let res = response.data;                    
                     if(res.status == 'success'){
                         this.questions = res.data                        
@@ -221,7 +225,8 @@
             },
             async dataUser(){
                 try{                        
-                    const response = await axios.get(this.baseUrl+'quiz/data-user');
+                    let idQuizzes = $('#id-quizzes').val()
+                    const response = await axios.get(this.baseUrl+'quiz/data-user/'+idQuizzes);
                     let res = response.data;                               
                     if(res.status == 'success'){                                                                                        
                         this.timeLimit(res.data.start_time, res.data.time_limit_minutes)

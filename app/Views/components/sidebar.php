@@ -17,8 +17,8 @@
         <?php endif; ?>
                         
         <?php if($role=='user') : ?> 
-            <li><a href="/quiz/attention"><i class="fas fa-laptop fa-fw me-1"></i> Quiz</a></li>
-            <li><a href="/quiz/score"><i class="fas fa-history fa-fw me-1"></i>History Quiz</a></li>
+            <li><a href="/quiz/start"><i class="fas fa-laptop fa-fw me-1"></i> Quiz</a></li>
+            <li><a href="/quiz/history"><i class="fas fa-history fa-fw me-1"></i>History Quiz</a></li>
         <?php endif; ?>
             
         <li><a href="/logout"><i class="fas fa-sign-out-alt fa-fw me-1"></i> Logout</a></li>

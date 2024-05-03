@@ -7,7 +7,8 @@
         <?= view('components/navbar'); ?>
         
         <div class="px-lg-4 pt-4 d-flex justify-content-center">            
-            <input type="hidden" id="id-user"  value="<?= $idUser; ?>">
+            <input type="hidden" id="id-quizzes"  value="<?= $idQuizzes; ?>">
+            <input type="hidden" id="id-periode"  value="<?= $idPeriode; ?>">
 
             <?php if($status=='finish') : ?> 
             <div class="row container">
@@ -91,14 +92,14 @@
         methods:{
             async getDataQuiz()
             {
-                let idUser = $('#id-user').val();
-                let paramsId = (idUser!='') ? ('/'+idUser) : '';
-                
-                this.dataUser(idUser)
+                let idQuizzes = $('#id-quizzes').val();
+                let paramsId = (idQuizzes!='') ? ('/'+idQuizzes) : '';                        
+                this.dataUser(idQuizzes)
 
                 try{    
                     const response = await axios.get(this.baseUrl+'quiz/data'+paramsId);
-                    let res = response.data;                          
+                    let res = response.data;     
+                    console.log(res)                     
                     if(res.status == 'success'){
                         this.historyQuestion = res.data                         
                     }                                        
@@ -109,11 +110,14 @@
             
             async dataUser(id)
             {
-                try{    
+                try{                                                        
                     const response = await axios.get(this.baseUrl+'quiz/data-user/'+id);
-                    let res = response.data;                                 
+                    let res = response.data;   
+                    console.log(res)                              
                     if(res.status == 'success'){
-                        this.dataUserQuiz = res.data                         
+                        if(res.data!=null){
+                            this.dataUserQuiz = res.data                         
+                        }
                     }                                        
                 }catch(error){
                     console.log(error.response)

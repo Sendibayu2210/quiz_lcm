@@ -11,6 +11,7 @@ use App\Models\QuestionsModel;
 use App\Models\AnsweredUsersModel;
 use App\Models\MultipleChoiceModel;
 use App\Models\UserQuizzesModel;
+use App\Models\PeriodeModel;
 
 class QuizController extends BaseController
 {
@@ -21,34 +22,63 @@ class QuizController extends BaseController
         $this->questionsmodel = new QuestionsModel();
         $this->multiplechoicemodel = new MultipleChoiceModel();
         $this->userquizzesmodel = new UserQuizzesModel();
+        $this->periodemodel = new PeriodeModel();
 
         $this->idLogin = session()->get('idLogin');
         $this->roleLogin = session()->get('roleLogin');
     }
 
-    public function attentionBeforeQuiz()
-    {
-
-        // check userquizzesmodel apakah sudah melakaukan progress atau belum
-        $id = $this->idLogin;
-
-        $checkData = $this->userquizzesmodel->where('user_id', $id)->find();
+    
+    public function attentionBeforeQuiz($idQuizzes)
+    {                
+        $checkData = $this->userquizzesmodel->where('id', $idQuizzes)->find();
         $status = '-';
         if($checkData){            
             $dataProgress = $this->statusProgressAndScore($checkData);
-            $status = $dataProgress[0]['status_progress'];
-
-            // if($status=='finish'){
-            //     return redirect('quiz/score');
-            // }
+            $status = $dataProgress[0]['status_progress'];            
         }
+        $periode = $dataProgress;            
+
+        // check jumlah soal
+        $countQuestion = $this->questionsmodel->where('id_periode', $periode[0]['id_periode'])->countAllResults();
+        if($countQuestion <= 0){
+            $status = 'questions is null';
+        }        
 
         $data = [
             'title' => 'Attention',
             'status' => $status,
+            'periode' => $periode,
+        ];        
+        
+        return view('quiz/quizAttention', $data);
+    }
+
+    public function historyBeforeQuiz()
+    {
+        // tampikan data history quiz per periode
+        $id = $this->idLogin;
+
+        $checkData = $this->userquizzesmodel
+            ->select('periode.periode, user_quizzes.*')
+            ->join('periode', 'periode.id=user_quizzes.id_periode')
+            ->where('user_id', $id)->orderBy('user_quizzes.created_at', 'desc')->find();        
+
+        $status = '-';
+
+        if($checkData){            
+            $dataProgress = $this->statusProgressAndScore($checkData);
+            $status = $dataProgress[0]['status_progress'];            
+        }
+        $periode = $dataProgress;    
+
+        $data = [
+            'title' => 'Attention',
+            'status' => $status,
+            'periode' => $periode,
         ];        
 
-        return view('quiz/quizAttention', $data);
+        return view('quiz/quizHistoryPeriode', $data);
     }
 
     public function quiz()
@@ -58,12 +88,15 @@ class QuizController extends BaseController
             dd('please login');
         }
 
+        $idPeriode = $this->request->getVar('periode');                
+
         // check id user di table answerd_users apakah sudah ada atau tidak
-        $checkUserQuiz = $this->answeredusersmodel->where('id_user', $this->idLogin)->first();
+        $checkUserQuiz = $this->answeredusersmodel->where('id_user', $this->idLogin)->where('id_periode', $idPeriode)->first();
+        $quizzes = $this->userquizzesmodel->where('user_id', $this->idLogin)->where('id_periode', $idPeriode)->first();        
         if(!$checkUserQuiz){
             // jika belum ada - buatkan soalnya
-            $questions = $this->questioncontroller->dataQuestions('','quizcontroller');    
-
+            $questions = $this->questioncontroller->dataQuestions('','quizcontroller','',$idPeriode);                
+            
             // pengacakan multiple choice (pilihan ganda)
             foreach($questions as &$dt){
                 $mc = $dt['multiple_choice'];
@@ -83,6 +116,7 @@ class QuizController extends BaseController
                     'id_user' => $this->idLogin,
                     'id_question' => $rq['id'],
                     'id_multiple_choice' => implode(',', $dataMc),
+                    'id_periode' => $idPeriode,
                 ];
                 $saveQuestionRandom[] = $data;
             }
@@ -91,23 +125,23 @@ class QuizController extends BaseController
             if(!$createQuiz){
                 // return redirect to sorry (failed create quiz for you);
                 dd('sorry,  failed create quiz');
-            }
-            
-            $this->checkUserQuizzes();
+            }            
+            $this->checkUserQuizzes($idPeriode);
         }else{
-            $this->checkUserQuizzes();
+            $this->checkUserQuizzes($idPeriode);
         }
         
         $data = [
             'title' => 'Quiz',
-        ];
+            'quizzes' => $quizzes,
+        ];        
         return view('quiz/quiz', $data);
     }    
 
-    private function checkUserQuizzes()
+    private function checkUserQuizzes($idPeriode)
     {
         // == untuk mengecek apakah user sudah pernah melakukan quiz dan menandai waktu mulai
-        $checkQuizzes = $this->userquizzesmodel->where('user_id', $this->idLogin)->first();
+        $checkQuizzes = $this->userquizzesmodel->where('user_id', $this->idLogin)->where('id_periode', $idPeriode)->first();
         if(!$checkQuizzes){
             $saveStartQuiz = $this->userquizzesmodel->insert([
                 'user_id' => $this->idLogin,
@@ -117,7 +151,7 @@ class QuizController extends BaseController
             $startTime =  strtotime($checkQuizzes['start_time']);
             if($startTime < 0){
                 $timeNow = date('Y-m-d H:i:s');
-                $this->userquizzesmodel->set('start_time', $timeNow)->where('user_id', $this->idLogin)->update();
+                $this->userquizzesmodel->set('start_time', $timeNow)->where('id', $checkQuizzes['id'])->update();
             }
         }
     }
@@ -127,14 +161,10 @@ class QuizController extends BaseController
         if($this->idLogin == ''){
             // return redirect to 403
             dd('please login');
-        }
-
-        if($id==''){
-            $id = $this->idLogin;
-        }
-
-        $quiz = $this->answeredusersmodel->where('id_user', $id)->findAll();
-
+        }                
+        $dataQuizzes = $this->userquizzesmodel->where('id',$id)->first(); 
+        $quiz = $this->answeredusersmodel->where('id_user', $dataQuizzes['user_id'])->where('id_periode', $dataQuizzes['id_periode'])->findAll();
+        
         if($quiz){
             $userQuiz = [];
             foreach($quiz as $dt){
@@ -220,32 +250,34 @@ class QuizController extends BaseController
             // return redirect to 403
             dd('please login');
         }                
-        $getData = $this->userquizzesmodel->where('user_id', $this->idLogin)->first();
+        $idQuizzes = $this->request->getPost('id-quizzes');
+        $getData = $this->userquizzesmodel->where('id', $idQuizzes)->first();        
         if(strtotime($getData['end_time']) < strtotime($getData['start_time'])){
             $time = date('Y-m-d H:i:s');
-            $updateCloseQuiz = $this->userquizzesmodel->set('end_time', $time)->where('user_id', $this->idLogin)->update();
+            $updateCloseQuiz = $this->userquizzesmodel->set('end_time', $time)->where('id', $idQuizzes)->update();
         }
-        return redirect('quiz/score');
+        return redirect('quiz/history');
     }
 
-    public function scoreQuiz($id='')
+    public function scoreQuiz($id='', $idPeriode='')
     {
         if($id==''){
             if($this->roleLogin=='user'){
                 $id = $this->idLogin;
             }
-        }
-
+        }        
         // cek dulu apakah user sudah selesai mengerjakan quiz ?
-        $checkFinishQuiz = $this->userquizzesmodel->where('user_id', $id)->first();
+        $checkFinishQuiz = $this->userquizzesmodel->where('user_id', $id)->where('id_periode', $idPeriode)->first();        
         if($checkFinishQuiz){
             $start = strtotime($checkFinishQuiz['start_time']);
-            $end = strtotime($checkFinishQuiz['end_time']);        
-            $answered = $this->answeredusersmodel->where('id_user', $id)->findAll();
-            $totalQuestions = count($answered);                
+            $end = strtotime($checkFinishQuiz['end_time']);    
 
-            if($end > $start){     // jika date close quiz > start quiz       
+            $answered = $this->answeredusersmodel->where('id_user', $id)->where('id_periode', $idPeriode)->findAll();
+            $totalQuestions = count($answered);   
+                        
+            if($end > $start){     // jika date close quiz > start quiz                       
                 $totalCorrect = 0;
+
                 foreach($answered as $dt){
                     $idMc = explode(',', $dt['id_multiple_choice']);
                     $multipleChoice = $this->multiplechoicemodel->whereIn('id', $idMc)->where('is_correct', 'true')->first();
@@ -258,7 +290,8 @@ class QuizController extends BaseController
                 // ============ Perhitungan Nilai ================
                 // Total soal dan jawaban yang benar
                 // $totalQuestions = count($answered);                
-                // Hitung persentase benar
+                // Hitung persentase benar 
+
                 $persentaseBenar = ($totalCorrect / $totalQuestions) * 100;
                 // Bobot nilai maksimal
                 $bobotNilaiMaksimal = 100;
@@ -271,7 +304,7 @@ class QuizController extends BaseController
                     'totalCorrect' => $totalCorrect,
                     'totalWrong' => $totalQuestions - $totalCorrect,
                     'score' => number_format($nilai, 2),
-                ];
+                ];                
             }else{                
                 $result = [
                     'totalQuestion' => $totalQuestions,
@@ -291,31 +324,29 @@ class QuizController extends BaseController
         return $result; 
     }
 
-    public function pageScore($id='')
-    {
-        // validasi apakah sudah finish atau belum 
-        if($id==''){
-            $id = $this->idLogin;
-        }
-        $dataQuizzes = $this->userquizzesmodel->where('user_id', $id)->find();
-        $status = false;
+    public function pageScore($id)
+    {    
+        // validasi apakah sudah finish atau belum         
+        $dataQuizzes = $this->userquizzesmodel->where('id', $id)->find();         
+        $status = false;        
         if($dataQuizzes){
             // check status progress
             $progress = $this->statusProgressAndScore($dataQuizzes);
             $status = $progress['0']['status_progress'];
         }
-        
+
         if($this->roleLogin=='admin'){
             $status = 'finish'; // agar admin bisa mengecek hasil score siswa walaupun siswa belum menyelesaikan quiz
-        }
-
+        }        
+        
         $data = [
             'title' => 'Score',
-            'data' => $this->scoreQuiz($id),
-            'idUser' => $id,
+            'data' => $this->scoreQuiz($dataQuizzes[0]['user_id'], $dataQuizzes[0]['id_periode']),
+            'idQuizzes' => $id,
             'status' => $status,
-        ];        
-
+            'idPeriode' => $dataQuizzes[0]['id_periode'],
+        ];                
+        
         return view('quiz/quizHistoryScore', $data);
     }
 
@@ -371,28 +402,25 @@ class QuizController extends BaseController
         ]);
     }
 
-    public function dataUserQuiz($id='')
-    {
-        if($id==''){
-            $id = $this->idLogin;
-        }
-
-        $data = $this->userquizzesmodel
+    public function dataUserQuiz($id)
+    {                   
+        $data = $this->userquizzesmodel        
             ->select('user_quizzes.*, users.name, users.email, users.username')
             ->join('users', 'users.id=user_quizzes.user_id')
-            ->where('user_id', $id)
+            ->where('user_quizzes.id', $id)            
             ->orderBy('name', 'asc')
             ->first();                        
 
         return $this->response->setJson([
             'status'=> 'success',
             'data' => $data,
+            'id' => $id,
         ]);
     }
     
     private function statusProgressAndScore($dataArray)
     {
-        if(is_array($dataArray)){
+        if(is_array($dataArray)){               
             foreach($dataArray as $key => &$dt){
                 $startTime = strtotime($dt['start_time']);
                 $endTime = strtotime($dt['end_time']);
@@ -409,8 +437,8 @@ class QuizController extends BaseController
                 }else if($startTime < 0){
                     $dt['status_progress'] = 'not yet';
                 }
-                // score
-                $dataScore = $this->scoreQuiz($dt['user_id']);
+                // score            
+                $dataScore = $this->scoreQuiz($dt['user_id'], $dt['id_periode']);
                 if($dataScore){
                     $dt['score'] = $dataScore['score'];
                     $dt['total_question'] = $dataScore['totalQuestion'];

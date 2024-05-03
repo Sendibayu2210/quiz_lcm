@@ -47,15 +47,18 @@ $routes->post('/admin/quiz/set-timing', 'QuizController::setTimingQuiz');
 
 
 $routes->get('/quiz', 'QuizController::quiz');
-$routes->get('/quiz/attention', 'QuizController::attentionBeforeQuiz');
+$routes->get('/quiz/attention/(:num)', 'QuizController::attentionBeforeQuiz/$1');
+$routes->get('/quiz/start', 'QuizController::historyBeforeQuiz');
+$routes->get('/quiz/score', 'QuizController::historyBeforeQuiz');
+$routes->get('/quiz/history', 'QuizController::historyBeforeQuiz');
+
 $routes->get('/quiz/data', 'QuizController::dataQuiz');
 $routes->get('/quiz/data/(:any)', 'QuizController::dataQuiz/$1');
 $routes->post('/quiz/save-choice', 'QuizController::saveChoiceQuiz');
 $routes->post('/quiz/finish', 'QuizController::finishQuiz');
-$routes->get('/quiz/score', 'QuizController::pageScore');
 $routes->get('/quiz/score/(:any)', 'QuizController::pageScore/$1');
+// $routes->get('/quiz/data-user', 'QuizController::dataUserQuiz');
 $routes->get('/quiz/data-user/(:any)', 'QuizController::dataUserQuiz/$1');
-$routes->get('/quiz/data-user', 'QuizController::dataUserQuiz');
 $routes->post('/quiz/manage-user', 'QuizController::manageUserQuiz');
 
 // About
