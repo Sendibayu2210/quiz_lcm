@@ -148,13 +148,15 @@ class UsersController extends ResourceController
                 $checkUserQuizzes = $this->userquizzesmodel->where("user_id", $user['id'])->where('id_periode', $idPeriode)->first();
                 if($checkUserQuizzes){
                     $user['user_quiz'] = true;
-                    $user['timing'] = $checkUserQuizzes['time_limit_minutes'];
+                    $user['timing'] = $checkUserQuizzes['time_limit_minutes'];                                        
+                    $user['id_quizzes'] = $checkUserQuizzes['id'];
                 }else{            
                     $user['user_quiz'] = false;
-                    $user['timing'] = 60;
+                    $user['timing'] = 60;                    
+                    $user['id_quizzes'] = '-';
                 }
             }        
-        }
+        }        
         $periode = $this->periodemodel->where('id', $idPeriode)->first();
         $data = [
             'title' => 'List Users',

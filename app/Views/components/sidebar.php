@@ -12,7 +12,7 @@
         <li><a href="/dashboard"><i class="fas fa-home fa-fw me-1"></i> Home</a></li>
         <?php if($role=='admin') : ?> 
             <li><a href="/admin/users"><i class="fas fa-users fa-fw me-1"></i> Manage Users</a></li>
-            <li><a href="/admin/periode"><i class="fas fa-book-open fa-fw me-1"></i> Manage Question</a></li>
+            <li><a href="/admin/periode"><i class="fas fa-book-open fa-fw me-1"></i> Manage Quiz</a></li>
             <li><a href="/admin/history"><i class="fas fa-history fa-fw me-1"></i> History Quiz</a></li>
         <?php endif; ?>
                         

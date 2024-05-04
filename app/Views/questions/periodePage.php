@@ -128,7 +128,7 @@
     createApp({
         data(){
             return{
-                titlePage: 'Manage Questions',
+                titlePage: 'Manage Quiz',
                 baseUrl: $('#base-url').val(),                
                 idPeriodeSelected: 0,
                 isActive: false                

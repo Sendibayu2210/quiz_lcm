@@ -180,8 +180,15 @@ class QuestionController extends BaseController
 
     public function dataQuestions($id='', $requestFrom='', $search='', $idPeriode='')
     {                
-        if($idPeriode==''){
-            $idPeriode = $this->request->getVar('id_periode');
+        if($idPeriode==''){            
+            $uri = current_url(true)->getPath();
+            $urlPeriode = '?id_periode';
+            if(strpos($uri, $urlPeriode) !== false){                
+                $idPeriode = $this->request->getVar('id_periode');
+            }else{
+                $idPeriode = 0;
+                throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+            }            
         }
 
         if($requestFrom==''){

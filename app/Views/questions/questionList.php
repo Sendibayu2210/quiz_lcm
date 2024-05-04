@@ -33,7 +33,7 @@
                 <div class="card bg-warning-light">
                     <div class="card-body">
                         <div class="mb-3">
-                            <a href="/admin/questions/add?id_periode=<?= $id_periode; ?>" class="btn btn-sm bg-primary fw-bold me-1">Add Questions</a>
+                            <a href="/admin/questions/add?id_periode=<?= $id_periode; ?>" class="btn btn-sm btn-primary me-1">Add Questions</a>
                             <button data-bs-toggle="modal" data-bs-target="#exportQuestions" class="btn btn-warning-light border-primary border-2 br-5 btn-sm px-3 me-1">export to other periode</button>
                         </div>                
                         <div class="table-responsive">

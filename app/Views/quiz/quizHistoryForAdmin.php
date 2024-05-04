@@ -102,6 +102,7 @@
                 dataUsers:{},
                 userCreateLevel:{},          
                 messageLevel:null,                
+                titlePage: 'History',
             }
         },
         methods:{
@@ -109,12 +110,10 @@
             {
                 try{
                     const response = await axios.get(this.baseUrl+'admin/history/data-user');
-                    let res = response.data;
-                    console.log(res)
+                    let res = response.data;                    
                     if(res.status =='success'){
                         this.dataUsers = res.data;
                     }
-
                     setTimeout(() => {
                         new DataTable('#data-table')
                     }, 100);

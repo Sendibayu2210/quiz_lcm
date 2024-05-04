@@ -132,7 +132,14 @@ class QuizController extends BaseController
             }            
             $this->checkUserQuizzes($idPeriode);
         }else{
-            $this->checkUserQuizzes($idPeriode);
+            $check = $this->checkUserQuizzes($idPeriode);                        
+            if($check != true){                 
+                return redirect('quiz/history');
+            }
+            if($check==='quiz finish'){
+                return redirect('quiz/history');
+
+            }
         }
         
         $data = [
@@ -153,11 +160,17 @@ class QuizController extends BaseController
             ]);
         }else{
             $startTime =  strtotime($checkQuizzes['start_time']);
+            $endTime =  strtotime($checkQuizzes['end_time']);
             if($startTime < 0){
                 $timeNow = date('Y-m-d H:i:s');
-                $this->userquizzesmodel->set('start_time', $timeNow)->where('id', $checkQuizzes['id'])->update();
+                $this->userquizzesmodel->set('start_time', $timeNow)->where('id', $checkQuizzes['id'])->update();                
+            }
+            // jika end time > start time
+            if($endTime > $startTime){                                   
+                return 'quiz finish';
             }
         }
+        return true;
     }
 
     public function dataQuiz($id='')
@@ -337,6 +350,8 @@ class QuizController extends BaseController
             // check status progress
             $progress = $this->statusProgressAndScore($dataQuizzes);
             $status = $progress['0']['status_progress'];
+        }else{
+            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
         }
 
         if($this->roleLogin=='admin'){
@@ -519,8 +534,9 @@ class QuizController extends BaseController
         // delete from user_quizzes
         // delete from answerd_users
         $idUser = $this->request->getPost('id');
-        $this->userquizzesmodel->where('user_id', $idUser)->delete();
-        $this->answeredusersmodel->where('id_user', $idUser)->delete();
+        $idPeriode = $this->request->getPost('idPeriode');
+        $this->userquizzesmodel->where('user_id', $idUser)->where('id_periode', $idPeriode)->delete();
+        $this->answeredusersmodel->where('id_user', $idUser)->where('id_periode', $idPeriode)->delete();
 
         return $this->response->setJson([
             'status' => 'success',
