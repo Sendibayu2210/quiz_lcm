@@ -7,15 +7,16 @@
         <div class="container-lg">
             <div class="px-lg-4 bg-warning-light p-3 br-10 border-primary">        
                 <div class="table-responsive">
-                    <table class="table- w-100 small table-borderles">
+                    <table class="table- w-100 small table-borderles" id="data-table">
                         <thead>
                             <tr>
                                 <th width="40px">No</th>
                                 <th>Name</th>
                                 <th>Email</th>
+                                <th>Periode</th>
                                 <th>Status</th>
-                                <th>Score</th>                        
-                                <th>Total Question</th>                        
+                                <th class="text-start">Score</th>                        
+                                <!-- <th>Total Question</th>                         -->
                                 <th>Level</th>                        
                                 <th>Action</th>
                             </tr>
@@ -25,13 +26,14 @@
                                 <td>{{index+1}}</td>
                                 <td>{{item.name}}</td>                        
                                 <td>{{item.email}}</td>                        
+                                <td>{{item.periode}}</td>                        
                                 <td>{{item.status_progress}}</td>                        
-                                <td>{{item.score}}</td>                        
-                                <td>{{item.total_question}}</td>                                                                    
+                                <td class="text-start">{{item.score}}</td>                        
+                                <!-- <td>{{item.total_question}}</td>                                                                     -->
                                 <td>{{item.level}}</td>                                                                    
                                 <td class="d-flex">
                                     <div class="mb-2">
-                                        <a :href="'/quiz/score/'+item.user_id" class="badge bg-primary me-2">Detail</a>
+                                        <a :href="'/quiz/score/'+item.id" class="badge bg-primary me-2">Detail</a>
                                         <div class="badge bg-warning text-dark cursor-pointer" @click="creteLevel(item.id)">Level</div>                            
                                     </div>
                                 </td>
@@ -112,6 +114,10 @@
                     if(res.status =='success'){
                         this.dataUsers = res.data;
                     }
+
+                    setTimeout(() => {
+                        new DataTable('#data-table')
+                    }, 100);
                 }catch(error){
                     console.log(error.response)
                 }

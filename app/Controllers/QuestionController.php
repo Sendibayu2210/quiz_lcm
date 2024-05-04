@@ -28,11 +28,14 @@ class QuestionController extends BaseController
     {                        
         $dataUsers = $this->listUser($idPeriode);   
         $periode = $this->periodemodel->where('id', $idPeriode)->first();
+        $allPeriode = $this->periodemodel->where('id !=', $idPeriode)->orderBy('id', 'desc')->findAll();        
+
         $data = [
             'title' => 'List Questions',
             'id_periode' => $idPeriode,
             'users' => $dataUsers,
             'periode' => $periode,
+            'allPeriode' => $allPeriode,
         ];
         return view('questions/questionList', $data);
     }
@@ -342,12 +345,69 @@ class QuestionController extends BaseController
 
     public function deletePeriode()
     {
+        // delete periode
         // delete question
         // delete user answerd
         // delete user quizzes
-        // delete periode
         $id = $this->request->getPost('id');
         $this->periodemodel->where('id', $id)->delete();
+        $this->questionsmodel->where('id_periode', $id)->delete();
+        $this->userquizzesmodel->where('id_periode', $id)->delete();
+        $this->answeredusersmodel->where('id_periode', $id)->delete();    
+        session()->setFlashdata('success', 'period has been deleted');
         return redirect()->back();
+    }
+
+    public function exportCopyQuestion()
+    {
+        $fromPeriode = $this->request->getPost('from-periode');
+        $toPeriode = $this->request->getPost('to-periode');
+        $questionsFrom = $this->questionsmodel->where('id_periode', $fromPeriode)->findAll();
+
+        if($questionsFrom){
+            $getMaxIdQuestions = ($this->questionsmodel->selectMax('id')->get()->getRow()->id) + 1;   
+            $getMaxIdMc = ($this->multiplechoicemodel->selectMax('id')->get()->getRow()->id) + 1;   
+                             
+            $questions = $this->dataQuestions('','quizcontroller','',$fromPeriode);                            
+            $dataQuestions = [];
+            $dataMc = [];
+            foreach($questions as &$dt){
+
+                $idQuestion = $getMaxIdQuestions++;
+                $dataQuestions[] = [
+                    'id' => $idQuestion,
+                    'question' => $dt['question'],
+                    'id_periode' => $toPeriode,
+                ];
+                
+                foreach($dt['multiple_choice'] as &$mc){
+                    $dataMc[] = [
+                        'id_question' => $idQuestion,
+                        'choice_text' => $mc['choice_text'],
+                        'is_correct' => $mc['is_correct'],
+                    ];
+                }
+            }
+            $insertBatchQuestions = $this->questionsmodel->insertBatch($dataQuestions);
+            if($insertBatchQuestions){
+                $insertBatchMc = $this->multiplechoicemodel->insertBatch($dataMc);   
+                if($insertBatchMc){
+                    $status = 'success';
+                    $message = 'export questions successfully';
+                }else{
+                    $status = 'error';
+                    $message = "multiple choice can't be save";
+                }
+            }else{
+                $status = 'error';
+                $message = "questions choice can't be save";
+            }            
+        }else{
+            $status = 'error';
+            $message = "questions not found";
+        }
+
+        session()->setFlashdata($status, $message);
+        return redirect()->back();        
     }
 }

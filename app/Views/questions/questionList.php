@@ -17,11 +17,24 @@
             
         
             <div id="card-question">
+                <?php if(session()->getFlashdata('error')) : ?>
+                    <div class="alert alert-warning alert-dismissible fade show mb-3" role="alert">
+                        <?= session()->getFlashdata('error'); ?>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                <?php endif; ?>
+                <?php if(session()->getFlashdata('success')) : ?>
+                    <div class="alert alert-success alert-dismissible fade show mb-3" role="alert">
+                        <?= session()->getFlashdata('success'); ?>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                <?php endif; ?>
+
                 <div class="card bg-warning-light">
                     <div class="card-body">
                         <div class="mb-3">
                             <a href="/admin/questions/add?id_periode=<?= $id_periode; ?>" class="btn btn-sm bg-primary fw-bold me-1">Add Questions</a>
-                            <button class="btn btn-warning-light border-primary border-2 br-5 btn-sm px-3 me-1">export to other periode</button>
+                            <button data-bs-toggle="modal" data-bs-target="#exportQuestions" class="btn btn-warning-light border-primary border-2 br-5 btn-sm px-3 me-1">export to other periode</button>
                         </div>                
                         <div class="table-responsive">
                             <table class="table- w-100" id="data-table">
@@ -129,6 +142,44 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Modal delete user quiz -->
+            <div class="modal fade" id="exportQuestions" tabindex="-1" aria-labelledby="exportQuestionsLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exportQuestionsLabel">Export Question</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form action="/admin/questions/export" method="post">
+                        <div class="modal-body">
+                            <div class="form-group mb-3">
+                                <label for="">From Periode</label>
+                                <select name="from-periode" id="" class="form-select form-select-sm" readonly>
+                                    <option value="<?= $periode['id']; ?>"><?= $periode['periode']; ?></option>
+                                </select>                            
+                            </div>
+
+                            <div class="form-group mb-3">
+                                <label for="">To Periode</label>
+                                <select name="to-periode" id="" class="form-select form-select-sm mt-2" required>
+                                    <option value="">Choose</option>
+                                    <?php foreach($allPeriode as $dt) : ?> 
+                                        <option value="<?= $dt['id']; ?>"><?= $dt['periode']; ?></option>
+                                    <?php endforeach; ?>
+                                </select>                            
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-sm btn-light " data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-sm btn-primary">Export</button>
+                        </div>
+                    </form>
+                    </div>
+                </div>
+            </div>
+
+
         </div>
     </div>
 
@@ -217,7 +268,7 @@
             showQuestion(index){                
                 this.questionSelect = this.questionsList[index]
                 $("#modal-show-question").modal('show')
-            },                    
+            },                          
 
         },
         mounted(){

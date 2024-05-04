@@ -69,8 +69,12 @@ class QuizController extends BaseController
         if($checkData){            
             $dataProgress = $this->statusProgressAndScore($checkData);
             $status = $dataProgress[0]['status_progress'];            
+            $periode = $dataProgress;    
+
+        }else{
+            $status = 'data not found';
+            $periode = 0;
         }
-        $periode = $dataProgress;    
 
         $data = [
             'title' => 'Attention',
@@ -387,7 +391,8 @@ class QuizController extends BaseController
     public function dataHistoryQuiz($requestFromServer=false)
     {
         $data = $this->userquizzesmodel
-            ->select('user_quizzes.*, users.name, users.email, users.username')
+            ->select('user_quizzes.*, users.name, users.email, users.username, periode.periode')
+            ->join('periode', 'periode.id=user_quizzes.id_periode')
             ->join('users', 'users.id=user_quizzes.user_id')->orderBy('name', 'asc')->findAll();
         
         $data = $this->statusProgressAndScore($data);           

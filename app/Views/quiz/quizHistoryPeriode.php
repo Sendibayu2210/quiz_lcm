@@ -44,7 +44,11 @@
                         </tbody>
                     </table>
                 </div>
-            <?php else: ?>
+            <?php else: ?>                
+                <div class="my-5 text-center text-danger fw-bold">
+                    <div><i class="fas fa-warning h5"></i></div>
+                    <div>Data not found</div>                        
+                </div>                
             <?php endif; ?>            
         </div>
     </div>

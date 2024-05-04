@@ -172,6 +172,12 @@ th,td{
     background: transparent;    
 }
 
+/* Merubah warna border untuk kelas "dt-paging-button page-item active" */
+.dt-paging-button.page-item.active .page-link {
+    border-color: #5b5ba8; /* Warna border */
+    background-color: #5b5ba8 !important; /* Warna latar belakang */
+}
+
 
 @media (min-width: 768px) {
     .border-desktop-none {

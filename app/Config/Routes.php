@@ -38,6 +38,7 @@ $routes->post('/admin/questions/save', 'QuestionController::saveQuestions');
 $routes->get('/admin/questions/edit/(:num)', 'QuestionController::editQuestions/$1');
 $routes->post('/admin/questions/check-delete', 'QuestionController::checkQuestionProgressForDelete');
 $routes->post('/admin/questions/delete', 'QuestionController::deleteQuestion');
+$routes->post('/admin/questions/export', 'QuestionController::exportCopyQuestion');
 $routes->post('/admin/multiple-choice/delete', 'QuestionController::deleteMultipleChoice');
 $routes->get('/admin/history', 'QuizController::pageHistoryQuizForAdmin');
 $routes->get('/admin/history/data-user', 'QuizController::dataHistoryQuiz');
