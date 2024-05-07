@@ -11,8 +11,7 @@
         
             <div class="d-flex mb-3 menu-top">
                 <a href="/admin/questions-periode/<?= $id_periode; ?>" class="btn btn-primary br-5 btn-sm px-3 me-1">questions</a>
-                <a href="/admin/students-periode/<?= $id_periode; ?>" class="btn btn-warning-light border-primary border-2 br-5 btn-sm px-3 me-1">add students</a>                
-                <button data-bs-toggle="modal" data-bs-target="#settingTimer" class="btn btn-warning-light border-primary border-2 br-5 btn-sm px-3 me-1">Setting Timer</button>                
+                <a href="/admin/students-periode/<?= $id_periode; ?>" class="btn btn-warning-light border-primary border-2 br-5 btn-sm px-3 me-1">add students</a>                                
                 <input type="hidden" id="id_periode" value="<?= $id_periode; ?>">            
             </div>
             
@@ -161,32 +160,6 @@
                 </div>
             </div>
             
-            <!-- Modal delete user quiz -->
-            <div class="modal fade" id="settingTimer" tabindex="-1" aria-labelledby="settingTimerLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                    <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="settingTimerLabel">Setting Timer Quiz</h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <form action="/admin/quiz/set-timing" method="post">
-                        <div class="modal-body">
-                            <div class="form-group">
-                                <label for="">Input timer (per minutes)</label>
-                                <input type="hidden" name="id" value="<?= $id_periode; ?>">
-                                <input type="number" class="form-control form-control-sm mt-2" value="<?= $periode['quiz_timer']; ?>" name="time">
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-sm btn-light " data-bs-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-sm btn-primary">Save</button>
-                        </div>
-                    </form>
-                    </div>
-                </div>
-            </div>
-
-
         </div>
     </div>
 

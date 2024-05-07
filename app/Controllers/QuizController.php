@@ -561,12 +561,12 @@ class QuizController extends BaseController
             $status = 'error';
             $message = 'please activate the quiz for this user';
         }
-        session()->setFlashdata($status, $message);
-        return redirect()->back();
+        // session()->setFlashdata($status, $message);
+        // return redirect()->back();
 
-        // return $this->response->setJson([
-        //     'status' => $status,
-        //     'message' => $message,                                    
-        // ]);        
+        return $this->response->setJson([
+            'status' => $status,
+            'message' => $message,                                    
+        ]);        
     }
 }

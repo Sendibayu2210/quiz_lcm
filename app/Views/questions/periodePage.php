@@ -30,6 +30,7 @@
                                 <th class="text-center">Count Questions</th>
                                 <th class="text-center">Count Student Quiz</th>
                                 <th class="text-center">Status</th>
+                                <th width="80">Timer</th>
                                 <th class="text-center">Action</th>
                             </tr>
                         </thead>
@@ -42,6 +43,11 @@
                                     <td class="text-center"><?= $dt['total_questions']; ?></td>
                                     <td class="text-center"><?= $dt['total_user_quizzes']; ?></td>
                                     <td class="text-center"><?= $dt['status']; ?></td>
+                                    <td>
+                                        <div class="form-group">
+                                            <input type="text" class="form-control form-control-sm" @keyup="setTiming('<?= $dt['id']; ?>', $event)" value="<?= $dt['quiz_timer']; ?>">                                            
+                                        </div>
+                                    </td>
                                     <td class="text-center d-flex align-items-center">
                                         <a href="/admin/questions-periode/<?= $dt['id']; ?>" class="badge bg-primary">detail</a>
                                         <button type="button" @click="addEditPeriode('<?= $dt['id']; ?>', '<?= $dt['periode']; ?>', '<?= $dt['status']; ?>')" class="badge bg-warning mx-1 border-0"><i class="fas fa-pencil"></i></button>                                        
@@ -156,7 +162,40 @@
             deletePeriode(id){
                 this.idPeriodeSelected = id
                 $('#modal-confirmation').modal('show')
-            }
+            },
+            async setTiming(id, event)
+            {
+                let time = event.target.value;
+                let params = {
+                    'id':id,
+                    'time':time,
+                }
+
+                $(event.target).removeClass('is-valid is-invalid');
+                $(".invalid-feedback.timing").html('');
+
+                try{
+                    const response = await axios.post(this.baseUrl + 'admin/quiz/set-timing', params, {
+                        headers:{
+                            'Content-type':'multipart/form-data',
+                        }
+                    })
+                    let res = response.data;       
+                                                     
+                    if(res.status=='success'){                    
+                        $(event.target).addClass('is-valid');
+                    }else{
+                        $(event.target).addClass('is-invalid');            
+                        $(".invalid-feedback.timing").html(res.message);
+                    }
+                    setTimeout(() => {
+                        $(event.target).removeClass('is-valid is-invalid');
+                        $(".invalid-feedback.timing").html('');
+                    }, 2000);
+                }catch(error){
+                    console.log(error.response)
+                }
+            },
         },
         mounted(){            
             new DataTable('#data-table');
