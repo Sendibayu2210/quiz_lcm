@@ -497,9 +497,11 @@ class QuizController extends BaseController
         }else{
             // (tambahan) = jika tidak ada data users di table users maka lakukan validasi
             // tidak ada maka di insert
+            $periode = $this->periodemodel->where('id', $idPeriode)->first();
             $save = $this->userquizzesmodel->insert([
                 'user_id' => $id,
                 'id_periode' => $idPeriode,
+                'time_limit_minutes' => $periode['quiz_timer'],
             ]);
             if($save){
                 $status = 'success';
@@ -550,19 +552,21 @@ class QuizController extends BaseController
         $id = $this->request->getVar('id');
         $time = $this->request->getVar('time');
 
-        $checkData = $this->userquizzesmodel->where("user_id", $id)->first();
-        
+        $checkData = $this->periodemodel->where("id", $id)->first();        
         if($checkData){
-            $update = $this->userquizzesmodel->set('time_limit_minutes', $time)->where('user_id', $id)->update();
+            $update = $this->periodemodel->set('quiz_timer', $time)->where('id', $id)->update();
             $status = 'success';
             $message = 'successfully updated timer';
         }else{
             $status = 'error';
             $message = 'please activate the quiz for this user';
         }
-        return $this->response->setJson([
-            'status' => $status,
-            'message' => $message,                                    
-        ]);
+        session()->setFlashdata($status, $message);
+        return redirect()->back();
+
+        // return $this->response->setJson([
+        //     'status' => $status,
+        //     'message' => $message,                                    
+        // ]);        
     }
 }

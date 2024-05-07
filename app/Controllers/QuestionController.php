@@ -179,17 +179,17 @@ class QuestionController extends BaseController
     }
 
     public function dataQuestions($id='', $requestFrom='', $search='', $idPeriode='')
-    {                
+    {                        
         if($idPeriode==''){            
             $uri = current_url(true)->getPath();
-            $urlPeriode = '?id_periode';
+            $urlPeriode = '?id_periode';            
             if(strpos($uri, $urlPeriode) !== false){                
                 $idPeriode = $this->request->getVar('id_periode');
             }else{
                 $idPeriode = 0;
-                throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+                $idPeriode = $this->request->getVar('id_periode');                
             }            
-        }
+        }        
 
         if($requestFrom==''){
             $search = $this->request->getVar('search');    
@@ -218,7 +218,6 @@ class QuestionController extends BaseController
 
             if($multipleChoice){
                 // jika yang login adalah user hapus is_correct
-
                 $quest['multiple_choice'] = $multipleChoice;
             }else{
                 $quest['multiple_choice'] = [];

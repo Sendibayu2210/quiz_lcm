@@ -27,8 +27,7 @@
                                         <th>Username</th>
                                         <th class="text-start">Periode</th>       
                                         <th class="text-start">Score</th>                                
-                                        <th class="text-center" width="70px">Set Quiz</th>                                                       
-                                        <th class="text-center" width="70px">Set Timer</th> 
+                                        <th class="text-center" width="70px">Set Quiz</th>                                                                                               
                                         <th>Action</th>                      
                                     </tr>
                                 </thead>
@@ -47,11 +46,7 @@
                                                         <input class="form-check-input border-primary" type="checkbox" role="switch" id="set-quiz-<?= $dt['id']; ?>" value="<?= $dt['id']; ?>" @change="settingQuiz('<?= $dt['id']; ?>')" <?= ($dt['user_quiz']==true) ? 'checked' : ''; ?>> 
                                                     </div>
                                                 </div>      
-                                            </td>                     
-                                            <td class="position-relative">
-                                                <input type="number" class="form-control form-control-sm" value="<?= $dt['timing']; ?>" @keyup="setTiming('<?= $dt['id']; ?>', $event)">
-                                                <div class="invalid-feedback timing bg-light border danger position-absolute" style="right: 0; z-index: 3; margin-top: -100px;"></div>
-                                            </td>                                                                                               
+                                            </td>                                                                                                                                                            
                                             <td class="text-center">
                                                 <a href="<?= base_url('quiz/score/'.$dt['id_quizzes']); ?>" class="badge bg-primary">
                                                     Detail
