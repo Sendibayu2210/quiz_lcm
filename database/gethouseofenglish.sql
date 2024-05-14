@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: May 04, 2024 at 07:15 AM
--- Server version: 10.4.32-MariaDB
--- PHP Version: 8.0.30
+-- Host: localhost:3306
+-- Generation Time: May 07, 2024 at 01:25 PM
+-- Server version: 10.6.16-MariaDB-cll-lve
+-- PHP Version: 8.1.25
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `gethouseofenglish`
+-- Database: `u1609520_gethouseofenglish`
 --
 
 -- --------------------------------------------------------
@@ -36,46 +36,25 @@ CREATE TABLE `answered_users` (
   `id_multiple_choice` varchar(50) NOT NULL,
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 --
 -- Dumping data for table `answered_users`
 --
 
 INSERT INTO `answered_users` (`id`, `id_user`, `id_question`, `id_periode`, `id_answered`, `id_multiple_choice`, `created_at`, `updated_at`) VALUES
-(249, 8, 720, 1, '51', '53,50,51,52', '2024-04-26 10:39:19', '2024-04-26 10:39:29'),
-(250, 8, 74, 1, '83', '84,83,85', '2024-04-26 10:39:19', '2024-04-26 10:39:32'),
-(252, 8, 445, 1, NULL, '65,62,63,64', '2024-04-26 10:39:19', '2024-04-26 10:39:19'),
-(253, 8, 241, 1, NULL, '45,42,43,44', '2024-04-26 10:39:19', '2024-04-26 10:39:19'),
-(254, 8, 737, 1, NULL, '59,58,61', '2024-04-26 10:39:19', '2024-04-26 10:39:19'),
-(255, 8, 91, 1, NULL, '49,46,47,48', '2024-04-26 10:39:19', '2024-04-26 10:39:19'),
-(256, 8, 661, 1, NULL, '41,38,39,40', '2024-04-26 10:39:19', '2024-04-26 10:39:19'),
-(257, 8, 959, 1, NULL, '33,30,31,32', '2024-04-26 10:39:19', '2024-04-26 10:39:19'),
-(258, 8, 247, 1, NULL, '57,54,55,56', '2024-04-26 10:39:19', '2024-04-26 10:39:19'),
-(259, 8, 815, 1, NULL, '69,66,67,68', '2024-04-26 10:39:19', '2024-04-26 10:39:19'),
-(260, 8, 117, 1, NULL, '37,34,35,36', '2024-04-26 10:39:19', '2024-04-26 10:39:19'),
-(298, 10, 970, 10, '202', '204,201,202,203', '2024-05-04 10:14:11', '2024-05-04 10:14:13'),
-(299, 10, 967, 10, '191', '193,190,191,192', '2024-05-04 10:14:11', '2024-05-04 10:14:19'),
-(300, 10, 966, 10, '188', '189,186,187,188', '2024-05-04 10:14:11', '2024-05-04 10:14:23'),
-(301, 10, 962, 10, '171', '173,170,171,172', '2024-05-04 10:14:11', '2024-05-04 10:14:27'),
-(302, 10, 963, 10, '174', '177,174,175,176', '2024-05-04 10:14:11', '2024-05-04 10:14:30'),
-(303, 10, 969, 10, NULL, '200,197,198,199', '2024-05-04 10:14:11', '2024-05-04 10:14:11'),
-(304, 10, 960, 10, NULL, '165,164,163', '2024-05-04 10:14:11', '2024-05-04 10:14:11'),
-(305, 10, 964, 10, NULL, '181,178,179,180', '2024-05-04 10:14:11', '2024-05-04 10:14:11'),
-(306, 10, 968, 10, NULL, '196,195,194', '2024-05-04 10:14:11', '2024-05-04 10:14:11'),
-(307, 10, 961, 10, NULL, '169,166,167,168', '2024-05-04 10:14:11', '2024-05-04 10:14:11'),
-(308, 10, 965, 10, NULL, '185,182,183,184', '2024-05-04 10:14:11', '2024-05-04 10:14:11'),
-(364, 9, 737, 1, NULL, '61,59,58', '2024-05-04 11:00:32', '2024-05-04 11:00:32'),
-(365, 9, 959, 1, '31', '30,31,32,33', '2024-05-04 11:00:32', '2024-05-04 11:00:36'),
-(366, 9, 247, 1, NULL, '54,55,56,57', '2024-05-04 11:00:32', '2024-05-04 11:00:32'),
-(367, 9, 815, 1, NULL, '66,67,68,69', '2024-05-04 11:00:32', '2024-05-04 11:00:32'),
-(368, 9, 91, 1, NULL, '46,47,48,49', '2024-05-04 11:00:32', '2024-05-04 11:00:32'),
-(369, 9, 445, 1, NULL, '62,63,64,65', '2024-05-04 11:00:32', '2024-05-04 11:00:32'),
-(370, 9, 720, 1, NULL, '50,51,52,53', '2024-05-04 11:00:32', '2024-05-04 11:00:32'),
-(371, 9, 117, 1, NULL, '34,35,36,37', '2024-05-04 11:00:32', '2024-05-04 11:00:32'),
-(372, 9, 661, 1, NULL, '38,39,40,41', '2024-05-04 11:00:32', '2024-05-04 11:00:32'),
-(373, 9, 74, 1, NULL, '85,84,83', '2024-05-04 11:00:32', '2024-05-04 11:00:32'),
-(374, 9, 241, 1, NULL, '42,43,44,45', '2024-05-04 11:00:32', '2024-05-04 11:00:32');
+(408, 10, 970, 10, '202', '203,204,201,202', '2024-05-04 12:57:10', '2024-05-04 12:57:19'),
+(409, 10, 967, 10, '191', '192,193,190,191', '2024-05-04 12:57:10', '2024-05-04 12:58:00'),
+(410, 10, 966, 10, '188', '188,189,186,187', '2024-05-04 12:57:10', '2024-05-04 12:58:04'),
+(411, 10, 962, 10, '171', '172,173,170,171', '2024-05-04 12:57:10', '2024-05-04 12:58:10'),
+(412, 10, 963, 10, NULL, '176,177,174,175', '2024-05-04 12:57:10', '2024-05-04 12:57:10'),
+(413, 10, 969, 10, NULL, '199,200,197,198', '2024-05-04 12:57:10', '2024-05-04 12:57:10'),
+(414, 10, 960, 10, NULL, '164,163,165', '2024-05-04 12:57:10', '2024-05-04 12:57:10'),
+(415, 10, 964, 10, NULL, '180,181,178,179', '2024-05-04 12:57:10', '2024-05-04 12:57:10'),
+(416, 10, 968, 10, NULL, '195,194,196', '2024-05-04 12:57:10', '2024-05-04 12:57:10'),
+(417, 10, 961, 10, NULL, '168,169,166,167', '2024-05-04 12:57:10', '2024-05-04 12:57:10'),
+(418, 10, 965, 10, NULL, '184,185,182,183', '2024-05-04 12:57:10', '2024-05-04 12:57:10'),
+(419, 10, 955, 12, '205', '206,205', '2024-05-04 13:00:09', '2024-05-04 13:00:12');
 
 -- --------------------------------------------------------
 
@@ -90,7 +69,7 @@ CREATE TABLE `multiple_choice` (
   `is_correct` enum('true','false') NOT NULL DEFAULT 'false',
   `created_at` datetime DEFAULT current_timestamp(),
   `updated_at` datetime DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 --
 -- Dumping data for table `multiple_choice`
@@ -136,9 +115,9 @@ INSERT INTO `multiple_choice` (`id`, `id_question`, `choice_text`, `is_correct`,
 (67, 815, 'Thomas Jefferson', 'false', '2024-04-08 12:31:37', '2024-04-08 12:31:37'),
 (68, 815, 'George Washington', 'true', '2024-04-08 12:31:37', '2024-04-08 12:31:37'),
 (69, 815, 'Abraham Lincoln', 'false', '2024-04-08 12:31:37', '2024-04-08 12:31:37'),
-(83, 74, 'She is cooking dinner right now.', 'true', '2024-04-20 22:18:48', '2024-05-03 19:35:49'),
-(84, 74, 'They will go to the beach tomorrow.', 'false', '2024-04-20 22:18:48', '2024-05-03 19:35:49'),
-(85, 74, 'work on my project every day.', 'false', '2024-04-20 22:18:48', '2024-05-03 19:35:49'),
+(83, 74, 'She is cooking dinner right now.', 'false', '2024-04-20 22:18:48', '2024-05-04 12:54:24'),
+(84, 74, 'They will go to the beach tomorrow.', 'true', '2024-04-20 22:18:48', '2024-05-04 12:54:24'),
+(85, 74, 'work on my project every day.', 'false', '2024-04-20 22:18:48', '2024-05-04 12:54:24'),
 (103, 148, 'test', 'false', '2024-05-04 01:06:09', '2024-05-04 01:06:09'),
 (104, 148, 'etrw432', 'false', '2024-05-04 01:06:09', '2024-05-04 01:06:09'),
 (105, 148, '2432', 'true', '2024-05-04 01:06:09', '2024-05-04 01:06:09'),
@@ -186,7 +165,9 @@ INSERT INTO `multiple_choice` (`id`, `id_question`, `choice_text`, `is_correct`,
 (201, 970, ' London', 'false', '2024-05-04 10:13:46', '2024-05-04 10:13:46'),
 (202, 970, 'Paris', 'true', '2024-05-04 10:13:46', '2024-05-04 10:13:46'),
 (203, 970, 'Rome', 'false', '2024-05-04 10:13:46', '2024-05-04 10:13:46'),
-(204, 970, 'Berlin', 'false', '2024-05-04 10:13:46', '2024-05-04 10:13:46');
+(204, 970, 'Berlin', 'false', '2024-05-04 10:13:46', '2024-05-04 10:13:46'),
+(205, 955, 'iya boleh', 'true', '2024-05-04 12:59:55', '2024-05-04 12:59:55'),
+(206, 955, 'tidak', 'false', '2024-05-04 12:59:55', '2024-05-04 12:59:55');
 
 -- --------------------------------------------------------
 
@@ -198,6 +179,7 @@ CREATE TABLE `periode` (
   `id` int(11) NOT NULL,
   `periode` varchar(50) NOT NULL,
   `status` enum('active','nonactive') NOT NULL DEFAULT 'nonactive',
+  `quiz_timer` int(5) DEFAULT 0,
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -206,9 +188,10 @@ CREATE TABLE `periode` (
 -- Dumping data for table `periode`
 --
 
-INSERT INTO `periode` (`id`, `periode`, `status`, `created_at`, `updated_at`) VALUES
-(1, 'Tahun 2021/2022', 'nonactive', '2024-05-03 08:53:41', '2024-05-03 08:53:41'),
-(10, 'Tahun 2024', 'active', '2024-05-04 10:13:36', '2024-05-04 10:21:45');
+INSERT INTO `periode` (`id`, `periode`, `status`, `quiz_timer`, `created_at`, `updated_at`) VALUES
+(1, 'Tahun 2021/2022', 'active', 60, '2024-05-03 08:53:41', '2024-05-07 13:22:05'),
+(10, 'Tahun 2024', 'active', 30, '2024-05-04 10:13:36', '2024-05-07 13:20:57'),
+(12, 'Tahun 2024/2025', 'active', 75, '2024-05-04 12:34:32', '2024-05-07 12:06:04');
 
 -- --------------------------------------------------------
 
@@ -223,14 +206,14 @@ CREATE TABLE `questions` (
   `id_periode` int(11) NOT NULL,
   `created_at` datetime DEFAULT current_timestamp(),
   `updated_at` datetime DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 --
 -- Dumping data for table `questions`
 --
 
 INSERT INTO `questions` (`id`, `question`, `status`, `id_periode`, `created_at`, `updated_at`) VALUES
-(74, 'Choose the sentence that correctly uses the present continuous tense', 'active', 1, '2024-04-07 21:16:53', '2024-05-03 19:35:48'),
+(74, 'Choose the sentence that correctly uses the present continuous tense', 'active', 1, '2024-04-07 21:16:53', '2024-05-04 12:54:24'),
 (91, 'Which country is known as the \"Land of the Rising Sun\"?', 'active', 1, '2024-04-08 12:28:49', '2024-05-03 19:46:35'),
 (117, 'Which planet is known as the Red Planet?', 'active', 1, '2024-04-08 12:26:53', '2024-05-03 13:52:27'),
 (241, 'What is the largest mammal in the world?', 'active', 1, '2024-04-08 12:28:04', '2024-05-03 13:52:27'),
@@ -240,6 +223,7 @@ INSERT INTO `questions` (`id`, `question`, `status`, `id_periode`, `created_at`,
 (720, 'Who painted the Mona Lisa?', 'active', 1, '2024-04-08 12:29:26', '2024-05-03 13:52:27'),
 (737, 'Which of the following is a primary color?', 'active', 1, '2024-04-08 12:30:31', '2024-05-03 13:52:27'),
 (815, 'Who was the first President of the United States?', 'active', 1, '2024-04-08 12:31:36', '2024-05-03 13:52:27'),
+(955, 'coba test ya', 'active', 12, '2024-05-04 12:59:55', '2024-05-04 12:59:55'),
 (959, 'What is the capital of France?', 'active', 1, '2024-04-08 12:26:17', '2024-05-03 13:52:27'),
 (960, 'Choose the sentence that correctly uses the present continuous tense', 'active', 10, '2024-05-04 10:13:46', '2024-05-04 10:13:46'),
 (961, 'Which country is known as the \"Land of the Rising Sun\"?', 'active', 10, '2024-05-04 10:13:46', '2024-05-04 10:13:46'),
@@ -272,7 +256,7 @@ CREATE TABLE `users` (
   `foto` varchar(255) DEFAULT NULL,
   `created_at` datetime DEFAULT current_timestamp(),
   `updated_at` datetime DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 --
 -- Dumping data for table `users`
@@ -300,16 +284,15 @@ CREATE TABLE `user_quizzes` (
   `time_limit_minutes` int(11) DEFAULT 60,
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 --
 -- Dumping data for table `user_quizzes`
 --
 
 INSERT INTO `user_quizzes` (`id`, `user_id`, `id_periode`, `level`, `start_time`, `end_time`, `time_limit_minutes`, `created_at`, `updated_at`) VALUES
-(40, 8, 1, '', '2024-05-04 01:25:23', '2024-05-04 02:25:23', 60, '2024-04-26 10:39:03', '2024-05-04 11:03:17'),
-(57, 10, 10, '', '2024-05-04 10:14:11', '2024-05-04 10:14:32', 60, '2024-05-04 10:13:56', '2024-05-04 10:14:32'),
-(66, 9, 1, '', '2024-05-04 11:00:32', '2024-05-04 11:00:39', 90, '2024-05-04 11:00:07', '2024-05-04 11:07:36');
+(73, 10, 10, 'HICE 3', '2024-05-04 12:57:10', '2024-05-04 13:57:10', 60, '2024-05-04 12:56:21', '2024-05-06 12:15:55'),
+(74, 10, 12, '', '2024-05-04 13:00:09', '2024-05-04 14:00:09', 60, '2024-05-04 12:59:05', '2024-05-06 12:15:55');
 
 --
 -- Indexes for dumped tables
@@ -359,19 +342,19 @@ ALTER TABLE `user_quizzes`
 -- AUTO_INCREMENT for table `answered_users`
 --
 ALTER TABLE `answered_users`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=408;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=431;
 
 --
 -- AUTO_INCREMENT for table `multiple_choice`
 --
 ALTER TABLE `multiple_choice`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=205;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=207;
 
 --
 -- AUTO_INCREMENT for table `periode`
 --
 ALTER TABLE `periode`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `questions`
@@ -389,7 +372,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `user_quizzes`
 --
 ALTER TABLE `user_quizzes`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=73;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=81;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

@@ -33,14 +33,14 @@
                     <div class="p-3 br-10 border-info border border-2 mb-3 border-desktop-none">
                         <div class="btn btn-info px-4 border border-2 border-white text-white fw-bold mb-3">Visi</div>
                         <div>
-                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Excepturi vitae nam pariatur cupiditate quia perferendis voluptatibus assumenda animi ipsa. Molestias, similique? Perferendis maiores porro amet ratione praesentium quidem eligendi totam corrupti ea, excepturi voluptates velit minima distinctio voluptate atque aliquid, repellendus assumenda dolorem, cum hic dolores. Harum quo non aperiam.
+                            Terwujudnya lembaga pendidikan kursus yang menghasilkan lulusan yang memiliki kompetensi bahasa inggris yang unggul dan berwawasan global.
                         </div>
                     </div>
 
                     <div class="p-3 br-10 border-danger border border-2 border-desktop-none">
                         <div class="btn btn-danger px-4 border border-2 border-white text-white fw-bold mb-3">Misi</div>
                         <div>
-                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Excepturi vitae nam pariatur cupiditate quia perferendis voluptatibus assumenda animi ipsa. Molestias, similique? Perferendis maiores porro amet ratione praesentium quidem eligendi totam corrupti ea, excepturi voluptates velit minima distinctio voluptate atque aliquid, repellendus assumenda dolorem, cum hic dolores. Harum quo non aperiam.
+                            Menerapkan pendekatan komunikatif, mengembangkan kompetensi bahasa inggris secara optimal pada bidang tertentu, memberikan layanan kepada warga belajar dan masyarakat melalui sertifikasi serta meningkatkan profesionalisme pendidik dan kecakapan kerja melalui pelatihan.
                         </div>
                     </div>
                 </div>

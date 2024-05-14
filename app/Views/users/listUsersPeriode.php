@@ -18,6 +18,16 @@
                     <!-- <div style="margin-top: -25px;" class="mb-4"><span class="bg-primary p-2 px-5 br-10 border-light border-3 border">List Users</span></div> -->
                     <?php if(count($users) > 0) : ?>
                         <div class="table-responsive">
+                            
+                            <div class="d-flex justify-content-end mb-3">                                
+                                <span class="d-flex border-primary border-2 pt-2 p-1 br-5 px-3">
+                                    <label class="form-check-label me-2" for="flexSwitchCheckDefault">Set Quiz for All Student</label>
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" <?= ($setAllStudentQuiz===true) ? 'checked' : ''; ?> @change="setAllStudent('<?= $id_periode; ?>')">
+                                    </div>
+                                </span>
+                            </div>
+
                             <table class="table- br-10 w-100 small table-border table-striped table-hover" id="data-table">
                                 <thead>
                                     <tr>
@@ -56,6 +66,7 @@
                                     <?php endforeach; ?>                            
                                 </tbody>
                             </table>
+
                         </div>    
                     <?php else: ?>                    
                         <div class="text-center fw-bold text-danger pb-3"><i class="fas fa-warning me-1"></i> Data not found</div>
@@ -82,6 +93,8 @@
                     </div>
                 </div>
             </div>
+
+            
         </div>
     </div>
 
@@ -201,6 +214,9 @@
                     console.log(error.response)
                 }
             },
+            setAllStudent(idPeriode){
+                document.location.href = '/quiz/manage-all-user/'+idPeriode;
+            }
         },
         mounted()
         {
@@ -209,4 +225,5 @@
         }
     }).mount('#list-users')
 </script>
+
 <?= $this->endSection(); ?>

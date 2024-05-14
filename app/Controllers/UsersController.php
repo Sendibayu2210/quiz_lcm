@@ -158,11 +158,20 @@ class UsersController extends ResourceController
             }        
         }        
         $periode = $this->periodemodel->where('id', $idPeriode)->first();
+
+
+        $countQuizzes = $this->userquizzesmodel->where('id_periode', $idPeriode)->countAllResults();
+        if(count($users) === $countQuizzes){
+            $setAllStudentQuiz = true;
+        }else{
+            $setAllStudentQuiz = false;
+        }        
         $data = [
             'title' => 'List Users',
             'users' => $users,          
             'id_periode'  => $idPeriode,
             'periode' => $periode,
+            'setAllStudentQuiz' => $setAllStudentQuiz,
         ];
         return view('users/listUsersPeriode',$data);
     }

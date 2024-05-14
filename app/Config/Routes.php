@@ -30,6 +30,8 @@ $routes->post('/admin/periode/delete', 'QuestionController::deletePeriode');
 
 $routes->get('/admin/questions-periode/(:num)', 'QuestionController::questionsList/$1');
 $routes->get('/admin/students-periode/(:num)', 'UsersController::studentPeriode/$1');
+$routes->get('/admin/students-periode/confirm-delete-quizzes/(:num)', 'QuizController::confirmDeleteAllQuizzes/$1');
+$routes->post('/admin/students-periode-delete', 'QuizController::deleteAllQuizzesPeriod');
 
 $routes->get('/admin/questions/data', 'QuestionController::dataQuestions'); // all
 $routes->get('/admin/questions/data/(:num)', 'QuestionController::dataQuestions/$1'); // per id
@@ -61,6 +63,7 @@ $routes->get('/quiz/score/(:any)', 'QuizController::pageScore/$1');
 // $routes->get('/quiz/data-user', 'QuizController::dataUserQuiz');
 $routes->get('/quiz/data-user/(:any)', 'QuizController::dataUserQuiz/$1');
 $routes->post('/quiz/manage-user', 'QuizController::manageUserQuiz');
+$routes->get('/quiz/manage-all-user/(:num)', 'QuizController::setQuizForAllUser/$1');
 
 // About
 $routes->get('/about', 'Home::about');

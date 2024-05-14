@@ -12,6 +12,7 @@ use App\Models\AnsweredUsersModel;
 use App\Models\MultipleChoiceModel;
 use App\Models\UserQuizzesModel;
 use App\Models\PeriodeModel;
+use App\Models\UsersModel;
 
 class QuizController extends BaseController
 {
@@ -23,6 +24,7 @@ class QuizController extends BaseController
         $this->multiplechoicemodel = new MultipleChoiceModel();
         $this->userquizzesmodel = new UserQuizzesModel();
         $this->periodemodel = new PeriodeModel();
+        $this->usersmodel = new UsersModel();
 
         $this->idLogin = session()->get('idLogin');
         $this->roleLogin = session()->get('roleLogin');
@@ -568,5 +570,125 @@ class QuizController extends BaseController
             'status' => $status,
             'message' => $message,                                    
         ]);        
+    }
+
+    public function setQuizForAllUser($idPeriode)
+    {
+        // === Logic ===
+        // 1. get user_quizzes by periode
+        // 2. get all student
+        // 3. match id student === id user in quizzes
+        // 4. if match then continue, else push to array
+        // 5. insert batch to user quizzes
+
+        $periode = $this->periodemodel->where('id', $idPeriode)->first();
+        if($periode){
+            $userQuizzes = $this->userquizzesmodel->where('id_periode', $idPeriode)->findAll();
+            $users = $this->usersmodel->where('role','user')->findAll();
+
+            if(count($userQuizzes) == count($users)){
+
+                // jika ada di answer quizzes maka redirect to confirm page
+                // jika tidak ada maka hapus aja
+                $checkAnswerd = $this->answeredusersmodel->where('id_periode', $idPeriode)->first();
+                if($checkAnswerd){
+                    return redirect()->to('admin/students-periode/confirm-delete-quizzes/'. $idPeriode);
+                }else{
+                    // delete users answerd
+                    $this->answeredusersmodel->where('id_periode', $idPeriode)->delete();
+                    // delete user quizzes
+                    $this->userquizzesmodel->where('id_periode', $idPeriode)->delete();
+                    
+                    session()->setFlashdata('message', 'data student has been off quiz');
+                    return redirect()->back();
+                }
+            }            
+
+            $saveQuizzes = [];            
+            // ambil dan match ke users
+            if($users){
+                $dataQuizzes=[];
+
+                if($userQuizzes){
+                    foreach($userQuizzes as $dt){
+                        $dataQuizzes[] = $dt['user_id'];
+                    }
+                }
+                
+                foreach($users as $dt){
+                    if(in_array($dt['id'],$dataQuizzes)){
+                        continue;
+                    }
+
+                    $data = [
+                        'user_id'=> $dt['id'],
+                        'id_periode'=>$periode['id'],
+                        'time_limit_minutes'=>$periode['quiz_timer'],
+                    ];
+                    $saveQuizzes[] = $data;
+                }
+
+                if(count($saveQuizzes)>0){
+                    $insertBatch = $this->userquizzesmodel->insertBatch($saveQuizzes);
+                    if($insertBatch){                    
+                        session()->setFlashdata('message', 'student has been set for quiz');
+                    }else{
+                        session()->setFlashdata('message', 'data failed save');
+                    }
+                }else{
+                    session()->setFlashdata('message', 'no data added');
+                }
+
+            }else{
+                session()->setFlashdata('message', 'data student not found');
+            }
+           
+        }else{
+            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+        }
+        return redirect()->back();        
+    }
+
+    public function confirmDeleteAllQuizzes($idPeriode)
+    {
+        $periode = $this->periodemodel->where('id', $idPeriode)->first();
+        if(!$periode){
+            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+        }
+        $data = [
+            'title' => 'Confirmation turn off quiz',
+            'idPeriode' => $idPeriode,
+            'periode' => $periode,
+        ];
+        return view('users/confirmDeleteAllUserQuizPeriod', $data);
+    }
+
+    public function deleteAllQuizzesPeriod()
+    {
+        $idPeriode = $this->request->getPost('id-periode');
+        $category = $this->request->getPost('category');
+
+        if($category=='all'){
+            $this->answeredusersmodel->where('id_periode', $idPeriode)->delete();            
+            $this->userquizzesmodel->where('id_periode', $idPeriode)->delete();                 
+        }else{
+            $answerdQuizzes = $this->answeredusersmodel->where('id_periode', $idPeriode)->groupBy('id_user')->findAll();
+            $quizzes = $this->userquizzesmodel->where('id_periode', $idPeriode)->findAll();
+
+            if($answerdQuizzes){
+                $idAnswerd = [];
+                foreach($answerdQuizzes as $dt){
+                    $idAnswerd[] = $dt['id_user'];
+                }                
+                foreach($quizzes as $dt){
+                    if(in_array($dt['user_id'], $idAnswerd)){ // jika id user ada di answerd = continue
+                        continue;
+                    }
+                    $this->userquizzesmodel->where('id', $dt['id'])->delete();
+                }                            
+            }
+        }
+        session()->setFlashdata('message', 'data student has been off quiz');
+        return redirect()->to('admin/students-periode/'.$idPeriode);           
     }
 }
