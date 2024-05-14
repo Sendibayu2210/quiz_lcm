@@ -110,8 +110,9 @@ class QuizController extends BaseController
             }            
 
             $randomQuestions = $this->linearCongruentMethod($questions);
+            $periode = $this->periodemodel->where('id', $idPeriode)->first();
             $saveQuestionRandom=[];
-            foreach($randomQuestions as $rq){
+            foreach($randomQuestions as $key => $rq){
     
                 $dataMc = [];
                 foreach($rq['multiple_choice'] as $mc){
@@ -124,7 +125,10 @@ class QuizController extends BaseController
                     'id_multiple_choice' => implode(',', $dataMc),
                     'id_periode' => $idPeriode,
                 ];
-                $saveQuestionRandom[] = $data;
+
+                if($key < $periode['show_question']){ // hanya menampilkan soal maksimal dari jumlah yang ditentukan
+                    $saveQuestionRandom[] = $data;
+                }
             }
 
             $createQuiz = $this->answeredusersmodel->insertBatch($saveQuestionRandom);            

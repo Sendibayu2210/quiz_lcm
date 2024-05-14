@@ -12,7 +12,7 @@ class PeriodeModel extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['periode', 'status', 'quiz_timer'];
+    protected $allowedFields    = ['periode', 'status', 'quiz_timer', 'show_question'];
 
     protected bool $allowEmptyInserts = false;
 

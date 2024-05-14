@@ -27,6 +27,7 @@ $routes->post('/admin/users/change-password', 'UsersController::changePassword')
 $routes->get('/admin/periode', 'QuestionController::periodePage');
 $routes->post('/admin/periode/save', 'QuestionController::savePeriode');
 $routes->post('/admin/periode/delete', 'QuestionController::deletePeriode');
+$routes->post('/admin/periode/set-show-question', 'QuestionController::setShowQuestion');
 
 $routes->get('/admin/questions-periode/(:num)', 'QuestionController::questionsList/$1');
 $routes->get('/admin/students-periode/(:num)', 'UsersController::studentPeriode/$1');

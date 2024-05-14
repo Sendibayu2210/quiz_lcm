@@ -416,4 +416,16 @@ class QuestionController extends BaseController
         session()->setFlashdata($status, $message);
         return redirect()->back();        
     }
+
+    public function setShowQuestion()
+    {
+        $idPeriode = $this->request->getPost('id');
+        $countShow = $this->request->getPost('count');
+
+        $update = $this->periodemodel->set('show_question', $countShow)->where('id', $idPeriode)->update();
+        return $this->response->setJson([
+            'status' => 'success',
+            'message' => 'count question has been save',
+        ]);
+    }
 }

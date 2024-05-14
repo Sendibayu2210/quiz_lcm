@@ -31,6 +31,7 @@
                                 <th class="text-center">Count Student Quiz</th>
                                 <th class="text-center">Status</th>
                                 <th width="80">Timer</th>
+                                <th width="80">Show Question</th>
                                 <th class="text-center">Action</th>
                             </tr>
                         </thead>
@@ -46,6 +47,11 @@
                                     <td>
                                         <div class="form-group">
                                             <input type="text" class="form-control form-control-sm" @keyup="setTiming('<?= $dt['id']; ?>', $event)" value="<?= $dt['quiz_timer']; ?>">                                            
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="form-group">
+                                            <input type="text" class="form-control form-control-sm" @keyup="setShowQuestion('<?= $dt['id']; ?>', $event)" value="<?= $dt['show_question']; ?>">                                            
                                         </div>
                                     </td>
                                     <td class="text-center d-flex align-items-center">
@@ -196,6 +202,26 @@
                     console.log(error.response)
                 }
             },
+
+            async setShowQuestion(id, event){
+                try{
+                    let countValue = event.target.value;
+
+                    let params = {
+                        'id': id,
+                        'count': countValue,
+                    }                    
+                    const response = await axios.post('/admin/periode/set-show-question', params, {
+                        headers:{
+                            'Content-type':'multipart/form-data'
+                        }
+                    })
+                    let res = response.data;
+                    
+                }catch(error){
+                    console.log(error.response)
+                }
+            }
         },
         mounted(){            
             new DataTable('#data-table');
